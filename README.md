@@ -41,6 +41,61 @@ A new Flutter project.
 flutter test test/core/protocol/server_message_test.dart
 ```
 
+## Типизированные события сервера
+
+`lib/core/protocol/server_event_decoder.dart` экспортирует
+`decodeServerRecord(ServerRecord)` и модели событий. Декодер не зависит от Flutter
+и не меняет состояние приложения. Каждый класс находится в отдельном файле.
+
+```dart
+for (final record in parseServerMessage(message)) {
+  final event = decodeServerRecord(record);
+  if (event == null) continue; // Пустая строка.
+  // Передать событие следующему слою.
+}
+```
+
+| Событие | Модель и поля |
+|---|---|
+| `challstr` | `ChallengeEvent.challenge`: полный challenge с символами `\|` |
+| `updateuser` | `UpdateUserEvent`: `user`, `named`, `avatar`, `settingsJson` |
+| `init` | `RoomInitEvent.roomType` |
+| `title` | `RoomTitleEvent.title` |
+| `deinit` | `RoomDeinitEvent` |
+| `error` | `ServerErrorEvent.message` |
+| `popup` | `PopupEvent.message`: исходный текст, включая `\|\|` |
+| `nametaken` | `NameTakenEvent`: `username`, `message` |
+| Обычный текст / `\|\|text` | `PlainTextEvent.text` |
+
+У всех моделей есть исходная неизменяемая `record` и доступ к `roomId`.
+Неизвестные типы (включая боевые события и HTML) становятся `UnknownServerEvent`,
+повреждённые записи — `MalformedServerEvent` с причиной без входных данных.
+Такие результаты не прерывают обработку следующих записей. Исходная `record`
+может содержать секреты; её нельзя безусловно писать в журнал.
+
+Контракт декодера: пустые строки дают `null`; текстовые хвосты сохраняются без
+обрезки пробелов. В `updateuser` обязательны непустые USER и AVATAR и флаг `0`/`1`.
+USER сохраняется вместе с рангом/статусом; `named` не доказывает регистрацию.
+SETTINGS при наличии проверяется как JSON-объект и хранится исходной строкой,
+чтобы модель оставалась неизменяемой; отсутствие поля допускается для старого
+формата и даёт `null`, пустое или повреждённое поле считается ошибкой.
+Challenge, тип комнаты, заголовок и оба поля `nametaken` должны быть непустыми;
+`deinit` не принимает данные. Пустые `error`/`popup` сохраняются.
+Новые типы комнат сохраняются строкой; допустимость комнаты и её контекста
+проверит будущий маршрутизатор, глобальный контекст здесь остаётся `null`.
+
+Источники для проверки полей: официальный
+[PROTOCOL.md → Global messages](https://github.com/smogon/pokemon-showdown/blob/master/PROTOCOL.md#global-messages),
+[Room initialization](https://github.com/smogon/pokemon-showdown/blob/master/PROTOCOL.md#room-initialization)
+и [Room messages](https://github.com/smogon/pokemon-showdown/blob/master/PROTOCOL.md#room-messages).
+Обработка `deinit` дополнительно сверена с методом `receive` в
+[официальном клиенте](https://github.com/smogon/pokemon-showdown-client/blob/master/play.pokemonshowdown.com/src/client-main.ts).
+Эти ссылки на `master` проверены 23 октября 2026 года и могут меняться.
+Правила отклонения некорректных полей и поддержки старого `updateuser` — решения
+нашего клиента, а не дополнительные требования спецификации.
+
+Тесты декодера: `flutter test test/core/protocol/server_event_decoder_test.dart`.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

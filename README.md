@@ -132,6 +132,52 @@ ID комнаты должен состоять из строчных ASCII-бу
 
 Тесты: `flutter test test/core/protocol/client_commands_test.dart`.
 
+## WebSocket-транспорт
+
+`lib/core/transport/showdown_transport.dart` предоставляет `ShowdownTransport`
+для Android/Linux на основе `web_socket_channel`. Он принимает WSS-адрес без
+встроенных логина/пароля и фрагмента URL. Проверка TLS-сертификата стандартная;
+небезопасный WS в рабочем адаптере не разрешён.
+
+- `connect(Uri)` завершается после успешного handshake; одновременно допускается
+  только одно подключение. Таймаут по умолчанию — 10 секунд.
+- `status` содержит текущее состояние; `statuses` сообщает изменения:
+  `disconnected`, `connecting`, `connected`, `disposed`.
+- `messages` передаёт полные текстовые сообщения в исходном порядке, включая
+  внутренние переносы строк. Декодирование протокола выполняет следующий слой.
+- `send(ClientCommand)` отправляет сериализованную команду только в состоянии
+  `connected`. Успех вызова не подтверждает принятие команды сервером.
+- `failures` сообщает `TransportException` с категорией ошибки без исходного
+  текста исключения или содержимого сообщения. Ошибка подключения также
+  завершает `connect()` исключением, которое вызывающий код должен обработать.
+- `disconnect()` отменяет незавершённое подключение и закрывает канал; после него
+  разрешён новый явный `connect()`. `dispose()` закрывает также потоки и запрещает
+  дальнейшее подключение. Оба метода допускают повторный вызов.
+
+На потоки нужно подписаться до `connect()`: они broadcast и не повторяют историю.
+Отмена ожидающего `connect()` даёт `TransportFailure.cancelled`; ошибки URI или
+таймаутов — `ArgumentError`, неверный порядок вызовов — `StateError`.
+Удалённое закрытие, ошибка сети, бинарное сообщение или ошибка отправки переводят
+транспорт в `disconnected`. Бинарные сообщения не преобразуются в текст.
+Очереди команд и автоматического reconnect/retry нет. Запоздалые события старого
+канала игнорируются. Рабочий адаптер использует WebSocket ping каждые 30 секунд
+для обнаружения потери связи; закрытие ожидается не более 2 секунд на операцию.
+Владельцу при завершении работы следует отменить свои подписки и вызвать `dispose()`.
+
+Через `channelFactory` тесты подставляют управляемый канал или локальный сервер;
+это точка внедрения тестового адаптера, не настройка приложения.
+Тесты охватывают handshake, таймаут, отмену, разрывы, ошибки отправки, старые
+события, освобождение ресурсов и обмен с локальным WebSocket-сервером.
+Они не подключаются к публичному серверу и не проверяют живую авторизацию/TLS.
+Android INTERNET permission добавлен в основной manifest для всех сборок.
+
+Источники: [Showdown → Protocol](https://github.com/smogon/pokemon-showdown/blob/9b136a8c8cdb860a8ab96fa063f906604e352547/PROTOCOL.md#protocol),
+[WebSocketChannel.ready](https://pub.dev/documentation/web_socket_channel/3.0.3/web_socket_channel/WebSocketChannel/ready.html)
+и [IOWebSocketChannel.connect](https://pub.dev/documentation/web_socket_channel/3.0.3/io/IOWebSocketChannel/IOWebSocketChannel.connect.html).
+Контракт адаптера также проверен по исходникам установленной версии 3.0.3.
+
+Проверка: `flutter test test/core/transport/showdown_transport_test.dart`.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

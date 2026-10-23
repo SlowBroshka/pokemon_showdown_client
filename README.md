@@ -96,6 +96,42 @@ Challenge, тип комнаты, заголовок и оба поля `nametak
 
 Тесты декодера: `flutter test test/core/protocol/server_event_decoder_test.dart`.
 
+## Исходящие команды
+
+`lib/core/protocol/client_commands.dart` экспортирует общий интерфейс
+`ClientCommand` и три неизменяемые модели (каждая в отдельном файле):
+
+| Модель | Результат `serialize()` |
+|---|---|
+| `TrnCommand(username: 'Alice', assertion: 'token')` | `\|/trn Alice,0,token` |
+| `JoinRoomCommand(roomId: 'lobby')` | `\|/join lobby` |
+| `LeaveRoomCommand(roomId: 'lobby')` | `lobby\|/leave` |
+
+Сериализация возвращает одно полное текстовое сообщение без завершающего
+переноса строки. Модуль не открывает соединение и ничего не отправляет.
+`/trn` использует готовый assertion, а не пароль; получение assertion относится
+к будущему модулю авторизации. `/leave` означает выход из комнаты, не сдачу боя.
+
+Поля проверяются в конструкторах, некорректный ввод вызывает `ArgumentError`
+без значения поля. Пустые значения, пробелы по краям, `|`, управляющие символы
+C0/C1 и Unicode-разделители строк U+2028/U+2029 запрещены. В имени также запрещена
+запятая; запятые внутри assertion сохраняются как часть оставшегося хвоста.
+ID комнаты должен состоять из строчных ASCII-букв, цифр и дефисов (`[a-z0-9-]+`);
+названия, URL и списки комнат не принимаются. Значения не обрезаются и не
+нормализуются. Это ограничения нашего API; окончательные правила имён,
+существование комнаты и права доступа проверяет сервер.
+
+`toString()` команды не содержит её полей. Результат `serialize()` для `/trn`
+содержит assertion и не предназначен для логирования.
+
+Официальная документация: [Client-to-server messages](https://github.com/smogon/pokemon-showdown/blob/9b136a8c8cdb860a8ab96fa063f906604e352547/PROTOCOL.md#client-to-server-messages)
+описывает оболочку и `/join`; [Global messages](https://github.com/smogon/pokemon-showdown/blob/9b136a8c8cdb860a8ab96fa063f906604e352547/PROTOCOL.md#global-messages)
+описывает `/trn`. Разделение `/trn` по первым двум запятым также проверено в
+[серверном обработчике `trn`](https://github.com/smogon/pokemon-showdown/blob/master/server/chat-commands/core.ts#L1609-L1617)
+(ссылка на `master`, проверена 23 октября 2026 года).
+
+Тесты: `flutter test test/core/protocol/client_commands_test.dart`.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

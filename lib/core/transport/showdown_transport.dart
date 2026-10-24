@@ -8,10 +8,12 @@ import '../protocol/client_command.dart';
 import 'transport_exception.dart';
 import 'transport_failure.dart';
 import 'transport_status.dart';
+import 'transport_update.dart';
 
 export 'transport_exception.dart';
 export 'transport_failure.dart';
 export 'transport_status.dart';
+export 'transport_update.dart';
 
 /// Native Android/Linux transport. No parsing, auth, queue or automatic retry.
 /// Subscribe before connecting: broadcast streams do not replay old events.
@@ -32,6 +34,7 @@ final class ShowdownTransport {
   /// Optional test adapter. Production uses a native WSS channel.
   final WebSocketChannel Function(Uri)? channelFactory;
   final _messages = StreamController<String>.broadcast();
+  final _updates = StreamController<TransportUpdate>.broadcast();
   final _statuses = StreamController<TransportStatus>.broadcast();
   final _failures = StreamController<TransportException>.broadcast();
   WebSocketChannel? _channel;
@@ -44,6 +47,9 @@ final class ShowdownTransport {
 
   TransportStatus get status => _status;
   Stream<String> get messages => _messages.stream;
+
+  /// Preserves relative order of messages and status changes for state reducers.
+  Stream<TransportUpdate> get updates => _updates.stream;
   Stream<TransportStatus> get statuses => _statuses.stream;
 
   /// Typed notifications, not Stream errors. connect() also reports its failure.
@@ -83,6 +89,7 @@ final class ShowdownTransport {
         (dynamic message) {
           if (!identical(_channel, channel)) return;
           if (message is String) {
+            _updates.add(TransportUpdate.message(message));
             _messages.add(message);
           } else {
             _fail(TransportFailure.unsupportedMessage);
@@ -147,6 +154,7 @@ final class ShowdownTransport {
     await cleanup;
     await Future.wait([
       _messages.close(),
+      _updates.close(),
       _statuses.close(),
       _failures.close(),
     ]);
@@ -193,6 +201,7 @@ final class ShowdownTransport {
   void _setStatus(TransportStatus value) {
     if (_status == value) return;
     _status = value;
+    _updates.add(TransportUpdate.status(value));
     _statuses.add(value);
   }
 }

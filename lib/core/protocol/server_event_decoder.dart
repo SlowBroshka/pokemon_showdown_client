@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'battle_event_decoder.dart';
+
 import '../battle/requests/battle_request_decoder.dart';
 import 'events/battle_request_event.dart';
 
@@ -30,6 +32,7 @@ export 'events/plain_text_event.dart';
 export 'events/unknown_server_event.dart';
 export 'events/malformed_server_event.dart';
 export 'server_event.dart';
+export 'battle_event_decoder.dart';
 export 'events/battle_request_event.dart';
 
 /// Decodes one record without network access, state changes or rendering.
@@ -53,6 +56,8 @@ ServerEvent? decodeServerRecord(ServerRecord record) {
     return MalformedServerEvent(record, reason: 'Missing event type or data');
   }
 
+  final battleEvent = decodeBattleEvent(record);
+  if (battleEvent != null) return battleEvent;
   switch (type) {
     case 'request':
       if (record.roomId == null) {

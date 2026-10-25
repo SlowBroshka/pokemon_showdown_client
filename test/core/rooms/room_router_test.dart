@@ -45,7 +45,7 @@ void main() {
     expect(first.map((value) => value.event.runtimeType), [
       RoomInitEvent,
       RoomTitleEvent,
-      UnknownServerEvent,
+      BattleTurnEvent,
     ]);
     expect(room.map((value) => value.roomId), [
       'battle-one',

@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import '../battle/requests/battle_request_decoder.dart';
+import 'events/battle_request_event.dart';
+
 import 'events/challenge_event.dart';
 import 'events/update_user_event.dart';
 import 'events/room_init_event.dart';
@@ -27,6 +30,7 @@ export 'events/plain_text_event.dart';
 export 'events/unknown_server_event.dart';
 export 'events/malformed_server_event.dart';
 export 'server_event.dart';
+export 'events/battle_request_event.dart';
 
 /// Decodes one record without network access, state changes or rendering.
 /// Empty lines return null. Unsupported events and malformed records are explicit
@@ -50,6 +54,11 @@ ServerEvent? decodeServerRecord(ServerRecord record) {
   }
 
   switch (type) {
+    case 'request':
+      if (record.roomId == null) {
+        return MalformedServerEvent(record, reason: 'Request requires a room');
+      }
+      return BattleRequestEvent(record, request: decodeBattleRequest(data));
     case '':
       return PlainTextEvent(record, text: data);
     case 'challstr':

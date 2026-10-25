@@ -215,7 +215,7 @@ abstract class AppLocalizations {
   /// Connection screen: connection description.
   ///
   /// In en, this message translates to:
-  /// **'Test screen · one active room\nSign-in and battle controls are coming later.'**
+  /// **'One active room · account sign-in\nBattle controls are coming later.'**
   String get connectionDescription;
 
   /// Connection screen: server address.
@@ -337,6 +337,228 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Type: {type, select, chat{chat} battle{battle} other{other}}'**
   String roomType(String type);
+
+  /// Account sign-in: Account
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get authHeading;
+
+  /// Account sign-in: Use an existing account. Your password is not saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Use an existing account. Your password is not saved.'**
+  String get authDescription;
+
+  /// Account sign-in: Username
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get authUsername;
+
+  /// Account sign-in: Password
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get authPassword;
+
+  /// Account sign-in: Show password
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get authShowPassword;
+
+  /// Account sign-in: Hide password
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get authHidePassword;
+
+  /// Account sign-in: Sign in
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get authSignIn;
+
+  /// Account sign-in: Cancel sign-in
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel sign-in'**
+  String get authCancelSignIn;
+
+  /// Account sign-in: Sign out and disconnect
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out and disconnect'**
+  String get authSignOut;
+
+  /// Account sign-in: Connect to the server to sign in.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to the server to sign in.'**
+  String get authDisconnected;
+
+  /// Account sign-in: Sign-in is unavailable for this server.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in is unavailable for this server.'**
+  String get authUnavailable;
+
+  /// Account sign-in: Waiting for sign-in details from the server…
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for sign-in details from the server…'**
+  String get authWaitingChallenge;
+
+  /// Account sign-in: Ready to sign in to your account.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to sign in to your account.'**
+  String get authReady;
+
+  /// Account sign-in: Checking account credentials…
+  ///
+  /// In en, this message translates to:
+  /// **'Checking account credentials…'**
+  String get authAuthenticating;
+
+  /// Account sign-in: Waiting for the game server to confirm sign-in…
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for the game server to confirm sign-in…'**
+  String get authAwaitingConfirmation;
+
+  /// Account sign-in: Signed in as {username}
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in as {username}'**
+  String authSignedIn(String username);
+
+  /// Account sign-in: Disconnecting…
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnecting…'**
+  String get authDisconnecting;
+
+  /// Account sign-in: The session has ended.
+  ///
+  /// In en, this message translates to:
+  /// **'The session has ended.'**
+  String get authDisposed;
+
+  /// Account sign-in: Check your username and password. Use a name of up to 18 ASCII characters.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your username and password. Use a name of up to 18 characters with Latin letters or digits.'**
+  String get authInvalidInput;
+
+  /// Account sign-in: Could not reach the sign-in service. Please try again.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not reach the sign-in service. Please try again.'**
+  String get authNetwork;
+
+  /// Account sign-in: Sign-in timed out. Please try again.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in timed out. Please try again.'**
+  String get authTimeout;
+
+  /// Account sign-in: Sign-in cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in cancelled.'**
+  String get authCancelled;
+
+  /// Account sign-in: The sign-in service returned an unexpected redirect. Sign-in stopped.
+  ///
+  /// In en, this message translates to:
+  /// **'The sign-in service returned an unexpected redirect. Sign-in stopped.'**
+  String get authUnexpectedRedirect;
+
+  /// Account sign-in: Too many sign-in attempts. Wait before trying again.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many sign-in attempts. Wait before trying again.'**
+  String get authRateLimited;
+
+  /// Account sign-in: The sign-in service is temporarily unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The sign-in service is temporarily unavailable.'**
+  String get authServiceUnavailable;
+
+  /// Account sign-in: The sign-in service could not process the request.
+  ///
+  /// In en, this message translates to:
+  /// **'The sign-in service could not process the request.'**
+  String get authHttpFailure;
+
+  /// Account sign-in: The sign-in service returned an unsupported response.
+  ///
+  /// In en, this message translates to:
+  /// **'The sign-in service returned an unsupported response.'**
+  String get authInvalidResponse;
+
+  /// Account sign-in: The sign-in response exceeded the allowed size.
+  ///
+  /// In en, this message translates to:
+  /// **'The sign-in response exceeded the allowed size.'**
+  String get authResponseTooLarge;
+
+  /// Account sign-in: Sign-in was rejected. Check your account details and try again.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in was rejected. Check your account details and try again.'**
+  String get authLoginRejected;
+
+  /// Account sign-in: The sign-in service returned invalid confirmation data.
+  ///
+  /// In en, this message translates to:
+  /// **'The sign-in service returned invalid confirmation data.'**
+  String get authInvalidAssertion;
+
+  /// Account sign-in: Account sign-in currently supports only the default Pokémon Showdown server.
+  ///
+  /// In en, this message translates to:
+  /// **'Account sign-in currently supports only the default Pokémon Showdown server.'**
+  String get authUnsupportedServer;
+
+  /// Account sign-in: The server did not provide sign-in details. Please reconnect.
+  ///
+  /// In en, this message translates to:
+  /// **'The server did not provide sign-in details. Please reconnect.'**
+  String get authChallengeTimeout;
+
+  /// Account sign-in: The game server did not confirm sign-in. Please reconnect.
+  ///
+  /// In en, this message translates to:
+  /// **'The game server did not confirm sign-in. Please reconnect.'**
+  String get authConfirmationTimeout;
+
+  /// Account sign-in: The game server did not confirm your account. Please reconnect.
+  ///
+  /// In en, this message translates to:
+  /// **'The game server did not confirm your account. Please reconnect.'**
+  String get authIdentityRejected;
+
+  /// Account sign-in: The connection was lost. Reconnect and sign in again.
+  ///
+  /// In en, this message translates to:
+  /// **'The connection was lost. Reconnect and sign in again.'**
+  String get authConnectionLost;
+
+  /// Account sign-in: Could not complete sign-in. Please reconnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not complete sign-in. Please reconnect.'**
+  String get authSendFailed;
+
+  /// Account sign-in: The server sent invalid sign-in data. Please reconnect.
+  ///
+  /// In en, this message translates to:
+  /// **'The server sent invalid sign-in data. Please reconnect.'**
+  String get authInvalidServerEvent;
 }
 
 class _AppLocalizationsDelegate

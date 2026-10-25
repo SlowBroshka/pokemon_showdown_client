@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../../core/transport/transport_status.dart';
+import '../../core/auth/auth_controller.dart';
+import '../auth/auth_panel.dart';
 import 'connection_controller.dart';
 import '../../l10n/app_localizations.dart';
 import 'connection_message_localization.dart';
 
 class ConnectionScreen extends StatefulWidget {
-  const ConnectionScreen({super.key, this.controller});
+  const ConnectionScreen({super.key, this.controller, this.authController})
+    : assert(authController == null || controller != null);
   final ConnectionController? controller;
+  final AuthController? authController;
 
   @override
   State<ConnectionScreen> createState() => _ConnectionScreenState();
@@ -118,6 +122,13 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                       ),
                     ],
                     const Divider(height: 32),
+                    if (widget.authController != null) ...[
+                      AuthPanel(
+                        controller: widget.authController!,
+                        onDisconnect: _controller.disconnect,
+                      ),
+                      const Divider(height: 32),
+                    ],
                     Text(
                       l10n.roomHeading,
                       style: Theme.of(context).textTheme.titleLarge,

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "provenance": "Synthetic ordered scenarios for the future auth controller. Not recorded sessions or executable tests. Epoch and attempt IDs are local client metadata.",
+  "provenance": "Synthetic ordered scenario descriptions, covered by test/core/auth/auth_controller_test.dart. Not recorded sessions or an executable JSON test interpreter. Epoch and attempt IDs are local client metadata.",
   "cases": [
     {
       "id": "confirmed-identity",
@@ -103,13 +103,13 @@
       ]
     },
     {
-      "id": "empty-name-rejection-current-decoder-gap",
+      "id": "empty-name-rejection",
       "initialState": "awaitingConfirmation",
       "steps": [
         {"epoch": 1, "receive": "|nametaken||Synthetic invalid name"},
         {"expectAuthenticated": false, "mustTerminateAttempt": true}
       ],
-      "note": "Current decoder returns MalformedServerEvent. Decide typed support or explicit safe failure in the auth controller PR."
+      "note": "Decoder supports NameTakenEvent with an empty username; the controller terminates confirmation with identityRejected."
     }
   ]
 }

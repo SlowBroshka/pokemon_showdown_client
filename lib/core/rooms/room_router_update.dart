@@ -3,16 +3,20 @@ import '../transport/transport_status.dart';
 
 /// Routed events and lifecycle changes in the transport's original order.
 final class RoomRouterUpdate {
-  const RoomRouterUpdate.status(TransportStatus value)
+  const RoomRouterUpdate.status(TransportStatus value, {this.sequence = 0})
     : status = value,
       event = null,
       roomId = null;
 
-  const RoomRouterUpdate.event(ServerEvent value, {this.roomId})
-    : event = value,
-      status = null;
+  const RoomRouterUpdate.event(
+    ServerEvent value, {
+    this.roomId,
+    this.sequence = 0,
+  }) : event = value,
+       status = null;
 
   final TransportStatus? status;
   final ServerEvent? event;
   final String? roomId;
+  final int sequence;
 }

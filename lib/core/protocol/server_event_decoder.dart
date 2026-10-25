@@ -81,7 +81,7 @@ ServerEvent? decodeServerRecord(ServerRecord record) {
       return PopupEvent(record, message: data);
     case 'nametaken':
       final separator = data.indexOf('|');
-      if (separator <= 0 || separator == data.length - 1) {
+      if (separator < 0 || separator == data.length - 1) {
         return MalformedServerEvent(record, reason: 'Missing name or message');
       }
       return NameTakenEvent(

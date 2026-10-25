@@ -28,6 +28,7 @@ final class ShowdownSession {
   late final StreamSubscription<RoomRouterUpdate> _subscription;
   final _updates = StreamController<SessionUpdate>.broadcast();
   int _epoch = 0;
+  Uri? _endpoint;
   int _receivedEpoch = 0;
   bool _disposed = false;
   Future<void>? _disconnecting;
@@ -35,6 +36,8 @@ final class ShowdownSession {
 
   TransportStatus get status => _transport.status;
   int get connectionEpoch => _epoch;
+  Uri? get endpoint => _endpoint;
+  int get latestUpdateSequence => _transport.latestUpdateSequence;
   Map<String, RoomInfo> get rooms => _router.rooms;
   Stream<Map<String, RoomInfo>> get roomChanges => _router.roomChanges;
   Stream<TransportException> get failures => _transport.failures;
@@ -82,6 +85,7 @@ final class ShowdownSession {
     // Synchronous validation failures do not consume an epoch. A failed/cancelled
     // handshake does, as the accepted attempt may already have received data.
     final pending = _transport.connect(endpoint);
+    _endpoint = endpoint;
     _epoch++;
     return pending;
   }
@@ -112,13 +116,16 @@ final class ShowdownSession {
     final status = update.status;
     if (status != null) {
       if (status == TransportStatus.connecting) _receivedEpoch++;
-      _updates.add(SessionUpdate.status(_receivedEpoch, status));
+      _updates.add(
+        SessionUpdate.status(_receivedEpoch, status, sequence: update.sequence),
+      );
     } else {
       _updates.add(
         SessionUpdate.event(
           _receivedEpoch,
           update.event!,
           roomId: update.roomId,
+          sequence: update.sequence,
         ),
       );
     }

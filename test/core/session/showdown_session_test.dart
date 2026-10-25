@@ -55,6 +55,28 @@ void main() {
     expect(socket.sink.sent, isEmpty);
   });
 
+  test(
+    'source sequence is preserved across routing before subscriber delivery',
+    () async {
+      final updates = <SessionUpdate>[];
+      final subscription = session.updates.listen(updates.add)..pause();
+      await connect();
+      final before = session.latestUpdateSequence;
+      socket.incoming.add('|challstr|0|synthetic\n|updateuser| Guest 1|0|1|{}');
+      await flush();
+      final received = session.latestUpdateSequence;
+      expect(received, greaterThan(before));
+      expect(updates, isEmpty);
+      subscription.resume();
+      await flush();
+      final events = updates.where((u) => u.event != null).toList();
+      expect(events, hasLength(2));
+      expect(events.map((u) => u.sequence), [received, received]);
+      expect(session.endpoint, Uri.parse('wss://example.test'));
+      await subscription.cancel();
+    },
+  );
+
   test('routes once with epoch and preserves lifecycle/event order', () async {
     final updates = <SessionUpdate>[];
     final globals = <SessionUpdate>[];

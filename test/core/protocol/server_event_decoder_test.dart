@@ -59,6 +59,9 @@ void main() {
           decode('|nametaken|Alice| Already | taken ') as NameTakenEvent;
       expect(rejected.username, 'Alice');
       expect(rejected.message, ' Already | taken ');
+      final invalidName = decode('|nametaken||Invalid name') as NameTakenEvent;
+      expect(invalidName.username, '');
+      expect(invalidName.message, 'Invalid name');
       expect((decode('|error|') as ServerErrorEvent).message, '');
       expect((decode('|popup|') as PopupEvent).message, '');
     });
@@ -110,7 +113,6 @@ void main() {
         '|title|',
         '|deinit|extra',
         '|nametaken|Alice',
-        '|nametaken||message',
         '|nametaken|Alice|',
       ]) {
         expect(decode(line), isA<MalformedServerEvent>(), reason: line);

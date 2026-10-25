@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'auth_exception.dart';
+import 'auth_challenge.dart';
 import 'auth_failure.dart';
 import 'auth_login_result.dart';
 import 'auth_response_decoder.dart';
@@ -50,11 +51,7 @@ final class AuthApiClient {
       );
     }
     final userId = authUserId(username);
-    if (userId == null ||
-        password.isEmpty ||
-        challstr.length > 4096 ||
-        RegExp(r'^[0-9]+\|[^\s\x00-\x1f\x7f-\x9f]+$').stringMatch(challstr) !=
-            challstr) {
+    if (userId == null || password.isEmpty || !isValidAuthChallenge(challstr)) {
       throw const AuthException(AuthFailure.invalidInput);
     }
     final abort = Completer<void>();

@@ -5,9 +5,11 @@ import '../protocol/server_message.dart';
 import '../transport/showdown_transport.dart';
 import 'room_event.dart';
 import 'room_info.dart';
+import 'room_router_update.dart';
 
 export 'room_event.dart';
 export 'room_info.dart';
+export 'room_router_update.dart';
 
 /// Owns its subscriptions, but not the transport. Attach before connecting.
 /// Streams are broadcast notifications, without replay or retained event logs.
@@ -20,6 +22,7 @@ final class RoomRouter {
       if (status != null) {
         _status = status;
         if (status != TransportStatus.connected) _markStale();
+        _updates.add(RoomRouterUpdate.status(status));
       } else {
         _receive(update.message!);
       }
@@ -28,6 +31,7 @@ final class RoomRouter {
 
   final ShowdownTransport _transport;
   final _globalEvents = StreamController<ServerEvent>.broadcast();
+  final _updates = StreamController<RoomRouterUpdate>.broadcast();
   final _roomEvents = StreamController<RoomEvent>.broadcast();
   final _roomChanges = StreamController<Map<String, RoomInfo>>.broadcast();
   Map<String, RoomInfo> _rooms = const {};
@@ -37,6 +41,7 @@ final class RoomRouter {
   Future<void>? _disposal;
 
   Map<String, RoomInfo> get rooms => _rooms;
+  Stream<RoomRouterUpdate> get updates => _updates.stream;
   Stream<ServerEvent> get globalEvents => _globalEvents.stream;
   Stream<RoomEvent> get roomEvents => _roomEvents.stream;
   Stream<Map<String, RoomInfo>> get roomChanges => _roomChanges.stream;
@@ -62,6 +67,7 @@ final class RoomRouter {
         _apply(roomId, event);
         _roomEvents.add(RoomEvent(roomId: roomId, event: event));
       }
+      _updates.add(RoomRouterUpdate.event(event, roomId: roomId));
     }
   }
 
@@ -120,6 +126,7 @@ final class RoomRouter {
     await _subscription.cancel();
     await Future.wait([
       _globalEvents.close(),
+      _updates.close(),
       _roomEvents.close(),
       _roomChanges.close(),
     ]);

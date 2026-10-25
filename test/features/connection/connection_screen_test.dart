@@ -11,6 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pokemon_showdown_client/features/connection/connection_controller.dart';
 import 'package:pokemon_showdown_client/features/connection/connection_screen.dart';
 import 'package:pokemon_showdown_client/core/transport/showdown_transport.dart';
+import 'package:pokemon_showdown_client/core/session/showdown_session.dart';
 
 import '../../core/transport/support/fake_socket_channel.dart';
 
@@ -21,12 +22,14 @@ void main() {
       (tester) async {
         final l10n = await AppLocalizations.delegate.load(Locale(language));
         final socket = FakeSocketChannel();
-        final controller = ConnectionController(
+        final session = ShowdownSession(
           transport: ShowdownTransport(channelFactory: (_) => socket),
         );
+        final controller = ConnectionController(session: session);
         addTearDown(() async {
           controller.dispose();
           await controller.closed;
+          await session.dispose();
           await socket.incoming.close();
         });
         await tester.pumpWidget(
@@ -64,6 +67,8 @@ void main() {
           findsOneWidget,
         );
         await tester.pumpWidget(const SizedBox());
+        expect(session.status, TransportStatus.connected);
+        expect(controller.canJoin, isTrue);
       },
     );
   }

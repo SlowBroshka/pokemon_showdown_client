@@ -1,3 +1,4 @@
+import 'package:pokemon_showdown_client/features/connection/connection_message.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pokemon_showdown_client/features/connection/connection_controller.dart';
 import 'package:pokemon_showdown_client/core/transport/showdown_transport.dart';
@@ -60,7 +61,7 @@ void main() {
     socket.handshake.completeError(StateError('private-secret'));
     await pending;
     await flush();
-    expect(controller.error, contains('Ошибка соединения'));
+    expect(controller.error, ConnectionMessage.connectionFailed);
     expect(controller.notices.join(), isNot(contains('private-secret')));
   });
   test(
@@ -120,7 +121,7 @@ void main() {
       controller.join('one');
       await Future<void>.delayed(const Duration(milliseconds: 130));
       expect(controller.status, TransportStatus.disconnected);
-      expect(controller.error, contains('не подтвердил'));
+      expect(controller.error, ConnectionMessage.roomTimeout);
       expect(controller.canJoin, isFalse);
       expect(controller.joiningId, isNull);
     },

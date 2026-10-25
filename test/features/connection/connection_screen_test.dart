@@ -1,4 +1,7 @@
 import 'dart:io';
+
+import 'package:pokemon_showdown_client/l10n/app_localizations.dart';
+
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -12,48 +15,58 @@ import 'package:pokemon_showdown_client/core/transport/showdown_transport.dart';
 import '../../core/transport/support/fake_socket_channel.dart';
 
 void main() {
-  testWidgets(
-    'connect, join, display one room and wait for leave confirmation',
-    (tester) async {
-      final socket = FakeSocketChannel();
-      final controller = ConnectionController(
-        transport: ShowdownTransport(channelFactory: (_) => socket),
-      );
-      addTearDown(() async {
-        controller.dispose();
-        await controller.closed;
-        await socket.incoming.close();
-      });
-      await tester.pumpWidget(
-        MaterialApp(home: ConnectionScreen(controller: controller)),
-      );
-      await tester.tap(find.text('Подключиться'));
-      await tester.pump();
-      expect(find.text('Отменить'), findsOneWidget);
-      socket.handshake.complete();
-      await tester.pumpAndSettle();
-      await tester.enterText(
-        find.widgetWithText(TextField, 'ID комнаты'),
-        'one',
-      );
-      await tester.tap(find.text('Войти'));
-      await tester.pump();
-      expect(find.text('Ожидаем подтверждение входа…'), findsOneWidget);
-      expect(socket.sink.sent, ['|/join one']);
-      socket.incoming.add('>one\n|init|chat\n|title|Комната проверки');
-      await tester.pumpAndSettle();
-      expect(find.text('Комната проверки'), findsOneWidget);
-      expect(find.widgetWithText(TextField, 'ID комнаты'), findsNothing);
-      await tester.tap(find.text('Выйти из комнаты'));
-      await tester.pump();
-      expect(find.text('Ожидаем подтверждение выхода…'), findsOneWidget);
-      socket.incoming.add('>one\n|deinit');
-      await tester.pumpAndSettle();
-      expect(find.widgetWithText(TextField, 'ID комнаты'), findsOneWidget);
-      await tester.pumpWidget(const SizedBox());
-    },
-  );
-
+  for (final language in ['ru', 'en']) {
+    testWidgets(
+      '$language: connect, join, display one room and wait for leave confirmation',
+      (tester) async {
+        final l10n = await AppLocalizations.delegate.load(Locale(language));
+        final socket = FakeSocketChannel();
+        final controller = ConnectionController(
+          transport: ShowdownTransport(channelFactory: (_) => socket),
+        );
+        addTearDown(() async {
+          controller.dispose();
+          await controller.closed;
+          await socket.incoming.close();
+        });
+        await tester.pumpWidget(
+          MaterialApp(
+            locale: Locale(language),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: ConnectionScreen(controller: controller),
+          ),
+        );
+        await tester.tap(find.text(l10n.connect));
+        await tester.pump();
+        expect(find.text(l10n.cancel), findsOneWidget);
+        socket.handshake.complete();
+        await tester.pumpAndSettle();
+        await tester.enterText(
+          find.widgetWithText(TextField, l10n.roomIdLabel),
+          'one',
+        );
+        await tester.tap(find.text(l10n.join));
+        await tester.pump();
+        expect(find.text(l10n.awaitingJoin), findsOneWidget);
+        expect(socket.sink.sent, ['|/join one']);
+        socket.incoming.add('>one\n|init|chat\n|title|Комната проверки');
+        await tester.pumpAndSettle();
+        expect(find.text('Комната проверки'), findsOneWidget);
+        expect(find.widgetWithText(TextField, l10n.roomIdLabel), findsNothing);
+        await tester.tap(find.text(l10n.leaveRoom));
+        await tester.pump();
+        expect(find.text(l10n.awaitingLeave), findsOneWidget);
+        socket.incoming.add('>one\n|deinit');
+        await tester.pumpAndSettle();
+        expect(
+          find.widgetWithText(TextField, l10n.roomIdLabel),
+          findsOneWidget,
+        );
+        await tester.pumpWidget(const SizedBox());
+      },
+    );
+  }
   testWidgets(
     'small screen and large text remain scrollable without overflow',
     (tester) async {
@@ -63,6 +76,9 @@ void main() {
       addTearDown(tester.view.resetDevicePixelRatio);
       await tester.pumpWidget(
         MaterialApp(
+          locale: const Locale('ru'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           home: MediaQuery(
             data: const MediaQueryData(textScaler: TextScaler.linear(2)),
             child: const ConnectionScreen(),
@@ -89,7 +105,14 @@ void main() {
   testWidgets('connection error is visible without exposing input secrets', (
     tester,
   ) async {
-    await tester.pumpWidget(const MaterialApp(home: ConnectionScreen()));
+    await tester.pumpWidget(
+      const MaterialApp(
+        locale: Locale('ru'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: ConnectionScreen(),
+      ),
+    );
     await tester.enterText(
       find.widgetWithText(TextField, 'Адрес сервера (WSS)'),
       'wss://user:secret@example.test',
@@ -123,6 +146,9 @@ void main() {
       RepaintBoundary(
         key: key,
         child: MaterialApp(
+          locale: const Locale('ru'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           theme: fontPath.isEmpty ? null : ThemeData(fontFamily: 'Preview'),
           home: const ConnectionScreen(),
         ),

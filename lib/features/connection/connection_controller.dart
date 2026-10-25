@@ -6,6 +6,7 @@ import '../../core/protocol/client_commands.dart';
 import '../../core/protocol/server_event_decoder.dart';
 import '../../core/rooms/room_router.dart';
 import '../../core/transport/showdown_transport.dart';
+import 'connection_message.dart';
 
 /// Owns the transport and router. One selected room and one operation at a time.
 final class ConnectionController extends ChangeNotifier {
@@ -21,12 +22,12 @@ final class ConnectionController extends ChangeNotifier {
       _transport.statuses.listen(_onStatus),
       _transport.failures.listen(
         (failure) => _report(switch (failure.failure) {
-          TransportFailure.timeout => 'Время подключения истекло.',
-          TransportFailure.closed => 'Сервер закрыл соединение.',
+          TransportFailure.timeout => ConnectionMessage.connectionTimeout,
+          TransportFailure.closed => ConnectionMessage.serverClosed,
           TransportFailure.unsupportedMessage =>
-            'Сервер прислал неподдерживаемое сообщение.',
-          TransportFailure.send => 'Не удалось отправить команду.',
-          _ => 'Ошибка соединения. Попробуйте подключиться снова.',
+            ConnectionMessage.unsupportedMessage,
+          TransportFailure.send => ConnectionMessage.sendFailed,
+          _ => ConnectionMessage.connectionFailed,
         }),
       ),
       _router.roomEvents.listen(_onRoom),
@@ -39,14 +40,14 @@ final class ConnectionController extends ChangeNotifier {
   final Duration roomTimeout;
   late final RoomRouter _router;
   final _subscriptions = <StreamSubscription<dynamic>>[];
-  final _notices = <String>[];
+  final _notices = <ConnectionMessage>[];
   RoomInfo? _room;
   String? _joiningId;
   bool _leaving = false;
   bool _disconnecting = false;
   bool _disposed = false;
   Timer? _timer;
-  String? _error;
+  ConnectionMessage? _error;
   Future<void>? _cleanup;
 
   TransportStatus get status => _transport.status;
@@ -54,8 +55,8 @@ final class ConnectionController extends ChangeNotifier {
   String? get joiningId => _joiningId;
   bool get leaving => _leaving;
   bool get disconnecting => _disconnecting;
-  String? get error => _error;
-  List<String> get notices => List.unmodifiable(_notices);
+  ConnectionMessage? get error => _error;
+  List<ConnectionMessage> get notices => List.unmodifiable(_notices);
   bool get canConnect =>
       !_disposed && !_disconnecting && status == TransportStatus.disconnected;
   bool get canJoin =>
@@ -82,7 +83,7 @@ final class ConnectionController extends ChangeNotifier {
         uri.host.isEmpty ||
         uri.userInfo.isNotEmpty ||
         uri.hasFragment) {
-      _report('Введите WSS-адрес без логина, пароля и фрагмента.');
+      _report(ConnectionMessage.invalidWssAddress);
       return;
     }
     _room = null;
@@ -93,9 +94,9 @@ final class ConnectionController extends ChangeNotifier {
     } on TransportException {
       // The failures stream reports network failures; cancellation is intentional.
     } on ArgumentError {
-      _report('Некорректный адрес сервера.');
+      _report(ConnectionMessage.invalidAddress);
     } on StateError {
-      _report('Подключение сейчас недоступно.');
+      _report(ConnectionMessage.connectionUnavailable);
     }
     _changed();
   }
@@ -118,7 +119,7 @@ final class ConnectionController extends ChangeNotifier {
     try {
       command = JoinRoomCommand(roomId: id.trim());
     } on ArgumentError {
-      _report('ID комнаты: строчные латинские буквы, цифры и дефисы.');
+      _report(ConnectionMessage.invalidRoomId);
       return;
     }
     _error = null;
@@ -140,9 +141,7 @@ final class ConnectionController extends ChangeNotifier {
   void _awaitRoom() {
     _timer?.cancel();
     _timer = Timer(roomTimeout, () {
-      _report(
-        'Сервер не подтвердил действие. Соединение закрыто; подключитесь снова.',
-      );
+      _report(ConnectionMessage.roomTimeout);
       // A late init must not create a second room after a timed-out join.
       unawaited(disconnect());
     });
@@ -155,7 +154,7 @@ final class ConnectionController extends ChangeNotifier {
       _clearOperation();
     } on StateError {
       _clearOperation();
-      _report('Нет соединения с сервером.');
+      _report(ConnectionMessage.notConnected);
     }
   }
 
@@ -167,9 +166,9 @@ final class ConnectionController extends ChangeNotifier {
       _stale();
     }
     _notice(switch (value) {
-      TransportStatus.connecting => 'Подключение…',
-      TransportStatus.connected => 'Соединение установлено.',
-      _ => 'Соединение закрыто.',
+      TransportStatus.connecting => ConnectionMessage.connecting,
+      TransportStatus.connected => ConnectionMessage.connected,
+      _ => ConnectionMessage.disconnected,
     });
   }
 
@@ -183,7 +182,7 @@ final class ConnectionController extends ChangeNotifier {
       if (_joiningId == id || _room?.id == id) {
         _room = RoomInfo(id: id, type: event.roomType);
         if (_joiningId == id) _clearOperation();
-        _notice('Вход в комнату подтверждён.');
+        _notice(ConnectionMessage.roomJoined);
       } else {
         // No unsolicited room becomes active. Keep the lower-level router general.
         try {
@@ -199,7 +198,7 @@ final class ConnectionController extends ChangeNotifier {
         (_room?.id == id || _joiningId == id)) {
       _room = null;
       _clearOperation();
-      _notice('Выход из комнаты подтверждён.');
+      _notice(ConnectionMessage.roomLeft);
     } else if (id == _joiningId || id == _room?.id) {
       _onGlobal(event);
     }
@@ -213,9 +212,7 @@ final class ConnectionController extends ChangeNotifier {
         event is PopupEvent ||
         event is NameTakenEvent ||
         (event is UnknownServerEvent && event.eventType == 'noinit')) {
-      _report(
-        'Сервер отклонил действие или прислал уведомление. Возможно, требуется вход в аккаунт.',
-      );
+      _report(ConnectionMessage.serverNotice);
       if (_joiningId != null || _leaving) unawaited(disconnect());
     }
   }
@@ -239,13 +236,13 @@ final class ConnectionController extends ChangeNotifier {
     _leaving = false;
   }
 
-  void _report(String message) {
+  void _report(ConnectionMessage message) {
     if (_disposed) return;
     _error = message;
     _notice(message);
   }
 
-  void _notice(String message) {
+  void _notice(ConnectionMessage message) {
     if (_disposed) return;
     _notices.insert(0, message);
     if (_notices.length > 50) _notices.removeLast();

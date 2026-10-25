@@ -1,0 +1,1697 @@
+{
+  "schemaVersion": 1,
+  "provenance": "Synthetic contract examples, not captured sessions or executed domain tests.",
+  "cases": [
+    {
+      "id": "move",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "kind": "move",
+        "moveSlots": [
+          1
+        ],
+        "switchSlots": [
+          2
+        ],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "tera",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ],
+            "canTerastallize": "Electric"
+          }
+        ]
+      },
+      "expect": {
+        "kind": "move",
+        "moveSlots": [
+          1
+        ],
+        "switchSlots": [
+          2
+        ],
+        "canTerastallize": true
+      }
+    },
+    {
+      "id": "trapped",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ],
+            "trapped": true
+          }
+        ]
+      },
+      "expect": {
+        "kind": "move",
+        "moveSlots": [
+          1
+        ],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "maybe-trapped",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ],
+            "maybeTrapped": true
+          }
+        ]
+      },
+      "expect": {
+        "kind": "move",
+        "moveSlots": [
+          1
+        ],
+        "switchSlots": [
+          2
+        ],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "force-switch",
+      "payload": {
+        "rqid": 8,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "0 fnt",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "forceSwitch": [
+          true
+        ]
+      },
+      "expect": {
+        "kind": "switch",
+        "moveSlots": [],
+        "switchSlots": [
+          2
+        ],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "wait",
+      "payload": {
+        "wait": true,
+        "rqid": 8
+      },
+      "expect": {
+        "kind": "wait",
+        "moveSlots": [],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "clear",
+      "payload": null,
+      "expect": {
+        "kind": "noRequest",
+        "moveSlots": [],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "no-rqid",
+      "payload": {
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "kind": "move",
+        "moveSlots": [
+          1
+        ],
+        "switchSlots": [
+          2
+        ],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "same-rqid-changed",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": true
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "kind": "move",
+        "moveSlots": [],
+        "switchSlots": [
+          2
+        ],
+        "canTerastallize": false
+      },
+      "note": "A new delivery invalidates prior choices even with rqid=7."
+    },
+    {
+      "id": "no-cancel",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ]
+          }
+        ],
+        "noCancel": true
+      },
+      "expect": {
+        "kind": "move",
+        "moveSlots": [
+          1
+        ],
+        "switchSlots": [
+          2
+        ],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "struggle",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Struggle",
+                "id": "struggle",
+                "target": "randomNormal"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "kind": "move",
+        "moveSlots": [
+          1
+        ],
+        "switchSlots": [
+          2
+        ],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "extra-field",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ]
+          }
+        ],
+        "futureMetadata": {
+          "label": "a|b"
+        }
+      },
+      "expect": {
+        "kind": "move",
+        "moveSlots": [
+          1
+        ],
+        "switchSlots": [
+          2
+        ],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "team-preview",
+      "payload": {
+        "rqid": 9,
+        "teamPreview": true,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        }
+      },
+      "expect": {
+        "kind": "unsupportedRequest",
+        "moveSlots": [],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "doubles",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ]
+          },
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "kind": "unsupportedRequest",
+        "moveSlots": [],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "mega",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ],
+            "canMegaEvo": true
+          }
+        ]
+      },
+      "expect": {
+        "kind": "unsupportedRequest",
+        "moveSlots": [],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "unknown-target",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "futureTarget",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "kind": "unsupportedRequest",
+        "moveSlots": [],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "invalid-rqid",
+      "payload": {
+        "rqid": "7",
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "kind": "malformedRequest",
+        "moveSlots": [],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "missing-side",
+      "payload": {
+        "rqid": 7,
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "kind": "malformedRequest",
+        "moveSlots": [],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "conflicting-shapes",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ]
+          }
+        ],
+        "wait": true
+      },
+      "expect": {
+        "kind": "malformedRequest",
+        "moveSlots": [],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "invalid-pp",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": -1,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "kind": "malformedRequest",
+        "moveSlots": [],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "invalid-condition",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "201/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "kind": "malformedRequest",
+        "moveSlots": [],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "fainted-reserve",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "0 fnt",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Thunderbolt",
+                "id": "thunderbolt",
+                "pp": 15,
+                "maxpp": 24,
+                "target": "normal",
+                "disabled": false
+              },
+              {
+                "move": "Protect",
+                "id": "protect",
+                "pp": 0,
+                "maxpp": 16,
+                "target": "self",
+                "disabled": true
+              }
+            ]
+          }
+        ]
+      },
+      "expect": {
+        "kind": "move",
+        "moveSlots": [
+          1
+        ],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "false-force-switch",
+      "payload": {
+        "forceSwitch": [
+          false
+        ],
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        }
+      },
+      "expect": {
+        "kind": "unsupportedRequest",
+        "moveSlots": [],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "broken-json",
+      "rawPayload": "{\"active\":",
+      "expect": {
+        "kind": "malformedRequest",
+        "moveSlots": [],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    },
+    {
+      "id": "empty-payload",
+      "rawPayload": "",
+      "expect": {
+        "kind": "malformedRequest",
+        "moveSlots": [],
+        "switchSlots": [],
+        "canTerastallize": false
+      }
+    }
+  ]
+}

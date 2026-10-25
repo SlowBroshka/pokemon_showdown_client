@@ -2,6 +2,16 @@
 
 A new Flutter project.
 
+## Контракт будущей авторизации
+
+[Исследование нативного входа](docs/auth-contract.md) фиксирует выбранный endpoint,
+обмен challenge/assertion, подтверждение личности, ошибки и ограничения проверки.
+Добавлены синтетические HTTP-примеры и сценарии сессии для следующих PR.
+Анонимная проверка сервиса запускается вручную:
+`dart run tool/auth_contract_probe.dart`. Она не принимает пароль и не входит
+в CI. Успешный вход зарегистрированным аккаунтом пока не проверен; runtime-вход
+и сохранение сессии ещё не реализованы.
+
 ## Разбор сообщений Showdown
 
 Официальная спецификация: [PROTOCOL.md → Server-to-client messages](https://github.com/smogon/pokemon-showdown/blob/9b136a8c8cdb860a8ab96fa063f906604e352547/PROTOCOL.md#server-to-client-messages).

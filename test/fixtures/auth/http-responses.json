@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "provenance": "Synthetic response bodies for the future auth adapter; no real credentials, cookies or signatures. Expected outcomes are proposed client policy, not executed auth tests.",
+  "cases": [
+    {
+      "id": "login-success-awaits-websocket",
+      "status": 200,
+      "body": "]{\"curuser\":{\"loggedin\":true,\"username\":\"ExampleUser\"},\"assertion\":\"synthetic,exampleuser,2,0,example.invalid;not-a-signature\"}",
+      "expected": "assertionReady",
+      "authenticated": false
+    },
+    {
+      "id": "login-rejected",
+      "status": 200,
+      "body": "]{\"curuser\":{\"loggedin\":false},\"error\":\"Synthetic login rejection\"}",
+      "expected": "loginRejected"
+    },
+    {
+      "id": "action-error",
+      "status": 200,
+      "body": "]{\"actionerror\":\"Synthetic missing login fields\"}",
+      "expected": "loginRejected"
+    },
+    {
+      "id": "error-with-assertion-is-still-rejected",
+      "status": 200,
+      "body": "]{\"curuser\":{\"loggedin\":true,\"username\":\"ExampleUser\"},\"assertion\":\"synthetic;not-a-signature\",\"error\":\"Synthetic rejection\"}",
+      "expected": "loginRejected"
+    },
+    {
+      "id": "missing-assertion",
+      "status": 200,
+      "body": "]{\"curuser\":{\"loggedin\":true,\"username\":\"ExampleUser\"}}",
+      "expected": "invalidResponse"
+    },
+    {
+      "id": "wrong-loggedin-type",
+      "status": 200,
+      "body": "]{\"curuser\":{\"loggedin\":\"true\",\"username\":\"ExampleUser\"},\"assertion\":\"synthetic;not-a-signature\"}",
+      "expected": "invalidResponse"
+    },
+    {
+      "id": "different-identity",
+      "status": 200,
+      "requestedName": "ExampleUser",
+      "body": "]{\"curuser\":{\"loggedin\":true,\"username\":\"OtherUser\"},\"assertion\":\"synthetic;not-a-signature\"}",
+      "expected": "invalidResponse"
+    },
+    {
+      "id": "assertion-requires-password",
+      "status": 200,
+      "body": "]{\"curuser\":{\"loggedin\":true,\"username\":\"ExampleUser\"},\"assertion\":\";\"}",
+      "expected": "invalidAssertion"
+    },
+    {
+      "id": "assertion-special-error",
+      "status": 200,
+      "body": "]{\"curuser\":{\"loggedin\":true,\"username\":\"ExampleUser\"},\"assertion\":\";;synthetic error\"}",
+      "expected": "invalidAssertion"
+    },
+    {
+      "id": "assertion-command-injection",
+      "status": 200,
+      "body": "]{\"curuser\":{\"loggedin\":true,\"username\":\"ExampleUser\"},\"assertion\":\"synthetic\\n|/join lobby\"}",
+      "expected": "invalidAssertion"
+    },
+    {
+      "id": "unprefixed-json",
+      "status": 200,
+      "body": "{\"curuser\":{\"loggedin\":true}}",
+      "expected": "invalidResponse"
+    },
+    {
+      "id": "malformed-json",
+      "status": 200,
+      "body": "]{",
+      "expected": "invalidResponse"
+    },
+    {
+      "id": "json-array",
+      "status": 200,
+      "body": "][]",
+      "expected": "invalidResponse"
+    },
+    {
+      "id": "html-response",
+      "status": 200,
+      "body": "<!doctype html><title>Synthetic proxy response</title>",
+      "expected": "invalidResponse"
+    },
+    {
+      "id": "redirect",
+      "status": 302,
+      "location": "https://example.invalid/login",
+      "body": "",
+      "expected": "unexpectedRedirect",
+      "followRedirect": false
+    },
+    {
+      "id": "rate-limited",
+      "status": 429,
+      "body": "Synthetic rate limit",
+      "expected": "rateLimited"
+    },
+    {
+      "id": "service-unavailable",
+      "status": 503,
+      "body": "Synthetic service outage",
+      "expected": "serviceUnavailable"
+    },
+    {
+      "id": "anonymous-upkeep-not-login-schema",
+      "operation": "upkeep",
+      "status": 200,
+      "body": "]{\"loggedin\":false,\"username\":\"\",\"assertion\":\"\"}",
+      "expected": "noSavedSession"
+    }
+  ]
+}

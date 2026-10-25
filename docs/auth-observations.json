@@ -1,0 +1,68 @@
+{
+  "observedAtUtc": "2026-10-25T13:57:24.618238Z",
+  "scope": "Anonymous WSS handshake and empty-credential HTTPS requests only",
+  "websocket": {
+    "challengeReceived": true,
+    "challengeContainsSeparator": true
+  },
+  "http": [
+    {
+      "path": "/api/login",
+      "method": "POST",
+      "status": 200,
+      "contentType": "text/plain",
+      "redirect": false,
+      "prefixedJson": true,
+      "jsonKeys": [
+        "actionerror"
+      ],
+      "loggedIn": null,
+      "sessionLoggedIn": null,
+      "hasError": false,
+      "hasActionError": true,
+      "hasAssertion": false,
+      "setCookieCount": 0
+    },
+    {
+      "path": "/~~showdown/action.php",
+      "method": "POST",
+      "status": 200,
+      "contentType": "text/plain",
+      "redirect": false,
+      "prefixedJson": true,
+      "jsonKeys": [
+        "actionerror"
+      ],
+      "loggedIn": null,
+      "sessionLoggedIn": null,
+      "hasError": false,
+      "hasActionError": true,
+      "hasAssertion": false,
+      "setCookieCount": 0
+    },
+    {
+      "path": "/api/upkeep",
+      "method": "GET",
+      "status": 200,
+      "contentType": "text/plain",
+      "redirect": false,
+      "prefixedJson": true,
+      "jsonKeys": [
+        "assertion",
+        "loggedin",
+        "username"
+      ],
+      "loggedIn": null,
+      "sessionLoggedIn": false,
+      "hasError": false,
+      "hasActionError": false,
+      "hasAssertion": false,
+      "setCookieCount": 0
+    }
+  ],
+  "limitations": [
+    "No successful registered-account login or /trn confirmation tested",
+    "No authenticated cookies, upkeep, expiration or logout tested",
+    "No response bodies, challenges or cookie values recorded"
+  ]
+}

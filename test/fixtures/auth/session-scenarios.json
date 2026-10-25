@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "provenance": "Synthetic ordered scenarios for the future auth controller. Not recorded sessions or executable tests. Epoch and attempt IDs are local client metadata.",
+  "cases": [
+    {
+      "id": "confirmed-identity",
+      "steps": [
+        {"epoch": 1, "receive": "|challstr|0|synthetic-challenge"},
+        {"epoch": 1, "receive": "|updateuser| Guest 123|0|1|{}"},
+        {"attempt": 1, "loginAs": "ExampleUser"},
+        {"attempt": 1, "httpFixture": "login-success-awaits-websocket"},
+        {"expectSend": "|/trn ExampleUser,0,synthetic,exampleuser,2,0,example.invalid;not-a-signature"},
+        {"expectState": "awaitingConfirmation"},
+        {"epoch": 1, "receive": "|updateuser| ExampleUser|1|1|{}"},
+        {"expectState": "authenticated"}
+      ]
+    },
+    {
+      "id": "named-alone-is-not-account-login",
+      "steps": [
+        {"epoch": 1, "receive": "|updateuser| ExampleUser|1|1|{}"},
+        {"expectAuthenticated": false}
+      ]
+    },
+    {
+      "id": "late-http-after-reconnect",
+      "steps": [
+        {"epoch": 1, "receive": "|challstr|0|synthetic-old-challenge"},
+        {"epoch": 1, "attempt": 1, "loginAs": "ExampleUser"},
+        {"disconnect": true},
+        {"epoch": 2, "receive": "|challstr|0|synthetic-new-challenge"},
+        {"epoch": 1, "attempt": 1, "httpFixture": "login-success-awaits-websocket"},
+        {"expectTrnCount": 0, "expectAuthenticated": false}
+      ]
+    },
+    {
+      "id": "challenge-replaced-within-connection",
+      "steps": [
+        {"epoch": 1, "receive": "|challstr|0|synthetic-old-challenge"},
+        {"attempt": 1, "loginAs": "ExampleUser"},
+        {"epoch": 1, "receive": "|challstr|0|synthetic-new-challenge"},
+        {"attempt": 1, "httpFixture": "login-success-awaits-websocket"},
+        {"expectTrnCount": 0, "expectAuthenticated": false}
+      ]
+    },
+    {
+      "id": "cancelled-http-response",
+      "steps": [
+        {"epoch": 1, "receive": "|challstr|0|synthetic-challenge"},
+        {"attempt": 1, "loginAs": "ExampleUser"},
+        {"cancelAttempt": 1},
+        {"attempt": 1, "httpFixture": "login-success-awaits-websocket"},
+        {"expectTrnCount": 0, "expectAuthenticated": false}
+      ]
+    },
+    {
+      "id": "cancel-after-trn-disconnects",
+      "initialState": "awaitingConfirmation",
+      "requestedUserid": "exampleuser",
+      "steps": [
+        {"cancelAttempt": 1},
+        {"expectDisconnect": true},
+        {"epoch": 1, "receive": "|updateuser| ExampleUser|1|1|{}"},
+        {"expectAuthenticated": false}
+      ]
+    },
+    {
+      "id": "duplicate-click-does-not-repeat-login",
+      "steps": [
+        {"epoch": 1, "receive": "|challstr|0|synthetic-challenge"},
+        {"attempt": 1, "loginAs": "ExampleUser"},
+        {"loginAs": "ExampleUser"},
+        {"expectHttpLoginCount": 1}
+      ]
+    },
+    {
+      "id": "confirmation-for-another-user",
+      "initialState": "awaitingConfirmation",
+      "requestedUserid": "exampleuser",
+      "steps": [
+        {"epoch": 1, "receive": "|updateuser| OtherUser|1|1|{}"},
+        {"expectAuthenticated": false},
+        {"confirmationTimeout": true},
+        {"expectError": "confirmationTimeout", "expectDisconnect": true}
+      ]
+    },
+    {
+      "id": "rank-and-status-are-not-username",
+      "initialState": "awaitingConfirmation",
+      "requestedUserid": "exampleuser",
+      "steps": [
+        {"epoch": 1, "receive": "|updateuser|+ExampleUser@!|1|1|{}"},
+        {"expectState": "authenticated"}
+      ]
+    },
+    {
+      "id": "server-rejects-identity",
+      "initialState": "awaitingConfirmation",
+      "requestedUserid": "exampleuser",
+      "steps": [
+        {"epoch": 1, "receive": "|nametaken|ExampleUser|Synthetic identity rejection"},
+        {"expectError": "identityRejected", "expectAuthenticated": false}
+      ]
+    },
+    {
+      "id": "empty-name-rejection-current-decoder-gap",
+      "initialState": "awaitingConfirmation",
+      "steps": [
+        {"epoch": 1, "receive": "|nametaken||Synthetic invalid name"},
+        {"expectAuthenticated": false, "mustTerminateAttempt": true}
+      ],
+      "note": "Current decoder returns MalformedServerEvent. Decide typed support or explicit safe failure in the auth controller PR."
+    }
+  ]
+}

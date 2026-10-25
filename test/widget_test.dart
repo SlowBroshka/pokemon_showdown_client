@@ -7,6 +7,7 @@ void main() {
     tester,
   ) async {
     await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
     expect(find.text('Статус: отключено'), findsOneWidget);
     expect(find.text('Активной комнаты нет.'), findsOneWidget);
     final join = tester.widget<FilledButton>(

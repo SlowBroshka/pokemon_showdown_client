@@ -24,6 +24,10 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get
+      - name: Generate localizations
+        run: flutter gen-l10n
+      - name: Check translation completeness
+        run: flutter test test/l10n/localization_test.dart
       - name: Check formatting
         run: dart format --output=none --set-exit-if-changed .
       - name: Analyze

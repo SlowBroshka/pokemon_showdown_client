@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../core/transport/transport_status.dart';
 import 'connection_controller.dart';
+import '../../l10n/app_localizations.dart';
+import 'connection_message_localization.dart';
 
 class ConnectionScreen extends StatefulWidget {
   const ConnectionScreen({super.key, this.controller});
@@ -33,176 +35,165 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Pokémon Showdown')),
-    body: SafeArea(
-      child: ListenableBuilder(
-        listenable: _controller,
-        builder: (context, _) {
-          final status = _controller.status;
-          final room = _controller.room;
-          return Align(
-            alignment: Alignment.topCenter,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 720),
-              child: ListView(
-                padding: const EdgeInsets.all(20),
-                children: [
-                  Text(
-                    'Подключение',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Проверочный экран · одна активная комната\nВход в аккаунт и управление боем появятся позже.',
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: _endpoint,
-                    enabled: _controller.canConnect,
-                    keyboardType: TextInputType.url,
-                    autocorrect: false,
-                    decoration: const InputDecoration(
-                      labelText: 'Адрес сервера (WSS)',
-                      border: OutlineInputBorder(),
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.appTitle)),
+      body: SafeArea(
+        child: ListenableBuilder(
+          listenable: _controller,
+          builder: (context, _) {
+            final status = _controller.status;
+            final room = _controller.room;
+            return Align(
+              alignment: Alignment.topCenter,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 720),
+                child: ListView(
+                  padding: const EdgeInsets.all(20),
+                  children: [
+                    Text(
+                      l10n.connectionHeading,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                    onSubmitted: (_) => _controller.connect(_endpoint.text),
-                  ),
-                  const SizedBox(height: 12),
-                  Semantics(
-                    liveRegion: true,
-                    child: Text(switch (status) {
-                      TransportStatus.connecting => 'Статус: подключение…',
-                      TransportStatus.connected =>
-                        'Статус: соединение установлено',
-                      _ => 'Статус: отключено',
-                    }),
-                  ),
-                  const SizedBox(height: 12),
-                  Wrap(
-                    spacing: 12,
-                    runSpacing: 8,
-                    children: [
-                      FilledButton(
-                        onPressed: _controller.canConnect
-                            ? () => _controller.connect(_endpoint.text)
-                            : null,
-                        child: const Text('Подключиться'),
+                    const SizedBox(height: 8),
+                    Text(l10n.connectionDescription),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: _endpoint,
+                      enabled: _controller.canConnect,
+                      keyboardType: TextInputType.url,
+                      autocorrect: false,
+                      decoration: InputDecoration(
+                        labelText: l10n.serverAddress,
+                        border: OutlineInputBorder(),
                       ),
-                      OutlinedButton(
-                        onPressed:
-                            !_controller.disconnecting &&
-                                (status == TransportStatus.connecting ||
-                                    status == TransportStatus.connected)
-                            ? _controller.disconnect
-                            : null,
-                        child: Text(
-                          status == TransportStatus.connecting
-                              ? 'Отменить'
-                              : 'Отключиться',
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (_controller.error != null) ...[
+                      onSubmitted: (_) => _controller.connect(_endpoint.text),
+                    ),
                     const SizedBox(height: 12),
                     Semantics(
                       liveRegion: true,
-                      child: Text(
-                        _controller.error!,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
+                      child: Text(switch (status) {
+                        TransportStatus.connecting => l10n.statusConnecting,
+                        TransportStatus.connected => l10n.statusConnected,
+                        _ => l10n.statusDisconnected,
+                      }),
+                    ),
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 12,
+                      runSpacing: 8,
+                      children: [
+                        FilledButton(
+                          onPressed: _controller.canConnect
+                              ? () => _controller.connect(_endpoint.text)
+                              : null,
+                          child: Text(l10n.connect),
+                        ),
+                        OutlinedButton(
+                          onPressed:
+                              !_controller.disconnecting &&
+                                  (status == TransportStatus.connecting ||
+                                      status == TransportStatus.connected)
+                              ? _controller.disconnect
+                              : null,
+                          child: Text(
+                            status == TransportStatus.connecting
+                                ? l10n.cancel
+                                : l10n.disconnect,
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (_controller.error != null) ...[
+                      const SizedBox(height: 12),
+                      Semantics(
+                        liveRegion: true,
+                        child: Text(
+                          localizeConnectionMessage(_controller.error!, l10n),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
                         ),
                       ),
+                    ],
+                    const Divider(height: 32),
+                    Text(
+                      l10n.roomHeading,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
-                  ],
-                  const Divider(height: 32),
-                  Text(
-                    'Комната',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 12),
-                  if (room == null) ...[
-                    TextField(
-                      controller: _roomId,
-                      enabled: _controller.canJoin,
-                      autocorrect: false,
-                      decoration: const InputDecoration(
-                        labelText: 'ID комнаты',
-                        hintText: 'Например, lobby',
-                        border: OutlineInputBorder(),
+                    const SizedBox(height: 12),
+                    if (room == null) ...[
+                      TextField(
+                        controller: _roomId,
+                        enabled: _controller.canJoin,
+                        autocorrect: false,
+                        decoration: InputDecoration(
+                          labelText: l10n.roomIdLabel,
+                          hintText: l10n.roomIdHint,
+                          border: OutlineInputBorder(),
+                        ),
+                        onSubmitted: (_) => _controller.join(_roomId.text),
                       ),
-                      onSubmitted: (_) => _controller.join(_roomId.text),
+                      const SizedBox(height: 8),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: FilledButton(
+                          onPressed: _controller.canJoin
+                              ? () => _controller.join(_roomId.text)
+                              : null,
+                          child: Text(l10n.join),
+                        ),
+                      ),
+                      if (_controller.joiningId != null)
+                        Text(l10n.awaitingJoin)
+                      else
+                        Text(l10n.noActiveRoom),
+                    ] else
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                room.title ?? room.id,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              Text(l10n.roomIdValue(room.id)),
+                              Text(l10n.roomType(room.type)),
+                              if (room.isStale) Text(l10n.staleRoom),
+                              if (_controller.leaving) Text(l10n.awaitingLeave),
+                              const SizedBox(height: 8),
+                              OutlinedButton(
+                                onPressed: _controller.canLeave
+                                    ? _controller.leave
+                                    : null,
+                                child: Text(l10n.leaveRoom),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    const Divider(height: 32),
+                    Text(
+                      l10n.noticesHeading,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: FilledButton(
-                        onPressed: _controller.canJoin
-                            ? () => _controller.join(_roomId.text)
-                            : null,
-                        child: const Text('Войти'),
+                    if (_controller.notices.isEmpty) Text(l10n.noNotices),
+                    for (final notice in _controller.notices)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Text(localizeConnectionMessage(notice, l10n)),
                       ),
-                    ),
-                    if (_controller.joiningId != null)
-                      const Text('Ожидаем подтверждение входа…')
-                    else
-                      const Text('Активной комнаты нет.'),
-                  ] else
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              room.title ?? room.id,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            Text('ID: ${room.id}'),
-                            Text(
-                              'Тип: ${switch (room.type) {
-                                'chat' => 'чат',
-                                'battle' => 'бой',
-                                _ => 'другой',
-                              }}',
-                            ),
-                            if (room.isStale)
-                              const Text(
-                                'Данные устарели. Подключитесь и войдите в комнату снова.',
-                              ),
-                            if (_controller.leaving)
-                              const Text('Ожидаем подтверждение выхода…'),
-                            const SizedBox(height: 8),
-                            OutlinedButton(
-                              onPressed: _controller.canLeave
-                                  ? _controller.leave
-                                  : null,
-                              child: const Text('Выйти из комнаты'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  const Divider(height: 32),
-                  Text(
-                    'Уведомления',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  if (_controller.notices.isEmpty)
-                    const Text('Пока нет уведомлений.'),
-                  for (final notice in _controller.notices)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Text(notice),
-                    ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

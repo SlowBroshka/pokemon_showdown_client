@@ -1,0 +1,175 @@
+{
+  "@@locale": "en",
+  "connectionTimeout": "Connection timed out.",
+  "@connectionTimeout": {
+    "description": "Connection screen: connection timeout."
+  },
+  "serverClosed": "The server closed the connection.",
+  "@serverClosed": {
+    "description": "Connection screen: server closed."
+  },
+  "unsupportedMessage": "The server sent an unsupported message.",
+  "@unsupportedMessage": {
+    "description": "Connection screen: unsupported message."
+  },
+  "sendFailed": "Could not send the command.",
+  "@sendFailed": {
+    "description": "Connection screen: send failed."
+  },
+  "connectionFailed": "Connection error. Please reconnect.",
+  "@connectionFailed": {
+    "description": "Connection screen: connection failed."
+  },
+  "invalidWssAddress": "Enter a WSS address without credentials or a fragment.",
+  "@invalidWssAddress": {
+    "description": "Connection screen: invalid wss address."
+  },
+  "invalidAddress": "Invalid server address.",
+  "@invalidAddress": {
+    "description": "Connection screen: invalid address."
+  },
+  "connectionUnavailable": "Connection is currently unavailable.",
+  "@connectionUnavailable": {
+    "description": "Connection screen: connection unavailable."
+  },
+  "invalidRoomId": "Room ID: lowercase Latin letters, digits and hyphens.",
+  "@invalidRoomId": {
+    "description": "Connection screen: invalid room id."
+  },
+  "roomTimeout": "The server did not confirm the action. Connection closed; please reconnect.",
+  "@roomTimeout": {
+    "description": "Connection screen: room timeout."
+  },
+  "notConnected": "Not connected to the server.",
+  "@notConnected": {
+    "description": "Connection screen: not connected."
+  },
+  "connecting": "Connecting…",
+  "@connecting": {
+    "description": "Connection screen: connecting."
+  },
+  "connected": "Connection established.",
+  "@connected": {
+    "description": "Connection screen: connected."
+  },
+  "disconnected": "Connection closed.",
+  "@disconnected": {
+    "description": "Connection screen: disconnected."
+  },
+  "roomJoined": "Joined the room.",
+  "@roomJoined": {
+    "description": "Connection screen: room joined."
+  },
+  "roomLeft": "Left the room.",
+  "@roomLeft": {
+    "description": "Connection screen: room left."
+  },
+  "serverNotice": "The server rejected the action or sent a notification. You may need to sign in.",
+  "@serverNotice": {
+    "description": "Connection screen: server notice."
+  },
+  "appTitle": "Pokémon Showdown",
+  "@appTitle": {
+    "description": "Connection screen: app title."
+  },
+  "connectionHeading": "Connection",
+  "@connectionHeading": {
+    "description": "Connection screen: connection heading."
+  },
+  "connectionDescription": "Test screen · one active room\nSign-in and battle controls are coming later.",
+  "@connectionDescription": {
+    "description": "Connection screen: connection description."
+  },
+  "serverAddress": "Server address (WSS)",
+  "@serverAddress": {
+    "description": "Connection screen: server address."
+  },
+  "statusConnecting": "Status: connecting…",
+  "@statusConnecting": {
+    "description": "Connection screen: status connecting."
+  },
+  "statusConnected": "Status: connected",
+  "@statusConnected": {
+    "description": "Connection screen: status connected."
+  },
+  "statusDisconnected": "Status: disconnected",
+  "@statusDisconnected": {
+    "description": "Connection screen: status disconnected."
+  },
+  "connect": "Connect",
+  "@connect": {
+    "description": "Connection screen: connect."
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Connection screen: cancel."
+  },
+  "disconnect": "Disconnect",
+  "@disconnect": {
+    "description": "Connection screen: disconnect."
+  },
+  "roomHeading": "Room",
+  "@roomHeading": {
+    "description": "Connection screen: room heading."
+  },
+  "roomIdLabel": "Room ID",
+  "@roomIdLabel": {
+    "description": "Connection screen: room id label."
+  },
+  "roomIdHint": "For example, lobby",
+  "@roomIdHint": {
+    "description": "Connection screen: room id hint."
+  },
+  "join": "Join",
+  "@join": {
+    "description": "Connection screen: join."
+  },
+  "awaitingJoin": "Waiting for join confirmation…",
+  "@awaitingJoin": {
+    "description": "Connection screen: awaiting join."
+  },
+  "noActiveRoom": "No active room.",
+  "@noActiveRoom": {
+    "description": "Connection screen: no active room."
+  },
+  "staleRoom": "Data is outdated. Reconnect and join the room again.",
+  "@staleRoom": {
+    "description": "Connection screen: stale room."
+  },
+  "awaitingLeave": "Waiting for leave confirmation…",
+  "@awaitingLeave": {
+    "description": "Connection screen: awaiting leave."
+  },
+  "leaveRoom": "Leave room",
+  "@leaveRoom": {
+    "description": "Connection screen: leave room."
+  },
+  "noticesHeading": "Notifications",
+  "@noticesHeading": {
+    "description": "Connection screen: notices heading."
+  },
+  "noNotices": "No notifications yet.",
+  "@noNotices": {
+    "description": "Connection screen: no notices."
+  },
+  "roomIdValue": "ID: {roomId}",
+  "@roomIdValue": {
+    "description": "Connection screen: room id value.",
+    "placeholders": {
+      "roomId": {
+        "type": "String",
+        "description": "Literal room ID"
+      }
+    }
+  },
+  "roomType": "Type: {type, select, chat{chat} battle{battle} other{other}}",
+  "@roomType": {
+    "description": "Connection screen: room type.",
+    "placeholders": {
+      "type": {
+        "type": "String",
+        "description": "Server room type: chat, battle, or another value"
+      }
+    }
+  }
+}

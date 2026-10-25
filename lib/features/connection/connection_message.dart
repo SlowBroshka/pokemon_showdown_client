@@ -1,0 +1,20 @@
+/// Language-independent messages produced by the connection controller.
+enum ConnectionMessage {
+  connectionTimeout,
+  serverClosed,
+  unsupportedMessage,
+  sendFailed,
+  connectionFailed,
+  invalidWssAddress,
+  invalidAddress,
+  connectionUnavailable,
+  invalidRoomId,
+  roomTimeout,
+  notConnected,
+  connecting,
+  connected,
+  disconnected,
+  roomJoined,
+  roomLeft,
+  serverNotice,
+}

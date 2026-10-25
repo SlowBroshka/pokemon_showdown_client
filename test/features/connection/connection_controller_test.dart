@@ -2,6 +2,7 @@ import 'package:pokemon_showdown_client/features/connection/connection_message.d
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pokemon_showdown_client/features/connection/connection_controller.dart';
 import 'package:pokemon_showdown_client/core/transport/showdown_transport.dart';
+import 'package:pokemon_showdown_client/core/session/showdown_session.dart';
 
 import '../../core/transport/support/fake_socket_channel.dart';
 
@@ -11,17 +12,20 @@ void main() {
   late FakeSocketChannel socket;
   late ShowdownTransport transport;
   late ConnectionController controller;
+  late ShowdownSession session;
   setUp(() {
     socket = FakeSocketChannel();
     transport = ShowdownTransport(channelFactory: (_) => socket);
+    session = ShowdownSession(transport: transport);
     controller = ConnectionController(
-      transport: transport,
+      session: session,
       roomTimeout: const Duration(seconds: 10),
     );
   });
   tearDown(() async {
     controller.dispose();
     await controller.closed;
+    await session.dispose();
     await socket.incoming.close();
   });
   Future<void> connect() async {
@@ -44,6 +48,12 @@ void main() {
     controller.join('bad|id');
     expect(socket.sink.sent, isEmpty);
     expect(controller.canJoin, isTrue);
+  });
+  test('a standalone controller disposes its own session', () async {
+    final standalone = ConnectionController();
+    standalone.dispose();
+    await standalone.closed;
+    expect(standalone.status, TransportStatus.disposed);
   });
   test('cancellation and failed handshake leave the screen usable', () async {
     final pending = controller.connect('wss://example.test');
@@ -112,9 +122,11 @@ void main() {
     () async {
       controller.dispose();
       await controller.closed;
+      await session.dispose();
       transport = ShowdownTransport(channelFactory: (_) => socket);
+      session = ShowdownSession(transport: transport);
       controller = ConnectionController(
-        transport: transport,
+        session: session,
         roomTimeout: const Duration(milliseconds: 20),
       );
       await connect();
@@ -175,15 +187,16 @@ void main() {
     },
   );
   test(
-    'dispose during connecting cancels work and closes owned resources',
+    'disposing screen controller keeps caller-owned connecting session alive',
     () async {
       final pending = controller.connect('wss://example.test');
       controller.dispose();
       await controller.closed;
-      await pending;
-      expect(transport.status, TransportStatus.disposed);
+      expect(transport.status, TransportStatus.connecting);
       socket.handshake.complete();
+      await pending;
       await flush();
+      expect(transport.status, TransportStatus.connected);
       expect(controller.canJoin, isFalse);
     },
   );

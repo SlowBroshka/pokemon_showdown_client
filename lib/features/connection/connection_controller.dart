@@ -4,23 +4,22 @@ import 'package:flutter/foundation.dart';
 
 import '../../core/protocol/client_commands.dart';
 import '../../core/protocol/server_event_decoder.dart';
-import '../../core/rooms/room_router.dart';
-import '../../core/transport/showdown_transport.dart';
+import '../../core/session/showdown_session.dart';
 import 'connection_message.dart';
 
-/// Owns the transport and router. One selected room and one operation at a time.
+/// One selected room and operation. An injected session remains caller-owned.
 final class ConnectionController extends ChangeNotifier {
   ConnectionController({
-    ShowdownTransport? transport,
+    ShowdownSession? session,
     this.roomTimeout = const Duration(seconds: 10),
-  }) : _transport = transport ?? ShowdownTransport() {
+  }) : _ownsSession = session == null,
+       _session = session ?? ShowdownSession() {
     if (roomTimeout <= Duration.zero) {
       throw ArgumentError('Timeout must be positive');
     }
-    _router = RoomRouter(_transport);
     _subscriptions.addAll([
-      _transport.statuses.listen(_onStatus),
-      _transport.failures.listen(
+      _session.statuses.listen(_onStatus),
+      _session.failures.listen(
         (failure) => _report(switch (failure.failure) {
           TransportFailure.timeout => ConnectionMessage.connectionTimeout,
           TransportFailure.closed => ConnectionMessage.serverClosed,
@@ -30,15 +29,15 @@ final class ConnectionController extends ChangeNotifier {
           _ => ConnectionMessage.connectionFailed,
         }),
       ),
-      _router.roomEvents.listen(_onRoom),
-      _router.globalEvents.listen(_onGlobal),
+      _session.roomEvents.listen(_onRoom),
+      _session.globalEvents.listen((update) => _onGlobal(update.event!)),
     ]);
   }
 
   static const defaultEndpoint = 'wss://sim3.psim.us/showdown/websocket';
-  final ShowdownTransport _transport;
+  final ShowdownSession _session;
+  final bool _ownsSession;
   final Duration roomTimeout;
-  late final RoomRouter _router;
   final _subscriptions = <StreamSubscription<dynamic>>[];
   final _notices = <ConnectionMessage>[];
   RoomInfo? _room;
@@ -50,7 +49,7 @@ final class ConnectionController extends ChangeNotifier {
   ConnectionMessage? _error;
   Future<void>? _cleanup;
 
-  TransportStatus get status => _transport.status;
+  TransportStatus get status => _session.status;
   RoomInfo? get room => _room;
   String? get joiningId => _joiningId;
   bool get leaving => _leaving;
@@ -88,7 +87,7 @@ final class ConnectionController extends ChangeNotifier {
     }
     _room = null;
     try {
-      final pending = _transport.connect(uri);
+      final pending = _session.connect(uri);
       _changed();
       await pending;
     } on TransportException {
@@ -106,7 +105,7 @@ final class ConnectionController extends ChangeNotifier {
     _disconnecting = true;
     _clearOperation();
     _stale();
-    final pending = _transport.disconnect();
+    final pending = _session.disconnect();
     _changed();
     await pending;
     _disconnecting = false;
@@ -149,7 +148,7 @@ final class ConnectionController extends ChangeNotifier {
 
   void _send(ClientCommand command) {
     try {
-      _transport.send(command);
+      _session.send(command, connectionEpoch: _session.connectionEpoch);
     } on TransportException {
       _clearOperation();
     } on StateError {
@@ -172,12 +171,12 @@ final class ConnectionController extends ChangeNotifier {
     });
   }
 
-  void _onRoom(RoomEvent routed) {
+  void _onRoom(SessionUpdate routed) {
     if (_disposed || status != TransportStatus.connected || _disconnecting) {
       return;
     }
-    final event = routed.event;
-    final id = routed.roomId;
+    final event = routed.event!;
+    final id = routed.roomId!;
     if (event is RoomInitEvent) {
       if (_joiningId == id || _room?.id == id) {
         _room = RoomInfo(id: id, type: event.roomType);
@@ -268,7 +267,6 @@ final class ConnectionController extends ChangeNotifier {
     await Future.wait(
       _subscriptions.map((subscription) => subscription.cancel()),
     );
-    await _router.dispose();
-    await _transport.dispose();
+    if (_ownsSession) await _session.dispose();
   }
 }

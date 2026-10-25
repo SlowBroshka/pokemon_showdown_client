@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'core/session/showdown_session.dart';
+import 'core/auth/auth_controller.dart';
 import 'features/connection/connection_controller.dart';
 
 import 'app_config.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late final ShowdownSession _session;
+  late final AuthController _authController;
   late final ConnectionController _controller;
 
   @override
@@ -29,6 +31,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     // Both live above the screen, so replacing a screen does not close the socket.
     _session = ShowdownSession();
+    _authController = AuthController(session: _session);
     _controller = ConnectionController(session: _session);
   }
 
@@ -40,6 +43,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _closeSession() async {
+    await _authController.dispose();
     await _controller.closed;
     await _session.dispose();
   }

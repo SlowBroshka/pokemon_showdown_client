@@ -22,9 +22,11 @@ final class RoomRouter {
       if (status != null) {
         _status = status;
         if (status != TransportStatus.connected) _markStale();
-        _updates.add(RoomRouterUpdate.status(status));
+        _updates.add(
+          RoomRouterUpdate.status(status, sequence: update.sequence),
+        );
       } else {
-        _receive(update.message!);
+        _receive(update.message!, update.sequence);
       }
     }, onDone: _markStale);
   }
@@ -50,7 +52,7 @@ final class RoomRouter {
   Stream<RoomEvent> eventsForRoom(String roomId) =>
       roomEvents.where((event) => event.roomId == roomId);
 
-  void _receive(String message) {
+  void _receive(String message, int sequence) {
     if (_disposed) return;
     for (final record in parseServerMessage(message)) {
       final event = decodeServerRecord(record);
@@ -67,7 +69,9 @@ final class RoomRouter {
         _apply(roomId, event);
         _roomEvents.add(RoomEvent(roomId: roomId, event: event));
       }
-      _updates.add(RoomRouterUpdate.event(event, roomId: roomId));
+      _updates.add(
+        RoomRouterUpdate.event(event, roomId: roomId, sequence: sequence),
+      );
     }
   }
 

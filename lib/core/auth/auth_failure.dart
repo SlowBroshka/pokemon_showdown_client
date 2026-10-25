@@ -12,4 +12,11 @@ enum AuthFailure {
   responseTooLarge,
   loginRejected,
   invalidAssertion,
+  unsupportedServer,
+  challengeTimeout,
+  confirmationTimeout,
+  identityRejected,
+  connectionLost,
+  sendFailed,
+  invalidServerEvent,
 }

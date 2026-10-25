@@ -44,8 +44,10 @@ final class ShowdownTransport {
   Timer? _timer;
   Future<void>? _disposal;
   TransportStatus _status = TransportStatus.disconnected;
+  int _updateSequence = 0;
 
   TransportStatus get status => _status;
+  int get latestUpdateSequence => _updateSequence;
   Stream<String> get messages => _messages.stream;
 
   /// Preserves relative order of messages and status changes for state reducers.
@@ -89,7 +91,9 @@ final class ShowdownTransport {
         (dynamic message) {
           if (!identical(_channel, channel)) return;
           if (message is String) {
-            _updates.add(TransportUpdate.message(message));
+            _updates.add(
+              TransportUpdate.message(message, sequence: ++_updateSequence),
+            );
             _messages.add(message);
           } else {
             _fail(TransportFailure.unsupportedMessage);
@@ -201,7 +205,7 @@ final class ShowdownTransport {
   void _setStatus(TransportStatus value) {
     if (_status == value) return;
     _status = value;
-    _updates.add(TransportUpdate.status(value));
+    _updates.add(TransportUpdate.status(value, sequence: ++_updateSequence));
     _statuses.add(value);
   }
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "provenance": "Synthetic response bodies for the future auth adapter; no real credentials, cookies or signatures. Expected outcomes are proposed client policy, not executed auth tests.",
+  "provenance": "Synthetic response bodies; no real credentials, cookies or signatures. Login cases are exercised by test/core/auth/auth_api_client_test.dart. The upkeep case remains a future contract example; these are not live server recordings.",
   "cases": [
     {
       "id": "login-success-awaits-websocket",

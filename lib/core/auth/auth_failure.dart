@@ -1,0 +1,15 @@
+/// Categories only: never carry server text, request bodies or credentials.
+enum AuthFailure {
+  invalidInput,
+  network,
+  timeout,
+  cancelled,
+  unexpectedRedirect,
+  rateLimited,
+  serviceUnavailable,
+  httpFailure,
+  invalidResponse,
+  responseTooLarge,
+  loginRejected,
+  invalidAssertion,
+}

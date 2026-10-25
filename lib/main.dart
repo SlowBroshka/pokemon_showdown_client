@@ -58,6 +58,9 @@ class _MyAppState extends State<MyApp> {
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
       inputDecorationTheme: const InputDecorationTheme(filled: true),
     ),
-    home: ConnectionScreen(controller: _controller),
+    home: ConnectionScreen(
+      controller: _controller,
+      authController: _authController,
+    ),
   );
 }

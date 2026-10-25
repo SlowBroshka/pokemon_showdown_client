@@ -76,7 +76,7 @@
   "@connectionHeading": {
     "description": "Connection screen: connection heading."
   },
-  "connectionDescription": "Test screen · one active room\nSign-in and battle controls are coming later.",
+  "connectionDescription": "One active room · account sign-in\nBattle controls are coming later.",
   "@connectionDescription": {
     "description": "Connection screen: connection description."
   },
@@ -171,5 +171,159 @@
         "description": "Server room type: chat, battle, or another value"
       }
     }
+  },
+  "authHeading": "Account",
+  "@authHeading": {
+    "description": "Account sign-in: Account"
+  },
+  "authDescription": "Use an existing account. Your password is not saved.",
+  "@authDescription": {
+    "description": "Account sign-in: Use an existing account. Your password is not saved."
+  },
+  "authUsername": "Username",
+  "@authUsername": {
+    "description": "Account sign-in: Username"
+  },
+  "authPassword": "Password",
+  "@authPassword": {
+    "description": "Account sign-in: Password"
+  },
+  "authShowPassword": "Show password",
+  "@authShowPassword": {
+    "description": "Account sign-in: Show password"
+  },
+  "authHidePassword": "Hide password",
+  "@authHidePassword": {
+    "description": "Account sign-in: Hide password"
+  },
+  "authSignIn": "Sign in",
+  "@authSignIn": {
+    "description": "Account sign-in: Sign in"
+  },
+  "authCancelSignIn": "Cancel sign-in",
+  "@authCancelSignIn": {
+    "description": "Account sign-in: Cancel sign-in"
+  },
+  "authSignOut": "Sign out and disconnect",
+  "@authSignOut": {
+    "description": "Account sign-in: Sign out and disconnect"
+  },
+  "authDisconnected": "Connect to the server to sign in.",
+  "@authDisconnected": {
+    "description": "Account sign-in: Connect to the server to sign in."
+  },
+  "authUnavailable": "Sign-in is unavailable for this server.",
+  "@authUnavailable": {
+    "description": "Account sign-in: Sign-in is unavailable for this server."
+  },
+  "authWaitingChallenge": "Waiting for sign-in details from the server…",
+  "@authWaitingChallenge": {
+    "description": "Account sign-in: Waiting for sign-in details from the server…"
+  },
+  "authReady": "Ready to sign in to your account.",
+  "@authReady": {
+    "description": "Account sign-in: Ready to sign in to your account."
+  },
+  "authAuthenticating": "Checking account credentials…",
+  "@authAuthenticating": {
+    "description": "Account sign-in: Checking account credentials…"
+  },
+  "authAwaitingConfirmation": "Waiting for the game server to confirm sign-in…",
+  "@authAwaitingConfirmation": {
+    "description": "Account sign-in: Waiting for the game server to confirm sign-in…"
+  },
+  "authSignedIn": "Signed in as {username}",
+  "@authSignedIn": {
+    "description": "Account sign-in: Signed in as {username}",
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "description": "Username confirmed by the game server, shown literally"
+      }
+    }
+  },
+  "authDisconnecting": "Disconnecting…",
+  "@authDisconnecting": {
+    "description": "Account sign-in: Disconnecting…"
+  },
+  "authDisposed": "The session has ended.",
+  "@authDisposed": {
+    "description": "Account sign-in: The session has ended."
+  },
+  "authInvalidInput": "Check your username and password. Use a name of up to 18 characters with Latin letters or digits.",
+  "@authInvalidInput": {
+    "description": "Account sign-in: Check your username and password. Use a name of up to 18 ASCII characters."
+  },
+  "authNetwork": "Could not reach the sign-in service. Please try again.",
+  "@authNetwork": {
+    "description": "Account sign-in: Could not reach the sign-in service. Please try again."
+  },
+  "authTimeout": "Sign-in timed out. Please try again.",
+  "@authTimeout": {
+    "description": "Account sign-in: Sign-in timed out. Please try again."
+  },
+  "authCancelled": "Sign-in cancelled.",
+  "@authCancelled": {
+    "description": "Account sign-in: Sign-in cancelled."
+  },
+  "authUnexpectedRedirect": "The sign-in service returned an unexpected redirect. Sign-in stopped.",
+  "@authUnexpectedRedirect": {
+    "description": "Account sign-in: The sign-in service returned an unexpected redirect. Sign-in stopped."
+  },
+  "authRateLimited": "Too many sign-in attempts. Wait before trying again.",
+  "@authRateLimited": {
+    "description": "Account sign-in: Too many sign-in attempts. Wait before trying again."
+  },
+  "authServiceUnavailable": "The sign-in service is temporarily unavailable.",
+  "@authServiceUnavailable": {
+    "description": "Account sign-in: The sign-in service is temporarily unavailable."
+  },
+  "authHttpFailure": "The sign-in service could not process the request.",
+  "@authHttpFailure": {
+    "description": "Account sign-in: The sign-in service could not process the request."
+  },
+  "authInvalidResponse": "The sign-in service returned an unsupported response.",
+  "@authInvalidResponse": {
+    "description": "Account sign-in: The sign-in service returned an unsupported response."
+  },
+  "authResponseTooLarge": "The sign-in response exceeded the allowed size.",
+  "@authResponseTooLarge": {
+    "description": "Account sign-in: The sign-in response exceeded the allowed size."
+  },
+  "authLoginRejected": "Sign-in was rejected. Check your account details and try again.",
+  "@authLoginRejected": {
+    "description": "Account sign-in: Sign-in was rejected. Check your account details and try again."
+  },
+  "authInvalidAssertion": "The sign-in service returned invalid confirmation data.",
+  "@authInvalidAssertion": {
+    "description": "Account sign-in: The sign-in service returned invalid confirmation data."
+  },
+  "authUnsupportedServer": "Account sign-in currently supports only the default Pokémon Showdown server.",
+  "@authUnsupportedServer": {
+    "description": "Account sign-in: Account sign-in currently supports only the default Pokémon Showdown server."
+  },
+  "authChallengeTimeout": "The server did not provide sign-in details. Please reconnect.",
+  "@authChallengeTimeout": {
+    "description": "Account sign-in: The server did not provide sign-in details. Please reconnect."
+  },
+  "authConfirmationTimeout": "The game server did not confirm sign-in. Please reconnect.",
+  "@authConfirmationTimeout": {
+    "description": "Account sign-in: The game server did not confirm sign-in. Please reconnect."
+  },
+  "authIdentityRejected": "The game server did not confirm your account. Please reconnect.",
+  "@authIdentityRejected": {
+    "description": "Account sign-in: The game server did not confirm your account. Please reconnect."
+  },
+  "authConnectionLost": "The connection was lost. Reconnect and sign in again.",
+  "@authConnectionLost": {
+    "description": "Account sign-in: The connection was lost. Reconnect and sign in again."
+  },
+  "authSendFailed": "Could not complete sign-in. Please reconnect.",
+  "@authSendFailed": {
+    "description": "Account sign-in: Could not complete sign-in. Please reconnect."
+  },
+  "authInvalidServerEvent": "The server sent invalid sign-in data. Please reconnect.",
+  "@authInvalidServerEvent": {
+    "description": "Account sign-in: The server sent invalid sign-in data. Please reconnect."
   }
 }

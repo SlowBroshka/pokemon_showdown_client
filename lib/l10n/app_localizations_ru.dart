@@ -73,7 +73,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get connectionDescription =>
-      'Проверочный экран · одна активная комната\nВход в аккаунт и управление боем появятся позже.';
+      'Одна активная комната · вход в аккаунт\nУправление боем появится позже.';
 
   @override
   String get serverAddress => 'Адрес сервера (WSS)';
@@ -144,4 +144,133 @@ class AppLocalizationsRu extends AppLocalizations {
     });
     return 'Тип: $_temp0';
   }
+
+  @override
+  String get authHeading => 'Аккаунт';
+
+  @override
+  String get authDescription =>
+      'Используйте существующий аккаунт. Пароль не сохраняется.';
+
+  @override
+  String get authUsername => 'Имя пользователя';
+
+  @override
+  String get authPassword => 'Пароль';
+
+  @override
+  String get authShowPassword => 'Показать пароль';
+
+  @override
+  String get authHidePassword => 'Скрыть пароль';
+
+  @override
+  String get authSignIn => 'Войти в аккаунт';
+
+  @override
+  String get authCancelSignIn => 'Отменить вход';
+
+  @override
+  String get authSignOut => 'Выйти и отключиться';
+
+  @override
+  String get authDisconnected => 'Подключитесь к серверу для входа.';
+
+  @override
+  String get authUnavailable => 'Вход недоступен для этого сервера.';
+
+  @override
+  String get authWaitingChallenge => 'Ожидаем данные для входа от сервера…';
+
+  @override
+  String get authReady => 'Можно войти в аккаунт.';
+
+  @override
+  String get authAuthenticating => 'Проверяем учётные данные…';
+
+  @override
+  String get authAwaitingConfirmation =>
+      'Ожидаем подтверждение входа игровым сервером…';
+
+  @override
+  String authSignedIn(String username) {
+    return 'Вход выполнен: $username';
+  }
+
+  @override
+  String get authDisconnecting => 'Отключаемся…';
+
+  @override
+  String get authDisposed => 'Сеанс завершён.';
+
+  @override
+  String get authInvalidInput =>
+      'Проверьте имя и пароль. Имя — до 18 символов, с латинскими буквами или цифрами.';
+
+  @override
+  String get authNetwork =>
+      'Не удалось связаться со службой входа. Повторите попытку.';
+
+  @override
+  String get authTimeout => 'Время ожидания входа истекло. Повторите попытку.';
+
+  @override
+  String get authCancelled => 'Вход отменён.';
+
+  @override
+  String get authUnexpectedRedirect =>
+      'Служба входа вернула неожиданное перенаправление. Вход остановлен.';
+
+  @override
+  String get authRateLimited =>
+      'Слишком много попыток входа. Подождите перед повтором.';
+
+  @override
+  String get authServiceUnavailable => 'Служба входа временно недоступна.';
+
+  @override
+  String get authHttpFailure => 'Служба входа не смогла обработать запрос.';
+
+  @override
+  String get authInvalidResponse =>
+      'Служба входа вернула неподдерживаемый ответ.';
+
+  @override
+  String get authResponseTooLarge =>
+      'Ответ службы входа превысил допустимый размер.';
+
+  @override
+  String get authLoginRejected =>
+      'Вход отклонён. Проверьте данные аккаунта и повторите попытку.';
+
+  @override
+  String get authInvalidAssertion =>
+      'Служба входа вернула некорректные данные подтверждения.';
+
+  @override
+  String get authUnsupportedServer =>
+      'Вход в аккаунт пока поддерживается только на основном сервере Pokémon Showdown.';
+
+  @override
+  String get authChallengeTimeout =>
+      'Сервер не прислал данные для входа. Подключитесь снова.';
+
+  @override
+  String get authConfirmationTimeout =>
+      'Игровой сервер не подтвердил вход. Подключитесь снова.';
+
+  @override
+  String get authIdentityRejected =>
+      'Игровой сервер не подтвердил аккаунт. Подключитесь снова.';
+
+  @override
+  String get authConnectionLost =>
+      'Соединение потеряно. Подключитесь и войдите снова.';
+
+  @override
+  String get authSendFailed => 'Не удалось завершить вход. Подключитесь снова.';
+
+  @override
+  String get authInvalidServerEvent =>
+      'Сервер прислал некорректные данные входа. Подключитесь снова.';
 }

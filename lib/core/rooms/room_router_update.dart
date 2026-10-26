@@ -3,6 +3,12 @@ import '../transport/transport_status.dart';
 
 /// Routed events and lifecycle changes in the transport's original order.
 final class RoomRouterUpdate {
+  /// Advances source progress when a frame contains no decoded events.
+  const RoomRouterUpdate.emptyFrame({required this.sequence})
+    : status = null,
+      event = null,
+      roomId = null;
+
   const RoomRouterUpdate.status(TransportStatus value, {this.sequence = 0})
     : status = value,
       event = null,

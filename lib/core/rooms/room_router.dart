@@ -54,9 +54,11 @@ final class RoomRouter {
 
   void _receive(String message, int sequence) {
     if (_disposed) return;
+    var emitted = false;
     for (final record in parseServerMessage(message)) {
       final event = decodeServerRecord(record);
       if (event == null) continue;
+      emitted = true;
       final lifecycle =
           event is RoomInitEvent ||
           event is RoomTitleEvent ||
@@ -72,6 +74,9 @@ final class RoomRouter {
       _updates.add(
         RoomRouterUpdate.event(event, roomId: roomId, sequence: sequence),
       );
+    }
+    if (!emitted) {
+      _updates.add(RoomRouterUpdate.emptyFrame(sequence: sequence));
     }
   }
 

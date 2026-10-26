@@ -119,6 +119,10 @@ final class ShowdownSession {
       _updates.add(
         SessionUpdate.status(_receivedEpoch, status, sequence: update.sequence),
       );
+    } else if (update.event == null) {
+      _updates.add(
+        SessionUpdate.emptyFrame(_receivedEpoch, sequence: update.sequence),
+      );
     } else {
       _updates.add(
         SessionUpdate.event(

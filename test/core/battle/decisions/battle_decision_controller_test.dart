@@ -290,6 +290,7 @@ void main() {
         requestRevision: valid.requestRevision,
         rqid: valid.rqid,
         choice: valid.choice,
+        contextToken: valid.contextToken,
       ),
       CapturedBattleChoice(
         roomId: valid.roomId,
@@ -297,6 +298,7 @@ void main() {
         requestRevision: valid.requestRevision,
         rqid: valid.rqid,
         choice: valid.choice,
+        contextToken: valid.contextToken,
       ),
       CapturedBattleChoice(
         roomId: valid.roomId,
@@ -304,6 +306,7 @@ void main() {
         requestRevision: valid.requestRevision,
         rqid: 999,
         choice: valid.choice,
+        contextToken: valid.contextToken,
       ),
     ]) {
       expect(controller.submit(wrong), isFalse);

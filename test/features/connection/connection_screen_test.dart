@@ -72,6 +72,47 @@ void main() {
       },
     );
   }
+  testWidgets('removing screen preserves app-owned battle and session', (
+    tester,
+  ) async {
+    final socket = FakeSocketChannel();
+    final session = ShowdownSession(
+      transport: ShowdownTransport(channelFactory: (_) => socket),
+    );
+    final controller = ConnectionController(session: session);
+    addTearDown(() async {
+      controller.dispose();
+      await controller.closed;
+      await session.dispose();
+      await socket.incoming.close();
+    });
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('ru'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: ConnectionScreen(controller: controller),
+      ),
+    );
+    final connecting = controller.connect('wss://example.test');
+    socket.handshake.complete();
+    await tester.pumpAndSettle();
+    await connecting;
+    controller.join('battle-test');
+    socket.incoming.add(
+      '>battle-test\n|init|battle\n|gen|9\n|gametype|singles\n|start\n|turn|1',
+    );
+    await tester.pumpAndSettle();
+    final battle = controller.battle!;
+    await tester.pumpWidget(const SizedBox());
+    socket.incoming.add('>battle-test\n|turn|2');
+    await tester.pumpAndSettle();
+    expect(controller.battle, same(battle));
+    expect(battle.state.turn, 2);
+    expect(session.status, TransportStatus.connected);
+    expect(socket.sink.sent, ['|/join battle-test']);
+  });
+
   testWidgets(
     'small screen and large text remain scrollable without overflow',
     (tester) async {

@@ -36,6 +36,7 @@ final class BattleDecisionController {
   }
 
   final ShowdownSession _session;
+  final Object _contextToken = Object();
   final Duration responseTimeout;
   late final StreamSubscription<SessionUpdate> _subscription;
   final _changes = StreamController<void>.broadcast();
@@ -46,6 +47,7 @@ final class BattleDecisionController {
   int _seenSequence = -1;
   int _settledSequence = -1;
   bool _disposed = false;
+  bool _choicesStopped = false;
   bool _outstanding = false;
   // Errors have no request identifier. Once an unresolved send is superseded,
   // later errors cannot safely authorize a retry, even for a newer submission.
@@ -57,6 +59,7 @@ final class BattleDecisionController {
 
   bool get canChoose =>
       !_disposed &&
+      !_choicesStopped &&
       _phase == BattleDecisionPhase.ready &&
       !_state.stale &&
       _state.phase == BattlePhase.started &&
@@ -86,6 +89,7 @@ final class BattleDecisionController {
       requestRevision: _state.requestRevision,
       rqid: _state.request!.rqid,
       choice: choice,
+      contextToken: _contextToken,
     );
   }
 
@@ -93,6 +97,7 @@ final class BattleDecisionController {
   /// grants retry permission: inspect phase/canChoose after a send failure.
   bool submit(CapturedBattleChoice captured) {
     if (!canChoose ||
+        !identical(captured.contextToken, _contextToken) ||
         captured.roomId != _state.roomId ||
         captured.connectionEpoch != _state.connectionEpoch ||
         captured.requestRevision != _state.requestRevision ||
@@ -159,7 +164,7 @@ final class BattleDecisionController {
         _responseTimer?.cancel();
         _phase = BattleDecisionPhase.ready;
       }
-      if (_state.terminal || _state.unsupported) {
+      if (_choicesStopped || _state.terminal || _state.unsupported) {
         _responseTimer?.cancel();
         _phase = BattleDecisionPhase.inactive;
       } else if (event is ServerErrorEvent && _outstanding) {
@@ -186,6 +191,16 @@ final class BattleDecisionController {
     _notify();
   }
 
+  /// Permanently revoke send permission before /leave or owner cleanup.
+  /// Keep consuming events so a final result/deinit is still projected.
+  void stopChoosing() {
+    if (_disposed || _choicesStopped) return;
+    _choicesStopped = true;
+    _responseTimer?.cancel();
+    _phase = BattleDecisionPhase.inactive;
+    _notify();
+  }
+
   void _notify() {
     if (!_disposed) _changes.add(null);
   }
@@ -195,7 +210,8 @@ final class BattleDecisionController {
     _disposed = true;
     _settleTimer?.cancel();
     _responseTimer?.cancel();
-    await _subscription.cancel();
-    await _changes.close();
+    // Initiate both operations synchronously; cancelled upstream deliveries are
+    // already guarded by _disposed, so stream closure need not wait for cancel.
+    await Future.wait([_subscription.cancel(), _changes.close()]);
   }
 }

@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
+import '../../core/battle/decisions/battle_decision_controller.dart';
 import '../../core/protocol/client_commands.dart';
 import '../../core/protocol/server_event_decoder.dart';
 import '../../core/session/showdown_session.dart';
 import 'connection_message.dart';
 
-/// One selected room and operation. An injected session remains caller-owned.
+/// Owns one selected room, its battle context and pending room operation.
+/// An injected session remains caller-owned.
 final class ConnectionController extends ChangeNotifier {
   ConnectionController({
     ShowdownSession? session,
@@ -48,9 +50,17 @@ final class ConnectionController extends ChangeNotifier {
   Timer? _timer;
   ConnectionMessage? _error;
   Future<void>? _cleanup;
+  BattleDecisionController? _battle;
+  bool _battleConfirmed = false;
+  StreamSubscription<void>? _battleSubscription;
+  final _pendingBattleCleanup = <Future<void>>{};
 
   TransportStatus get status => _session.status;
   RoomInfo? get room => _room;
+
+  /// Selected battle, retained for its result after deinit or as stale on loss.
+  /// A pending join is not exposed until the server confirms type=battle.
+  BattleDecisionController? get battle => _battleConfirmed ? _battle : null;
   String? get joiningId => _joiningId;
   bool get leaving => _leaving;
   bool get disconnecting => _disconnecting;
@@ -62,6 +72,7 @@ final class ConnectionController extends ChangeNotifier {
       !_disposed &&
       !_disconnecting &&
       status == TransportStatus.connected &&
+      _session.isCurrent(_session.connectionEpoch) &&
       _room == null &&
       _joiningId == null &&
       !_leaving;
@@ -69,6 +80,7 @@ final class ConnectionController extends ChangeNotifier {
       !_disposed &&
       !_disconnecting &&
       status == TransportStatus.connected &&
+      _session.isCurrent(_session.connectionEpoch) &&
       _room != null &&
       !_room!.isStale &&
       !_leaving;
@@ -86,6 +98,7 @@ final class ConnectionController extends ChangeNotifier {
       return;
     }
     _room = null;
+    _releaseBattle();
     try {
       final pending = _session.connect(uri);
       _changed();
@@ -103,6 +116,7 @@ final class ConnectionController extends ChangeNotifier {
   Future<void> disconnect() async {
     if (_disposed || _disconnecting) return;
     _disconnecting = true;
+    _battle?.stopChoosing();
     _clearOperation();
     _stale();
     final pending = _session.disconnect();
@@ -122,6 +136,16 @@ final class ConnectionController extends ChangeNotifier {
       return;
     }
     _error = null;
+    _releaseBattle();
+    // Subscribe before sending: init and request may share the first frame.
+    final battle = BattleDecisionController(
+      session: _session,
+      roomId: command.roomId,
+    );
+    _battle = battle;
+    _battleSubscription = battle.changes.listen((_) {
+      if (identical(_battle, battle) && _battleConfirmed) _changed();
+    });
     _joiningId = command.roomId;
     _awaitRoom();
     _send(command);
@@ -132,6 +156,7 @@ final class ConnectionController extends ChangeNotifier {
     if (!canLeave) return;
     _error = null;
     _leaving = true;
+    _battle?.stopChoosing();
     _awaitRoom();
     _send(LeaveRoomCommand(roomId: _room!.id));
     _changed();
@@ -161,6 +186,8 @@ final class ConnectionController extends ChangeNotifier {
     if (_disposed) return;
     if (value == TransportStatus.disconnected ||
         value == TransportStatus.disposed) {
+      _battle?.stopChoosing();
+      if (!_battleConfirmed) _releaseBattle();
       _clearOperation();
       _stale();
     }
@@ -179,11 +206,20 @@ final class ConnectionController extends ChangeNotifier {
     final id = routed.roomId!;
     if (event is RoomInitEvent) {
       if (_joiningId == id || _room?.id == id) {
+        if (_joiningId == id) {
+          _battleConfirmed = event.roomType == 'battle';
+          if (!_battleConfirmed) _releaseBattle();
+        } else if (_room!.type != event.roomType) {
+          // A repeated init cannot silently change the selected room's type.
+          unawaited(disconnect());
+          return;
+        }
         _room = RoomInfo(id: id, type: event.roomType);
         if (_joiningId == id) _clearOperation();
         _notice(ConnectionMessage.roomJoined);
       } else {
-        // No unsolicited room becomes active. Keep the lower-level router general.
+        // The same owner arbitrates chat and battle joins. Never replace the
+        // selected context with an unsolicited room (including another battle).
         try {
           _send(LeaveRoomCommand(roomId: id));
         } on ArgumentError {
@@ -195,7 +231,9 @@ final class ConnectionController extends ChangeNotifier {
       _changed();
     } else if (event is RoomDeinitEvent &&
         (_room?.id == id || _joiningId == id)) {
+      _battle?.stopChoosing();
       _room = null;
+      if (!_battleConfirmed) _releaseBattle();
       _clearOperation();
       _notice(ConnectionMessage.roomLeft);
     } else if (id == _joiningId || id == _room?.id) {
@@ -252,18 +290,38 @@ final class ConnectionController extends ChangeNotifier {
     if (!_disposed) notifyListeners();
   }
 
+  void _releaseBattle() {
+    final battle = _battle;
+    final subscription = _battleSubscription;
+    _battle = null;
+    _battleConfirmed = false;
+    _battleSubscription = null;
+    // dispose disables writes synchronously, before asynchronous cleanup.
+    if (battle == null && subscription == null) return;
+    final cleanup = Future.wait<void>([
+      if (subscription != null) subscription.cancel(),
+      if (battle != null) battle.dispose(),
+    ]).then((_) {});
+    _pendingBattleCleanup.add(cleanup);
+    unawaited(
+      cleanup.whenComplete(() => _pendingBattleCleanup.remove(cleanup)),
+    );
+  }
+
   /// Completion of resource cleanup after dispose(), useful for the app owner/tests.
   Future<void> get closed => _cleanup ?? Future.value();
   @override
   void dispose() {
     if (_disposed) return;
     _disposed = true;
+    _releaseBattle();
     _clearOperation();
     _cleanup = _closeResources();
     super.dispose();
   }
 
   Future<void> _closeResources() async {
+    await Future.wait(_pendingBattleCleanup);
     await Future.wait(
       _subscriptions.map((subscription) => subscription.cancel()),
     );

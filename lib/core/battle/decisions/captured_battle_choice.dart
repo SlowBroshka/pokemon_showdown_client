@@ -8,10 +8,14 @@ final class CapturedBattleChoice {
     required this.requestRevision,
     required this.rqid,
     required this.choice,
+    this.contextToken,
   });
   final String roomId;
   final int connectionEpoch;
   final int requestRevision;
   final int? rqid;
   final BattleChoice choice;
+
+  /// Identity of the controller that captured this choice, including room visits.
+  final Object? contextToken;
 }

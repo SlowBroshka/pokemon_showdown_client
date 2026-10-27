@@ -49,6 +49,8 @@ final class BattleDecisionController {
   bool _disposed = false;
   bool _choicesStopped = false;
   bool _outstanding = false;
+  bool _choiceRejected = false;
+  bool get choiceRejected => _choiceRejected;
   // Errors have no request identifier. Once an unresolved send is superseded,
   // later errors cannot safely authorize a retry, even for a newer submission.
   bool _ambiguousErrors = false;
@@ -110,6 +112,7 @@ final class BattleDecisionController {
       choice: captured.choice,
       rqid: captured.rqid,
     );
+    _choiceRejected = false;
     _phase = BattleDecisionPhase.submitted;
     _outstanding = true;
     try {
@@ -159,6 +162,7 @@ final class BattleDecisionController {
         connectionEpoch: update.connectionEpoch,
       );
       if (_state.requestRevision != previousRevision) {
+        _choiceRejected = false;
         _ambiguousErrors |= _outstanding;
         _outstanding = false;
         _responseTimer?.cancel();
@@ -172,6 +176,7 @@ final class BattleDecisionController {
         final unavailable = event.message.startsWith('[Unavailable choice]');
         if (invalid || unavailable) {
           _responseTimer?.cancel();
+          _choiceRejected = invalid && !_ambiguousErrors;
           _phase = invalid && !_ambiguousErrors
               ? BattleDecisionPhase.ready
               : BattleDecisionPhase.awaitingRequest;

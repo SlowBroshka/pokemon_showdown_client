@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/transport/transport_status.dart';
 import '../../core/auth/auth_controller.dart';
 import '../auth/auth_panel.dart';
+import '../battle/battle_panel.dart';
 import 'connection_controller.dart';
 import '../../l10n/app_localizations.dart';
 import 'connection_message_localization.dart';
@@ -186,6 +187,8 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                           ),
                         ),
                       ),
+                    if (_controller.battle case final battle?)
+                      BattlePanel(key: ObjectKey(battle), controller: battle),
                     const Divider(height: 32),
                     Text(
                       l10n.noticesHeading,

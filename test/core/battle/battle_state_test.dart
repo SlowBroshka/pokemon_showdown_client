@@ -171,7 +171,7 @@ void main() {
     final initial = request(ready(), 'move');
     final state = lines(
       initial,
-      '|-crit|p2a: Gamma\n|html|<script>private</script>\n|uhtml|x|<b>text</b>\n|error|[Invalid choice] Example\n|popup|Example',
+      '|-nothing\n|-crit|p2a: Gamma\n|raw|<script>private</script>\n|html|<script>private</script>\n|uhtml|x|<b>text</b>\n|error|[Invalid choice] Example\n|popup|Example',
     );
     expect(state, same(initial));
     expect(state.log, isEmpty);

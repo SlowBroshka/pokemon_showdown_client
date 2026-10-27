@@ -73,7 +73,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get connectionDescription =>
-      'Одна активная комната · вход в аккаунт\nУправление боем появится позже.';
+      'Одна активная комната · вход в аккаунт · прототип боя';
 
   @override
   String get serverAddress => 'Адрес сервера (WSS)';
@@ -273,4 +273,142 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get authInvalidServerEvent =>
       'Сервер прислал некорректные данные входа. Подключитесь снова.';
+
+  @override
+  String get battleHeading => 'Бой';
+
+  @override
+  String get battleScope =>
+      'Прототип: Gen 9 singles. Неподдерживаемые механики блокируют выбор.';
+
+  @override
+  String battleTurn(int turn) {
+    return 'Ход $turn';
+  }
+
+  @override
+  String get battlePublicField => 'Активные Pokémon · публичные данные';
+
+  @override
+  String get battleUnknown => 'Не раскрыто';
+
+  @override
+  String battlePublicHp(int hp, String maximum) {
+    return 'Сообщённые HP: $hp/$maximum';
+  }
+
+  @override
+  String battlePrivateHp(int hp, String maximum) {
+    return 'HP: $hp/$maximum';
+  }
+
+  @override
+  String get battleFainted => 'Без сознания';
+
+  @override
+  String battleStatus(String status) {
+    String _temp0 = intl.Intl.selectLogic(status, {
+      'brn': 'ожог',
+      'par': 'паралич',
+      'psn': 'отравление',
+      'tox': 'сильное отравление',
+      'slp': 'сон',
+      'frz': 'заморозка',
+      'other': 'нет',
+    });
+    return 'Статус: $_temp0';
+  }
+
+  @override
+  String battleTeraType(String type) {
+    return 'Тератип: $type';
+  }
+
+  @override
+  String get battleTeam => 'Ваша команда · последний приватный снимок';
+
+  @override
+  String get battleActive => 'На поле';
+
+  @override
+  String get battleMoves => 'Выберите атаку';
+
+  @override
+  String battlePp(int current, String maximum) {
+    return 'PP: $current/$maximum';
+  }
+
+  @override
+  String battleMove(int slot, String name) {
+    return '$slot. $name';
+  }
+
+  @override
+  String battleSwitch(String name) {
+    return 'Заменить на $name';
+  }
+
+  @override
+  String get battleTera => 'Терастализация вместе с атакой';
+
+  @override
+  String get battleReady => 'Выберите атаку или доступную замену.';
+
+  @override
+  String get battleForced => 'Выберите замену.';
+
+  @override
+  String get battleWaiting => 'Ожидание следующего решения…';
+
+  @override
+  String get battleSubmitted => 'Выбор отправлен. Ожидание сервера…';
+
+  @override
+  String get battleUncertain =>
+      'Результат отправки неизвестен. Ожидаем новый запрос; автоматического повтора нет.';
+
+  @override
+  String get battleUnavailable =>
+      'Выбор недоступен. Ожидаем обновлённые варианты от сервера.';
+
+  @override
+  String get battleRejected => 'Сервер отклонил выбор. Можно выбрать заново.';
+
+  @override
+  String get battleUnsupported =>
+      'Это состояние боя не поддерживается. Выбор отключён.';
+
+  @override
+  String get battleMalformed =>
+      'Не удалось прочитать варианты решения от сервера. Ожидаем обновление.';
+
+  @override
+  String get battleStopped => 'Выбор в этой комнате отключён.';
+
+  @override
+  String get battleClosed => 'Комната закрыта. Результат не сообщён.';
+
+  @override
+  String battleWinner(String name) {
+    return 'Победитель: $name';
+  }
+
+  @override
+  String get battleTie => 'Бой завершился ничьей.';
+
+  @override
+  String get battleLog => 'Последние действия';
+
+  @override
+  String battleLogMove(int turn, String actor, String action) {
+    return 'Ход $turn: $actor использует $action.';
+  }
+
+  @override
+  String battleLogCant(int turn, String actor, String action) {
+    return 'Ход $turn: $actor не смог действовать ($action).';
+  }
+
+  @override
+  String get battleLogEmpty => 'Действий пока нет.';
 }

@@ -207,6 +207,7 @@ const _decorative = {
   'name',
   'message',
   '-message',
+  '-nothing',
   '-hint',
   '-anim',
   '-crit',
@@ -217,6 +218,7 @@ const _decorative = {
   '-immune',
   '-notarget',
   'html',
+  'raw',
   'uhtml',
   'uhtmlchange',
 };

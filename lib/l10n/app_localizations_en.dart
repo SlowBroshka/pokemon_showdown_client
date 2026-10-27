@@ -72,7 +72,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get connectionDescription =>
-      'One active room · account sign-in\nBattle controls are coming later.';
+      'One active room · account sign-in · battle prototype';
 
   @override
   String get serverAddress => 'Server address (WSS)';
@@ -275,4 +275,143 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get authInvalidServerEvent =>
       'The server sent invalid sign-in data. Please reconnect.';
+
+  @override
+  String get battleHeading => 'Battle';
+
+  @override
+  String get battleScope =>
+      'Prototype: Gen 9 singles. Unsupported mechanics disable choices.';
+
+  @override
+  String battleTurn(int turn) {
+    return 'Turn $turn';
+  }
+
+  @override
+  String get battlePublicField => 'Active Pokémon · public observations';
+
+  @override
+  String get battleUnknown => 'Not revealed';
+
+  @override
+  String battlePublicHp(int hp, String maximum) {
+    return 'Reported HP: $hp/$maximum';
+  }
+
+  @override
+  String battlePrivateHp(int hp, String maximum) {
+    return 'HP: $hp/$maximum';
+  }
+
+  @override
+  String get battleFainted => 'Fainted';
+
+  @override
+  String battleStatus(String status) {
+    String _temp0 = intl.Intl.selectLogic(status, {
+      'brn': 'burn',
+      'par': 'paralysis',
+      'psn': 'poison',
+      'tox': 'bad poison',
+      'slp': 'sleep',
+      'frz': 'freeze',
+      'other': 'none',
+    });
+    return 'Status: $_temp0';
+  }
+
+  @override
+  String battleTeraType(String type) {
+    return 'Tera: $type';
+  }
+
+  @override
+  String get battleTeam => 'Your team · last private snapshot';
+
+  @override
+  String get battleActive => 'Active';
+
+  @override
+  String get battleMoves => 'Choose a move';
+
+  @override
+  String battlePp(int current, String maximum) {
+    return 'PP: $current/$maximum';
+  }
+
+  @override
+  String battleMove(int slot, String name) {
+    return '$slot. $name';
+  }
+
+  @override
+  String battleSwitch(String name) {
+    return 'Switch to $name';
+  }
+
+  @override
+  String get battleTera => 'Terastallize with this move';
+
+  @override
+  String get battleReady => 'Choose a move or an available replacement.';
+
+  @override
+  String get battleForced => 'Choose a replacement.';
+
+  @override
+  String get battleWaiting => 'Waiting for the next decision…';
+
+  @override
+  String get battleSubmitted => 'Choice sent. Waiting for the server…';
+
+  @override
+  String get battleUncertain =>
+      'The outcome of sending is unknown. Waiting for a new request; no automatic retry.';
+
+  @override
+  String get battleUnavailable =>
+      'Choice unavailable. Waiting for updated choices from the server.';
+
+  @override
+  String get battleRejected =>
+      'The server rejected the choice. You can choose again.';
+
+  @override
+  String get battleUnsupported =>
+      'This battle state is not supported. Choices are disabled.';
+
+  @override
+  String get battleMalformed =>
+      'The server sent an unreadable decision request. Waiting for an update.';
+
+  @override
+  String get battleStopped => 'Choices are disabled for this room.';
+
+  @override
+  String get battleClosed => 'The room is closed. No result was reported.';
+
+  @override
+  String battleWinner(String name) {
+    return 'Winner: $name';
+  }
+
+  @override
+  String get battleTie => 'The battle ended in a tie.';
+
+  @override
+  String get battleLog => 'Recent actions';
+
+  @override
+  String battleLogMove(int turn, String actor, String action) {
+    return 'Turn $turn: $actor used $action.';
+  }
+
+  @override
+  String battleLogCant(int turn, String actor, String action) {
+    return 'Turn $turn: $actor could not act ($action).';
+  }
+
+  @override
+  String get battleLogEmpty => 'No actions yet.';
 }

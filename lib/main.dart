@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'core/session/showdown_session.dart';
+import 'core/matchmaking/formats/format_catalog_controller.dart';
 import 'core/auth/auth_controller.dart';
 import 'features/connection/connection_controller.dart';
 
@@ -24,13 +25,15 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late final ShowdownSession _session;
   late final AuthController _authController;
+  late final FormatCatalogController _formatCatalog;
   late final ConnectionController _controller;
 
   @override
   void initState() {
     super.initState();
-    // Both live above the screen, so replacing a screen does not close the socket.
+    // Controllers live above the screen and share the app-owned session.
     _session = ShowdownSession();
+    _formatCatalog = FormatCatalogController(session: _session);
     _authController = AuthController(session: _session);
     _controller = ConnectionController(session: _session);
   }
@@ -43,6 +46,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _closeSession() async {
+    await _formatCatalog.dispose();
     await _authController.dispose();
     await _controller.closed;
     await _session.dispose();

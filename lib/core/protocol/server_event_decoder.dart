@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import '../matchmaking/formats/format_catalog_decoder.dart';
+import 'events/formats_event.dart';
+
 import 'battle_event_decoder.dart';
 
 import '../battle/requests/battle_request_decoder.dart';
@@ -34,6 +37,7 @@ export 'events/malformed_server_event.dart';
 export 'server_event.dart';
 export 'battle_event_decoder.dart';
 export 'events/battle_request_event.dart';
+export 'events/formats_event.dart';
 
 /// Decodes one record without network access, state changes or rendering.
 /// Empty lines return null. Unsupported events and malformed records are explicit
@@ -59,6 +63,11 @@ ServerEvent? decodeServerRecord(ServerRecord record) {
   final battleEvent = decodeBattleEvent(record);
   if (battleEvent != null) return battleEvent;
   switch (type) {
+    case 'formats':
+      if (record.roomId != null) {
+        return MalformedServerEvent(record, reason: 'Formats must be global');
+      }
+      return FormatsEvent(record, catalog: decodeFormatCatalog(data));
     case 'request':
       if (record.roomId == null) {
         return MalformedServerEvent(record, reason: 'Request requires a room');

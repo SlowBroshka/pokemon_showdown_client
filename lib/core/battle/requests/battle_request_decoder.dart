@@ -151,7 +151,7 @@ RequestPokemon _pokemon(Map<String, dynamic> json, String sideId, int slot) {
     ability: _optionalText(json, 'ability', empty: true),
     baseAbility: _optionalText(json, 'baseAbility', empty: true),
     teraType: _optionalText(json, 'teraType'),
-    terastallized: _typeOrFalse(json, 'terastallized'),
+    terastallized: _typeOrFalse(json, 'terastallized', empty: true),
   );
 }
 
@@ -271,8 +271,16 @@ bool _flag(Map<String, dynamic> json, String key) {
   return json[key] as bool;
 }
 
-String? _typeOrFalse(Map<String, dynamic> json, String key) {
-  if (!json.containsKey(key) || json[key] == false) return null;
+String? _typeOrFalse(
+  Map<String, dynamic> json,
+  String key, {
+  bool empty = false,
+}) {
+  if (!json.containsKey(key) ||
+      json[key] == false ||
+      (empty && json[key] == '')) {
+    return null;
+  }
   return _text(json[key]);
 }
 

@@ -40,6 +40,16 @@ void main() {
     });
   }
 
+  test('real engine empty terastallized means not yet transformed', () {
+    final result = mutated(
+      (j) => j['side']['pokemon'][0]['terastallized'] = '',
+    );
+    expect(result.kind, BattleRequestKind.move);
+    expect(result.side!.pokemon.first.terastallized, isNull);
+    final invalid = mutated((j) => j['active'][0]['canTerastallize'] = '');
+    expect(invalid.kind, BattleRequestKind.malformedRequest);
+  });
+
   test('preserves private data and uses request indices, not names', () {
     final result = mutated((j) {
       j['side']['pokemon'][0]['condition'] = '123/200 par';

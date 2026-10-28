@@ -76,7 +76,7 @@
   "@connectionHeading": {
     "description": "Connection screen: connection heading."
   },
-  "connectionDescription": "One active room · account sign-in\nBattle controls are coming later.",
+  "connectionDescription": "One active room · account sign-in · battle prototype",
   "@connectionDescription": {
     "description": "Connection screen: connection description."
   },
@@ -325,5 +325,220 @@
   "authInvalidServerEvent": "The server sent invalid sign-in data. Please reconnect.",
   "@authInvalidServerEvent": {
     "description": "Account sign-in: The server sent invalid sign-in data. Please reconnect."
+  },
+  "battleHeading": "Battle",
+  "@battleHeading": {
+    "description": "Battle panel: battleHeading"
+  },
+  "battleScope": "Prototype: Gen 9 singles. Unsupported mechanics disable choices.",
+  "@battleScope": {
+    "description": "Battle panel: battleScope"
+  },
+  "battleTurn": "Turn {turn}",
+  "@battleTurn": {
+    "description": "Battle panel: battleTurn",
+    "placeholders": {
+      "turn": {
+        "type": "int"
+      }
+    }
+  },
+  "battlePublicField": "Active Pokémon · public observations",
+  "@battlePublicField": {
+    "description": "Battle panel: battlePublicField"
+  },
+  "battleUnknown": "Not revealed",
+  "@battleUnknown": {
+    "description": "Battle panel: battleUnknown"
+  },
+  "battlePublicHp": "Reported HP: {hp}/{maximum}",
+  "@battlePublicHp": {
+    "description": "Battle panel: battlePublicHp",
+    "placeholders": {
+      "hp": {
+        "type": "int"
+      },
+      "maximum": {
+        "type": "String"
+      }
+    }
+  },
+  "battlePrivateHp": "HP: {hp}/{maximum}",
+  "@battlePrivateHp": {
+    "description": "Battle panel: battlePrivateHp",
+    "placeholders": {
+      "hp": {
+        "type": "int"
+      },
+      "maximum": {
+        "type": "String"
+      }
+    }
+  },
+  "battleFainted": "Fainted",
+  "@battleFainted": {
+    "description": "Battle panel: battleFainted"
+  },
+  "battleStatus": "Status: {status, select, brn{burn} par{paralysis} psn{poison} tox{bad poison} slp{sleep} frz{freeze} other{none}}",
+  "@battleStatus": {
+    "description": "Battle panel: battleStatus",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "battleTeraType": "Tera: {type}",
+  "@battleTeraType": {
+    "description": "Battle panel: battleTeraType",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "battleTeam": "Your team · last private snapshot",
+  "@battleTeam": {
+    "description": "Battle panel: battleTeam"
+  },
+  "battleActive": "Active",
+  "@battleActive": {
+    "description": "Battle panel: battleActive"
+  },
+  "battleMoves": "Choose a move",
+  "@battleMoves": {
+    "description": "Battle panel: battleMoves"
+  },
+  "battlePp": "PP: {current}/{maximum}",
+  "@battlePp": {
+    "description": "Battle panel: battlePp",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "maximum": {
+        "type": "String"
+      }
+    }
+  },
+  "battleMove": "{slot}. {name}",
+  "@battleMove": {
+    "description": "Battle panel: battleMove",
+    "placeholders": {
+      "slot": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "battleSwitch": "Switch to {name}",
+  "@battleSwitch": {
+    "description": "Battle panel: battleSwitch",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "battleTera": "Terastallize with this move",
+  "@battleTera": {
+    "description": "Battle panel: battleTera"
+  },
+  "battleReady": "Choose a move or an available replacement.",
+  "@battleReady": {
+    "description": "Battle panel: battleReady"
+  },
+  "battleForced": "Choose a replacement.",
+  "@battleForced": {
+    "description": "Battle panel: battleForced"
+  },
+  "battleWaiting": "Waiting for the next decision…",
+  "@battleWaiting": {
+    "description": "Battle panel: battleWaiting"
+  },
+  "battleSubmitted": "Choice sent. Waiting for the server…",
+  "@battleSubmitted": {
+    "description": "Battle panel: battleSubmitted"
+  },
+  "battleUncertain": "The outcome of sending is unknown. Waiting for a new request; no automatic retry.",
+  "@battleUncertain": {
+    "description": "Battle panel: battleUncertain"
+  },
+  "battleUnavailable": "Choice unavailable. Waiting for updated choices from the server.",
+  "@battleUnavailable": {
+    "description": "Battle panel: battleUnavailable"
+  },
+  "battleRejected": "The server rejected the choice. You can choose again.",
+  "@battleRejected": {
+    "description": "Battle panel: battleRejected"
+  },
+  "battleUnsupported": "This battle state is not supported. Choices are disabled.",
+  "@battleUnsupported": {
+    "description": "Battle panel: battleUnsupported"
+  },
+  "battleMalformed": "The server sent an unreadable decision request. Waiting for an update.",
+  "@battleMalformed": {
+    "description": "Battle panel: battleMalformed"
+  },
+  "battleStopped": "Choices are disabled for this room.",
+  "@battleStopped": {
+    "description": "Battle panel: battleStopped"
+  },
+  "battleClosed": "The room is closed. No result was reported.",
+  "@battleClosed": {
+    "description": "Battle panel: battleClosed"
+  },
+  "battleWinner": "Winner: {name}",
+  "@battleWinner": {
+    "description": "Battle panel: battleWinner",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "battleTie": "The battle ended in a tie.",
+  "@battleTie": {
+    "description": "Battle panel: battleTie"
+  },
+  "battleLog": "Recent actions",
+  "@battleLog": {
+    "description": "Battle panel: battleLog"
+  },
+  "battleLogMove": "Turn {turn}: {actor} used {action}.",
+  "@battleLogMove": {
+    "description": "Battle panel: battleLogMove",
+    "placeholders": {
+      "turn": {
+        "type": "int"
+      },
+      "actor": {
+        "type": "String"
+      },
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "battleLogCant": "Turn {turn}: {actor} could not act ({action}).",
+  "@battleLogCant": {
+    "description": "Battle panel: battleLogCant",
+    "placeholders": {
+      "turn": {
+        "type": "int"
+      },
+      "actor": {
+        "type": "String"
+      },
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "battleLogEmpty": "No actions yet.",
+  "@battleLogEmpty": {
+    "description": "Battle panel: battleLogEmpty"
   }
 }

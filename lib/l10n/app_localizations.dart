@@ -215,7 +215,7 @@ abstract class AppLocalizations {
   /// Connection screen: connection description.
   ///
   /// In en, this message translates to:
-  /// **'One active room · account sign-in\nBattle controls are coming later.'**
+  /// **'One active room · account sign-in · battle prototype'**
   String get connectionDescription;
 
   /// Connection screen: server address.
@@ -559,6 +559,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The server sent invalid sign-in data. Please reconnect.'**
   String get authInvalidServerEvent;
+
+  /// Battle panel: battleHeading
+  ///
+  /// In en, this message translates to:
+  /// **'Battle'**
+  String get battleHeading;
+
+  /// Battle panel: battleScope
+  ///
+  /// In en, this message translates to:
+  /// **'Prototype: Gen 9 singles. Unsupported mechanics disable choices.'**
+  String get battleScope;
+
+  /// Battle panel: battleTurn
+  ///
+  /// In en, this message translates to:
+  /// **'Turn {turn}'**
+  String battleTurn(int turn);
+
+  /// Battle panel: battlePublicField
+  ///
+  /// In en, this message translates to:
+  /// **'Active Pokémon · public observations'**
+  String get battlePublicField;
+
+  /// Battle panel: battleUnknown
+  ///
+  /// In en, this message translates to:
+  /// **'Not revealed'**
+  String get battleUnknown;
+
+  /// Battle panel: battlePublicHp
+  ///
+  /// In en, this message translates to:
+  /// **'Reported HP: {hp}/{maximum}'**
+  String battlePublicHp(int hp, String maximum);
+
+  /// Battle panel: battlePrivateHp
+  ///
+  /// In en, this message translates to:
+  /// **'HP: {hp}/{maximum}'**
+  String battlePrivateHp(int hp, String maximum);
+
+  /// Battle panel: battleFainted
+  ///
+  /// In en, this message translates to:
+  /// **'Fainted'**
+  String get battleFainted;
+
+  /// Battle panel: battleStatus
+  ///
+  /// In en, this message translates to:
+  /// **'Status: {status, select, brn{burn} par{paralysis} psn{poison} tox{bad poison} slp{sleep} frz{freeze} other{none}}'**
+  String battleStatus(String status);
+
+  /// Battle panel: battleTeraType
+  ///
+  /// In en, this message translates to:
+  /// **'Tera: {type}'**
+  String battleTeraType(String type);
+
+  /// Battle panel: battleTeam
+  ///
+  /// In en, this message translates to:
+  /// **'Your team · last private snapshot'**
+  String get battleTeam;
+
+  /// Battle panel: battleActive
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get battleActive;
+
+  /// Battle panel: battleMoves
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a move'**
+  String get battleMoves;
+
+  /// Battle panel: battlePp
+  ///
+  /// In en, this message translates to:
+  /// **'PP: {current}/{maximum}'**
+  String battlePp(int current, String maximum);
+
+  /// Battle panel: battleMove
+  ///
+  /// In en, this message translates to:
+  /// **'{slot}. {name}'**
+  String battleMove(int slot, String name);
+
+  /// Battle panel: battleSwitch
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to {name}'**
+  String battleSwitch(String name);
+
+  /// Battle panel: battleTera
+  ///
+  /// In en, this message translates to:
+  /// **'Terastallize with this move'**
+  String get battleTera;
+
+  /// Battle panel: battleReady
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a move or an available replacement.'**
+  String get battleReady;
+
+  /// Battle panel: battleForced
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a replacement.'**
+  String get battleForced;
+
+  /// Battle panel: battleWaiting
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for the next decision…'**
+  String get battleWaiting;
+
+  /// Battle panel: battleSubmitted
+  ///
+  /// In en, this message translates to:
+  /// **'Choice sent. Waiting for the server…'**
+  String get battleSubmitted;
+
+  /// Battle panel: battleUncertain
+  ///
+  /// In en, this message translates to:
+  /// **'The outcome of sending is unknown. Waiting for a new request; no automatic retry.'**
+  String get battleUncertain;
+
+  /// Battle panel: battleUnavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Choice unavailable. Waiting for updated choices from the server.'**
+  String get battleUnavailable;
+
+  /// Battle panel: battleRejected
+  ///
+  /// In en, this message translates to:
+  /// **'The server rejected the choice. You can choose again.'**
+  String get battleRejected;
+
+  /// Battle panel: battleUnsupported
+  ///
+  /// In en, this message translates to:
+  /// **'This battle state is not supported. Choices are disabled.'**
+  String get battleUnsupported;
+
+  /// Battle panel: battleMalformed
+  ///
+  /// In en, this message translates to:
+  /// **'The server sent an unreadable decision request. Waiting for an update.'**
+  String get battleMalformed;
+
+  /// Battle panel: battleStopped
+  ///
+  /// In en, this message translates to:
+  /// **'Choices are disabled for this room.'**
+  String get battleStopped;
+
+  /// Battle panel: battleClosed
+  ///
+  /// In en, this message translates to:
+  /// **'The room is closed. No result was reported.'**
+  String get battleClosed;
+
+  /// Battle panel: battleWinner
+  ///
+  /// In en, this message translates to:
+  /// **'Winner: {name}'**
+  String battleWinner(String name);
+
+  /// Battle panel: battleTie
+  ///
+  /// In en, this message translates to:
+  /// **'The battle ended in a tie.'**
+  String get battleTie;
+
+  /// Battle panel: battleLog
+  ///
+  /// In en, this message translates to:
+  /// **'Recent actions'**
+  String get battleLog;
+
+  /// Battle panel: battleLogMove
+  ///
+  /// In en, this message translates to:
+  /// **'Turn {turn}: {actor} used {action}.'**
+  String battleLogMove(int turn, String actor, String action);
+
+  /// Battle panel: battleLogCant
+  ///
+  /// In en, this message translates to:
+  /// **'Turn {turn}: {actor} could not act ({action}).'**
+  String battleLogCant(int turn, String actor, String action);
+
+  /// Battle panel: battleLogEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'No actions yet.'**
+  String get battleLogEmpty;
 }
 
 class _AppLocalizationsDelegate

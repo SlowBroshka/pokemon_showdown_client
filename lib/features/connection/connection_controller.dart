@@ -6,6 +6,7 @@ import '../../core/battle/decisions/battle_decision_controller.dart';
 import '../../core/protocol/client_commands.dart';
 import '../../core/protocol/server_event_decoder.dart';
 import '../../core/session/showdown_session.dart';
+import '../../core/transport/showdown_endpoint.dart';
 import 'connection_message.dart';
 
 /// Owns one selected room, its battle context and pending room operation.
@@ -89,11 +90,7 @@ final class ConnectionController extends ChangeNotifier {
     if (!canConnect) return;
     _error = null;
     final uri = Uri.tryParse(address.trim());
-    if (uri == null ||
-        uri.scheme != 'wss' ||
-        uri.host.isEmpty ||
-        uri.userInfo.isNotEmpty ||
-        uri.hasFragment) {
+    if (uri == null || !isAllowedShowdownEndpoint(uri)) {
       _report(ConnectionMessage.invalidWssAddress);
       return;
     }

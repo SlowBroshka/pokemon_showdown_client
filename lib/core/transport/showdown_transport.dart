@@ -6,6 +6,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../protocol/client_command.dart';
 import 'transport_exception.dart';
+import 'showdown_endpoint.dart';
 import 'transport_failure.dart';
 import 'transport_status.dart';
 import 'transport_update.dart';
@@ -61,10 +62,7 @@ final class ShowdownTransport {
     if (_status != TransportStatus.disconnected) {
       throw StateError('Transport must be disconnected before connecting');
     }
-    if (endpoint.scheme != 'wss' ||
-        endpoint.host.isEmpty ||
-        endpoint.userInfo.isNotEmpty ||
-        endpoint.hasFragment) {
+    if (!isAllowedShowdownEndpoint(endpoint)) {
       throw ArgumentError(
         'Expected a WSS endpoint without credentials or fragment',
       );

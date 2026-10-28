@@ -1,0 +1,1447 @@
+{
+  "schemaVersion": 1,
+  "provenance": "handwritten synthetic specification; not executable controller tests",
+  "scenarios": [
+    {
+      "id": "search-found",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receiveFixture": "queued",
+          "expect": {
+            "phase": "searching"
+          }
+        },
+        {
+          "receiveFixture": "found",
+          "expect": {
+            "phase": "awaitingBattle"
+          }
+        },
+        {
+          "receive": ">battle-gen9randombattle-contract1\n|init|battle\n|player|p1|ExamplePlayer\n|player|p2|ExampleOpponent\n|gametype|singles\n|gen|9\n|tier|[Gen 9] Random Battle\n|start",
+          "expect": {
+            "phase": "inBattle",
+            "selectedRoom": "battle-gen9randombattle-contract1",
+            "send": [],
+            "battleContexts": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "immediate-match",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receiveFixture": "baseline",
+          "expect": {
+            "phase": "stoppedObserved",
+            "canStart": false
+          }
+        },
+        {
+          "receiveFixture": "found",
+          "expect": {
+            "phase": "awaitingBattle"
+          }
+        },
+        {
+          "receive": ">battle-gen9randombattle-contract1\n|init|battle\n|player|p1|ExamplePlayer\n|player|p2|ExampleOpponent\n|gametype|singles\n|gen|9\n|tier|[Gen 9] Random Battle\n|start",
+          "expect": {
+            "phase": "inBattle",
+            "selectedRoom": "battle-gen9randombattle-contract1",
+            "send": [],
+            "battleContexts": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "cancel-observed-not-ack",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receiveFixture": "queued",
+          "expect": {
+            "phase": "searching"
+          }
+        },
+        {
+          "action": "cancel",
+          "expect": {
+            "phase": "cancelling",
+            "send": [
+              "|/cancelsearch gen9randombattle"
+            ]
+          }
+        },
+        {
+          "receiveFixture": "baseline",
+          "expect": {
+            "phase": "stoppedObserved",
+            "canStart": false
+          }
+        },
+        {
+          "action": "timeout",
+          "expect": {
+            "phase": "outcomeUnknown",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "cancel-loses-to-match",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receiveFixture": "queued",
+          "expect": {
+            "phase": "searching"
+          }
+        },
+        {
+          "action": "cancel",
+          "expect": {
+            "phase": "cancelling",
+            "send": [
+              "|/cancelsearch gen9randombattle"
+            ]
+          }
+        },
+        {
+          "receiveFixture": "baseline",
+          "expect": {
+            "phase": "stoppedObserved"
+          }
+        },
+        {
+          "receiveFixture": "found",
+          "expect": {
+            "phase": "awaitingBattle"
+          }
+        },
+        {
+          "receive": ">battle-gen9randombattle-contract1\n|init|battle\n|player|p1|ExamplePlayer\n|player|p2|ExampleOpponent\n|gametype|singles\n|gen|9\n|tier|[Gen 9] Random Battle\n|start",
+          "expect": {
+            "phase": "inBattle",
+            "selectedRoom": "battle-gen9randombattle-contract1",
+            "send": [],
+            "battleContexts": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "early-cancel-late-queue",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "action": "cancel",
+          "expect": {
+            "phase": "cancelling",
+            "send": [
+              "|/cancelsearch gen9randombattle"
+            ]
+          }
+        },
+        {
+          "receiveFixture": "baseline",
+          "expect": {
+            "phase": "stoppedObserved"
+          }
+        },
+        {
+          "receiveFixture": "queued",
+          "expect": {
+            "phase": "cancelling",
+            "send": [
+              "|/cancelsearch gen9randombattle"
+            ]
+          }
+        },
+        {
+          "receiveFixture": "queued",
+          "expect": {
+            "phase": "cancelling",
+            "send": []
+          }
+        },
+        {
+          "receiveFixture": "baseline",
+          "expect": {
+            "phase": "stoppedObserved"
+          }
+        }
+      ]
+    },
+    {
+      "id": "early-cancel-no-reply",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "action": "cancel",
+          "expect": {
+            "phase": "cancelling",
+            "send": [
+              "|/cancelsearch gen9randombattle"
+            ]
+          }
+        },
+        {
+          "action": "timeout",
+          "expect": {
+            "phase": "outcomeUnknown",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "cancel-missing-queue-no-reply",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receiveFixture": "queued",
+          "expect": {
+            "phase": "searching"
+          }
+        },
+        {
+          "action": "cancel",
+          "expect": {
+            "phase": "cancelling",
+            "send": [
+              "|/cancelsearch gen9randombattle"
+            ]
+          }
+        },
+        {
+          "action": "timeout",
+          "expect": {
+            "phase": "outcomeUnknown",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "double-start",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": []
+          }
+        },
+        {
+          "receiveFixture": "queued",
+          "expect": {
+            "phase": "searching"
+          }
+        },
+        {
+          "action": "start",
+          "expect": {
+            "phase": "searching",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "double-cancel",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receiveFixture": "queued",
+          "expect": {
+            "phase": "searching"
+          }
+        },
+        {
+          "action": "cancel",
+          "expect": {
+            "phase": "cancelling",
+            "send": [
+              "|/cancelsearch gen9randombattle"
+            ]
+          }
+        },
+        {
+          "action": "cancel",
+          "expect": {
+            "phase": "cancelling",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "popup-is-not-final-rejection",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receive": "|popup|The ladder is temporarily disabled.",
+          "expect": {
+            "phase": "submitting",
+            "notice": "serverNotice",
+            "send": []
+          }
+        },
+        {
+          "receiveFixture": "found",
+          "expect": {
+            "phase": "awaitingBattle"
+          }
+        },
+        {
+          "receive": ">battle-gen9randombattle-contract1\n|init|battle\n|player|p1|ExamplePlayer\n|player|p2|ExampleOpponent\n|gametype|singles\n|gen|9\n|tier|[Gen 9] Random Battle\n|start",
+          "expect": {
+            "phase": "inBattle",
+            "selectedRoom": "battle-gen9randombattle-contract1",
+            "send": [],
+            "battleContexts": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "error-is-not-correlated-ack",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receive": "|error|Example refusal",
+          "expect": {
+            "phase": "submitting",
+            "notice": "serverNotice",
+            "send": []
+          }
+        },
+        {
+          "action": "timeout",
+          "expect": {
+            "phase": "outcomeUnknown",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "malformed-does-not-cancel",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receiveFixture": "queued",
+          "expect": {
+            "phase": "searching"
+          }
+        },
+        {
+          "action": "cancel",
+          "expect": {
+            "phase": "cancelling",
+            "send": [
+              "|/cancelsearch gen9randombattle"
+            ]
+          }
+        },
+        {
+          "receiveFixture": "broken-json",
+          "expect": {
+            "phase": "cancelling",
+            "notice": "invalidSearchSnapshot"
+          }
+        },
+        {
+          "action": "timeout",
+          "expect": {
+            "phase": "outcomeUnknown",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong-scope-ignored",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receiveFixture": "queued",
+          "expect": {
+            "phase": "searching"
+          }
+        },
+        {
+          "receiveFixture": "room-search",
+          "expect": {
+            "phase": "searching"
+          }
+        }
+      ]
+    },
+    {
+      "id": "old-epoch-ignored",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receiveFixture": "found",
+          "epoch": 0,
+          "expect": {
+            "phase": "submitting",
+            "selectedRoom": null,
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "disconnect-no-retry",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "action": "disconnect",
+          "expect": {
+            "phase": "disconnected",
+            "send": []
+          }
+        },
+        {
+          "connectEpoch": 2,
+          "expect": {
+            "phase": "unavailable",
+            "send": []
+          }
+        },
+        {
+          "receiveFixture": "baseline",
+          "expect": {
+            "phase": "unavailable",
+            "canStart": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "identity-changed",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "identity": "otherplayer",
+          "expect": {
+            "phase": "outcomeUnknown",
+            "send": [],
+            "canStart": false
+          }
+        },
+        {
+          "action": "cancel",
+          "expect": {
+            "phase": "outcomeUnknown",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "catalog-removed-during-search",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receiveFixture": "queued",
+          "expect": {
+            "phase": "searching"
+          }
+        },
+        {
+          "receiveFixture": "missing-target",
+          "expect": {
+            "phase": "searching",
+            "canStart": false
+          }
+        },
+        {
+          "action": "cancel",
+          "expect": {
+            "phase": "cancelling",
+            "send": [
+              "|/cancelsearch gen9randombattle"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "catalog-malformed-before-start",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "receiveFixture": "bad-flags",
+          "expect": {
+            "phase": "unavailable"
+          }
+        },
+        {
+          "action": "start",
+          "expect": {
+            "phase": "unavailable",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "external-queue-blocks",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "receiveFixture": "external-search",
+          "expect": {
+            "phase": "unavailable"
+          }
+        },
+        {
+          "action": "start",
+          "expect": {
+            "phase": "unavailable",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "existing-game-blocks",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "receiveFixture": "other-game",
+          "expect": {
+            "phase": "unavailable"
+          }
+        },
+        {
+          "action": "start",
+          "expect": {
+            "phase": "unavailable",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "multiple-games-conflict",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receiveFixture": "two-games",
+          "expect": {
+            "phase": "outcomeUnknown",
+            "selectedRoom": null,
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "init-before-games",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receive": ">battle-gen9randombattle-contract1\n|init|battle\n|player|p1|ExamplePlayer\n|player|p2|ExampleOpponent\n|gametype|singles\n|gen|9\n|tier|[Gen 9] Random Battle\n|start",
+          "expect": {
+            "phase": "awaitingBattle",
+            "selectedRoom": null,
+            "buffered": true,
+            "send": []
+          }
+        },
+        {
+          "receiveFixture": "found",
+          "expect": {
+            "phase": "inBattle",
+            "selectedRoom": "battle-gen9randombattle-contract1",
+            "battleContexts": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "duplicate-init",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receiveFixture": "found",
+          "expect": {
+            "phase": "awaitingBattle"
+          }
+        },
+        {
+          "receive": ">battle-gen9randombattle-contract1\n|init|battle\n|player|p1|ExamplePlayer\n|player|p2|ExampleOpponent\n|gametype|singles\n|gen|9\n|tier|[Gen 9] Random Battle\n|start",
+          "expect": {
+            "phase": "inBattle",
+            "selectedRoom": "battle-gen9randombattle-contract1",
+            "send": [],
+            "battleContexts": 1
+          }
+        },
+        {
+          "receive": ">battle-gen9randombattle-contract1\n|init|battle\n|player|p1|ExamplePlayer\n|player|p2|ExampleOpponent\n|gametype|singles\n|gen|9\n|tier|[Gen 9] Random Battle\n|start",
+          "expect": {
+            "phase": "inBattle",
+            "battleContexts": 1,
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "first-frame-request",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receiveFixture": "found",
+          "expect": {
+            "phase": "awaitingBattle"
+          }
+        },
+        {
+          "receiveFrame": [
+            {
+              "wire": ">battle-gen9randombattle-contract1\n|init|battle\n|player|p1|ExamplePlayer\n|player|p2|ExampleOpponent\n|gametype|singles\n|gen|9\n|tier|[Gen 9] Random Battle\n|start"
+            },
+            {
+              "battleRequestFixture": "move",
+              "roomId": "battle-gen9randombattle-contract1"
+            }
+          ],
+          "expect": {
+            "phase": "inBattle",
+            "selectedRoom": "battle-gen9randombattle-contract1",
+            "requestDeliveries": 1,
+            "battleContexts": 1,
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "spectator-not-owned",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receive": ">battle-unrelated\n|init|battle\n|player|p1|OtherPlayer",
+          "expect": {
+            "phase": "awaitingBattle",
+            "selectedRoom": null,
+            "send": []
+          }
+        },
+        {
+          "action": "timeout",
+          "expect": {
+            "phase": "outcomeUnknown",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "candidate-buffer-overflow",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receive": ">battle-gen9randombattle-contract1\n|init|battle\n|player|p1|ExamplePlayer\n|player|p2|ExampleOpponent\n|gametype|singles\n|gen|9\n|tier|[Gen 9] Random Battle\n|start",
+          "expect": {
+            "phase": "awaitingBattle"
+          }
+        },
+        {
+          "repeatReceive": {
+            "count": 257,
+            "wire": ">battle-gen9randombattle-contract1\n|turn|1"
+          },
+          "expect": {
+            "phase": "outcomeUnknown",
+            "selectedRoom": null,
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "candidate-byte-overflow",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receive": ">battle-gen9randombattle-contract1\n|init|battle\n|player|p1|ExamplePlayer\n|player|p2|ExampleOpponent\n|gametype|singles\n|gen|9\n|tier|[Gen 9] Random Battle\n|start",
+          "expect": {
+            "phase": "awaitingBattle"
+          }
+        },
+        {
+          "receiveGenerated": {
+            "roomId": "battle-gen9randombattle-contract1",
+            "event": "|message|",
+            "character": "x",
+            "count": 262145
+          },
+          "expect": {
+            "phase": "outcomeUnknown",
+            "selectedRoom": null,
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "candidate-timeout",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receive": ">battle-gen9randombattle-contract1\n|init|battle\n|player|p1|ExamplePlayer\n|player|p2|ExampleOpponent\n|gametype|singles\n|gen|9\n|tier|[Gen 9] Random Battle\n|start",
+          "expect": {
+            "phase": "awaitingBattle"
+          }
+        },
+        {
+          "action": "timeout",
+          "expect": {
+            "phase": "outcomeUnknown",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "send-utm-fails",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "failSendIndex": 1,
+          "expect": {
+            "phase": "outcomeUnknown",
+            "send": [
+              "|/utm null"
+            ],
+            "canStart": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "send-search-uncertain",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "failSendIndex": 2,
+          "expect": {
+            "phase": "outcomeUnknown",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "action": "start",
+          "expect": {
+            "phase": "outcomeUnknown",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "stale-callback",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "captureStart": "old"
+        },
+        {
+          "receiveFixture": "external-search",
+          "expect": {
+            "phase": "unavailable"
+          }
+        },
+        {
+          "submitCaptured": "old",
+          "expect": {
+            "phase": "unavailable",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "queued-update-before-click",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "enqueueFixture": "external-search"
+        },
+        {
+          "action": "start",
+          "expect": {
+            "phase": "unavailable",
+            "send": []
+          }
+        },
+        {
+          "drainUpdates": true,
+          "expect": {
+            "phase": "unavailable",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "manual-room-reservation",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "reserveManualJoin": "battle-manual",
+          "expect": {
+            "phase": "unavailable"
+          }
+        },
+        {
+          "action": "start",
+          "expect": {
+            "phase": "unavailable",
+            "send": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "unsupported-battle-still-found",
+      "initial": {
+        "epoch": 1,
+        "identity": "exampleplayer",
+        "identityConfirmed": true,
+        "experimentalEnabled": true,
+        "catalogFixture": "catalog",
+        "searchFixture": "baseline",
+        "selectedRoom": null,
+        "phase": "idle"
+      },
+      "steps": [
+        {
+          "action": "start",
+          "expect": {
+            "phase": "submitting",
+            "send": [
+              "|/utm null",
+              "|/search gen9randombattle"
+            ],
+            "canStart": false
+          }
+        },
+        {
+          "receiveFixture": "found",
+          "expect": {
+            "phase": "awaitingBattle"
+          }
+        },
+        {
+          "receive": ">battle-gen9randombattle-contract1\n|init|battle\n|player|p1|ExamplePlayer\n|player|p2|ExampleOpponent\n|gametype|singles\n|gen|9\n|tier|[Gen 9] Random Battle\n|start",
+          "expect": {
+            "phase": "inBattle",
+            "selectedRoom": "battle-gen9randombattle-contract1",
+            "send": [],
+            "battleContexts": 1
+          }
+        },
+        {
+          "receive": ">battle-gen9randombattle-contract1\n|-transform|p1a: Example|p2a: Other",
+          "expect": {
+            "phase": "inBattle",
+            "battleChoicesBlocked": true,
+            "send": []
+          }
+        }
+      ]
+    }
+  ]
+}

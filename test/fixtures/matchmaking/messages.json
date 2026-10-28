@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "provenance": "handwritten synthetic specification; not captured traffic",
+  "cases": [
+    {
+      "id": "catalog",
+      "kind": "formats",
+      "wire": "|formats|,1|S/V Singles|[Gen 9] Random Battle,4f|[Gen 9] OU,e",
+      "expect": {
+        "classification": "valid",
+        "target": {
+          "id": "gen9randombattle",
+          "flags": 79,
+          "preset": true,
+          "searchShow": true,
+          "bestOfDefault": true,
+          "experimentalEligible": true
+        }
+      }
+    },
+    {
+      "id": "local-ladder",
+      "kind": "formats",
+      "wire": "|formats|,LL|,1|Singles|[Gen 9] Random Battle,4f",
+      "expect": {
+        "classification": "valid",
+        "localLadder": true
+      }
+    },
+    {
+      "id": "no-search",
+      "kind": "formats",
+      "wire": "|formats|,1|Singles|[Gen 9] Random Battle,4d",
+      "expect": {
+        "classification": "valid",
+        "target": {
+          "searchShow": false,
+          "experimentalEligible": false
+        }
+      }
+    },
+    {
+      "id": "no-preset",
+      "kind": "formats",
+      "wire": "|formats|,1|Singles|[Gen 9] Random Battle,4e",
+      "expect": {
+        "classification": "valid",
+        "target": {
+          "preset": false,
+          "experimentalEligible": false
+        }
+      }
+    },
+    {
+      "id": "missing-target",
+      "kind": "formats",
+      "wire": "|formats|,1|Singles|[Gen 9] OU,e",
+      "expect": {
+        "classification": "valid",
+        "target": null
+      }
+    },
+    {
+      "id": "empty-catalog",
+      "kind": "formats",
+      "wire": "|formats",
+      "expect": {
+        "classification": "valid",
+        "target": null
+      }
+    },
+    {
+      "id": "unknown-flags",
+      "kind": "formats",
+      "wire": "|formats|,1|Singles|[Gen 9] Random Battle,24f",
+      "expect": {
+        "classification": "valid",
+        "target": {
+          "flags": 591,
+          "unsupported": true,
+          "experimentalEligible": false
+        }
+      }
+    },
+    {
+      "id": "partner-flag",
+      "kind": "formats",
+      "wire": "|formats|,1|Singles|[Gen 9] Random Battle,6f",
+      "expect": {
+        "classification": "valid",
+        "target": {
+          "unsupported": true,
+          "experimentalEligible": false
+        }
+      }
+    },
+    {
+      "id": "legacy-preset",
+      "kind": "formats",
+      "wire": "|formats|,1|Singles|[Gen 9] Random Battle,#",
+      "expect": {
+        "classification": "legacyUnsupported",
+        "experimentalEligible": false
+      }
+    },
+    {
+      "id": "legacy-search-only",
+      "kind": "formats",
+      "wire": "|formats|,1|Singles|[Gen 9] Random Battle,,",
+      "expect": {
+        "classification": "legacyUnsupported",
+        "experimentalEligible": false
+      }
+    },
+    {
+      "id": "legacy-challenge-only",
+      "kind": "formats",
+      "wire": "|formats|,1|Singles|[Gen 9] Random Battle,",
+      "expect": {
+        "classification": "legacyUnsupported",
+        "experimentalEligible": false
+      }
+    },
+    {
+      "id": "legacy-no-flags",
+      "kind": "formats",
+      "wire": "|formats|,1|Singles|[Gen 9] Random Battle",
+      "expect": {
+        "classification": "legacyUnsupported",
+        "experimentalEligible": false
+      }
+    },
+    {
+      "id": "bad-flags",
+      "kind": "formats",
+      "wire": "|formats|,1|Singles|[Gen 9] Random Battle,4g",
+      "expect": {
+        "classification": "malformed"
+      }
+    },
+    {
+      "id": "duplicate-id",
+      "kind": "formats",
+      "wire": "|formats|,1|Singles|[Gen 9] Random Battle,4f|gen9randombattle,4f",
+      "expect": {
+        "classification": "malformed"
+      }
+    },
+    {
+      "id": "dangling-section",
+      "kind": "formats",
+      "wire": "|formats|,1",
+      "expect": {
+        "classification": "malformed"
+      }
+    },
+    {
+      "id": "empty-name",
+      "kind": "formats",
+      "wire": "|formats|,1|Singles|,4f",
+      "expect": {
+        "classification": "malformed"
+      }
+    },
+    {
+      "id": "room-catalog",
+      "kind": "formats",
+      "wire": ">battle-other\n|formats|,1|Singles|[Gen 9] Random Battle,4f",
+      "expect": {
+        "classification": "wrongScope"
+      }
+    },
+    {
+      "id": "baseline",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|{\"searching\":[],\"games\":null}",
+      "expect": {
+        "classification": "valid",
+        "searching": [],
+        "games": null
+      }
+    },
+    {
+      "id": "queued",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|{\"searching\":[\"gen9randombattle\"],\"games\":null}",
+      "expect": {
+        "classification": "valid",
+        "searching": [
+          "gen9randombattle"
+        ],
+        "games": null
+      }
+    },
+    {
+      "id": "found",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|{\"searching\":[],\"games\":{\"battle-gen9randombattle-contract1\":\"ExamplePlayer vs. ExampleOpponent*\"}}",
+      "expect": {
+        "classification": "valid",
+        "searching": [],
+        "games": {
+          "battle-gen9randombattle-contract1": "ExamplePlayer vs. ExampleOpponent*"
+        }
+      }
+    },
+    {
+      "id": "empty-games",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|{\"searching\":[],\"games\":{}}",
+      "expect": {
+        "classification": "valid",
+        "searching": [],
+        "games": {}
+      }
+    },
+    {
+      "id": "external-search",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|{\"searching\":[\"gen9ou\"],\"games\":null}",
+      "expect": {
+        "classification": "valid",
+        "searching": [
+          "gen9ou"
+        ],
+        "games": null
+      }
+    },
+    {
+      "id": "other-game",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|{\"searching\":[],\"games\":{\"mafia\":\"Example game\"}}",
+      "expect": {
+        "classification": "valid",
+        "searching": [],
+        "games": {
+          "mafia": "Example game"
+        }
+      }
+    },
+    {
+      "id": "two-games",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|{\"searching\":[],\"games\":{\"battle-gen9randombattle-contract1\":\"One\",\"battle-gen9randombattle-contract2\":\"Two\"}}",
+      "expect": {
+        "classification": "valid",
+        "searching": [],
+        "games": {
+          "battle-gen9randombattle-contract1": "One",
+          "battle-gen9randombattle-contract2": "Two"
+        }
+      }
+    },
+    {
+      "id": "extension",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|{\"searching\":[],\"games\":null,\"futureField\":true}",
+      "expect": {
+        "classification": "valid",
+        "searching": [],
+        "games": null
+      }
+    },
+    {
+      "id": "missing-games",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|{\"searching\":[]}",
+      "expect": {
+        "classification": "malformed"
+      }
+    },
+    {
+      "id": "bad-searching",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|{\"searching\":\"gen9randombattle\",\"games\":null}",
+      "expect": {
+        "classification": "malformed"
+      }
+    },
+    {
+      "id": "bad-games",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|{\"searching\":[],\"games\":[]}",
+      "expect": {
+        "classification": "malformed"
+      }
+    },
+    {
+      "id": "bad-title",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|{\"searching\":[],\"games\":{\"battle-example\":4}}",
+      "expect": {
+        "classification": "malformed"
+      }
+    },
+    {
+      "id": "duplicate-search",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|{\"searching\":[\"gen9randombattle\",\"gen9randombattle\"],\"games\":null}",
+      "expect": {
+        "classification": "malformed"
+      }
+    },
+    {
+      "id": "bad-id",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|{\"searching\":[\"Gen 9 Random Battle\"],\"games\":null}",
+      "expect": {
+        "classification": "malformed"
+      }
+    },
+    {
+      "id": "null-search",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|null",
+      "expect": {
+        "classification": "malformed"
+      }
+    },
+    {
+      "id": "broken-json",
+      "kind": "updatesearch",
+      "wire": "|updatesearch|{",
+      "expect": {
+        "classification": "malformed"
+      }
+    },
+    {
+      "id": "room-search",
+      "kind": "updatesearch",
+      "wire": ">battle-other\n|updatesearch|{\"searching\":[],\"games\":null}",
+      "expect": {
+        "classification": "wrongScope"
+      }
+    }
+  ]
+}

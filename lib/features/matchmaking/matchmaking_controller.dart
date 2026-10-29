@@ -317,6 +317,8 @@ final class MatchmakingController {
     final attempt = _attempt;
     if (attempt == null) {
       _set(canStart ? MatchmakingPhase.idle : MatchmakingPhase.unavailable);
+      // Availability reasons and the opt-in may change without a phase change.
+      _changes.add(_state);
       return;
     }
     if (!_sameIdentity(attempt) || !rooms.ownsSearch(attempt.reservation)) {

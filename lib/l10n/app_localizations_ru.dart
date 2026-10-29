@@ -411,4 +411,141 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get battleLogEmpty => 'Действий пока нет.';
+
+  @override
+  String get matchmakingHeading => 'Поиск боя';
+
+  @override
+  String get matchmakingFormat => 'Случайный бой 9-го поколения';
+
+  @override
+  String get matchmakingExperimental => 'Включить экспериментальные бои';
+
+  @override
+  String get matchmakingExperimentalHint =>
+      'Некоторые механики боя ещё не поддержаны. Вы можете оказаться без возможности сделать ход.';
+
+  @override
+  String get matchmakingRatedHint =>
+      'Рейтинговый поиск; сервер может отключить начисление рейтинга.';
+
+  @override
+  String get matchmakingAccountHint =>
+      'Отмена затрагивает этот формат и в других клиентах того же аккаунта.';
+
+  @override
+  String get matchmakingStart => 'Найти соперника';
+
+  @override
+  String get matchmakingCancel => 'Отменить поиск';
+
+  @override
+  String get matchmakingRecover => 'Отключиться для восстановления';
+
+  @override
+  String get matchmakingRecoveryHint =>
+      'Отключитесь, затем подключитесь и войдите в аккаунт для повторной проверки. Отключение не отменяет поиск на сервере.';
+
+  @override
+  String get matchmakingUnavailable => 'Поиск пока недоступен.';
+
+  @override
+  String get matchmakingIdle => 'Можно начать поиск соперника.';
+
+  @override
+  String get matchmakingSubmitting => 'Запускаем поиск; ждём ответа сервера.';
+
+  @override
+  String get matchmakingSearching => 'Ищем соперника…';
+
+  @override
+  String get matchmakingCancelling => 'Отмена запрошена; ждём результата.';
+
+  @override
+  String get matchmakingStoppedObserved =>
+      'В последнем ответе поиска нет. Проверяем, не создаётся ли бой.';
+
+  @override
+  String get matchmakingAwaitingBattle =>
+      'Возможный бой найден. Ждём подтверждения.';
+
+  @override
+  String get matchmakingInBattle => 'Бой найден. Он показан ниже.';
+
+  @override
+  String get matchmakingOutcomeUnknown =>
+      'Результат поиска неизвестен. Новый поиск заблокирован.';
+
+  @override
+  String get matchmakingDisconnected => 'Подключитесь к серверу для поиска.';
+
+  @override
+  String get matchmakingNeedAccount => 'Войдите в существующий аккаунт выше.';
+
+  @override
+  String get matchmakingNeedExperimental =>
+      'Для продолжения включите экспериментальные бои.';
+
+  @override
+  String get matchmakingNeedData =>
+      'Ждём актуальные сведения об аккаунте и сервере.';
+
+  @override
+  String get matchmakingRoomBusy =>
+      'Перед поиском завершите работу с текущей комнатой.';
+
+  @override
+  String get matchmakingExternalSearch =>
+      'На аккаунте уже есть поиск. Проверьте другие клиенты.';
+
+  @override
+  String get matchmakingExistingGame =>
+      'На аккаунте уже есть игра. Завершите её перед поиском.';
+
+  @override
+  String get matchmakingMalformedCatalog =>
+      'Сервер прислал повреждённый список форматов. Поиск недоступен.';
+
+  @override
+  String get matchmakingLegacyCatalog =>
+      'Сервер использует неподдерживаемый список форматов.';
+
+  @override
+  String get matchmakingNotAdvertised =>
+      'На этом сервере нет случайного боя 9-го поколения.';
+
+  @override
+  String get matchmakingUnsupportedFormat => 'Этот формат боя не поддержан.';
+
+  @override
+  String get matchmakingUnsupportedFlags =>
+      'Настройки этого формата на сервере не поддержаны.';
+
+  @override
+  String get matchmakingSearchDisabled =>
+      'Сервер отключил поиск для этого формата.';
+
+  @override
+  String get matchmakingTeamRequired =>
+      'Для формата нужна команда; её выбор пока не поддержан.';
+
+  @override
+  String get matchmakingServerNotice =>
+      'Сервер прислал уведомление. Оно не подтверждает завершение поиска.';
+
+  @override
+  String get matchmakingSendFailed =>
+      'Не удалось надёжно отправить команду. Результат на сервере неизвестен.';
+
+  @override
+  String get matchmakingTimeout =>
+      'Время ожидания истекло без подтверждённого результата.';
+
+  @override
+  String get matchmakingConflict =>
+      'Сведения об аккаунте или бое неожиданно изменились.';
+
+  @override
+  String get matchmakingInvalidSnapshot =>
+      'Сервер прислал повреждённые сведения о поиске.';
 }

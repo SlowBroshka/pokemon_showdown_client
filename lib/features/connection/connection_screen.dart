@@ -4,15 +4,26 @@ import '../../core/transport/transport_status.dart';
 import '../../core/auth/auth_controller.dart';
 import '../auth/auth_panel.dart';
 import '../battle/battle_panel.dart';
+import '../matchmaking/matchmaking_controller.dart';
+import '../matchmaking/matchmaking_panel.dart';
 import 'connection_controller.dart';
 import '../../l10n/app_localizations.dart';
 import 'connection_message_localization.dart';
 
 class ConnectionScreen extends StatefulWidget {
-  const ConnectionScreen({super.key, this.controller, this.authController})
-    : assert(authController == null || controller != null);
+  const ConnectionScreen({
+    super.key,
+    this.controller,
+    this.authController,
+    this.matchmakingController,
+  }) : assert(authController == null || controller != null),
+       assert(
+         matchmakingController == null ||
+             (controller != null && authController != null),
+       );
   final ConnectionController? controller;
   final AuthController? authController;
+  final MatchmakingController? matchmakingController;
 
   @override
   State<ConnectionScreen> createState() => _ConnectionScreenState();
@@ -126,6 +137,13 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                     if (widget.authController != null) ...[
                       AuthPanel(
                         controller: widget.authController!,
+                        onDisconnect: _controller.disconnect,
+                      ),
+                      const Divider(height: 32),
+                    ],
+                    if (widget.matchmakingController != null) ...[
+                      MatchmakingPanel(
+                        controller: widget.matchmakingController!,
                         onDisconnect: _controller.disconnect,
                       ),
                       const Divider(height: 32),

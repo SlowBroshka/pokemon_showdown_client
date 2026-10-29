@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import '../matchmaking/search/search_snapshot_decoder.dart';
+import 'events/update_search_event.dart';
+
 import '../matchmaking/formats/format_catalog_decoder.dart';
 import 'events/formats_event.dart';
 
@@ -38,6 +41,7 @@ export 'server_event.dart';
 export 'battle_event_decoder.dart';
 export 'events/battle_request_event.dart';
 export 'events/formats_event.dart';
+export 'events/update_search_event.dart';
 
 /// Decodes one record without network access, state changes or rendering.
 /// Empty lines return null. Unsupported events and malformed records are explicit
@@ -63,6 +67,14 @@ ServerEvent? decodeServerRecord(ServerRecord record) {
   final battleEvent = decodeBattleEvent(record);
   if (battleEvent != null) return battleEvent;
   switch (type) {
+    case 'updatesearch':
+      if (record.roomId != null) {
+        return MalformedServerEvent(
+          record,
+          reason: 'Update search must be global',
+        );
+      }
+      return UpdateSearchEvent(record, result: decodeSearchSnapshot(data));
     case 'formats':
       if (record.roomId != null) {
         return MalformedServerEvent(record, reason: 'Formats must be global');

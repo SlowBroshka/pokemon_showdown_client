@@ -22,3 +22,10 @@ void validateCommandRoomId(String roomId) {
     throw ArgumentError('Invalid roomId');
   }
 }
+
+/// Current outgoing matchmaking scope; incoming snapshots may contain any ID.
+void validateSearchFormatId(String formatId) {
+  if (formatId != 'gen9randombattle') {
+    throw ArgumentError('Unsupported search formatId');
+  }
+}

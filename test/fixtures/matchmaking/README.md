@@ -74,7 +74,8 @@ baseline должен быть доставлен до начала шагов; 
 что 34 сценария поиска прошли тесты приложения.
 
 PR 2 подключил все 17 formats cases к реальному декодеру/фильтру в
-`test/core/matchmaking/format_catalog_test.dart`; PR 3 — updatesearch и команды;
+`test/core/matchmaking/format_catalog_test.dart`; PR 3 подключил все 17 updatesearch cases к реальному декодеру в
+`test/core/matchmaking/search_protocol_test.dart` и проверяет команды/сессию;
 PR 4–5 — последовательности для настоящего владельца комнаты и контроллера;
 PR 6 — widget-проверки обеих локалей; PR 7 — проверку на полном локальном сервере.
 Нельзя реализовать тест чтением expect и сравнением его с самим собой.

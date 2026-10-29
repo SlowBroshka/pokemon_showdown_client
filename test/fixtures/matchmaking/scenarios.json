@@ -593,7 +593,7 @@
         {
           "receiveFixture": "broken-json",
           "expect": {
-            "phase": "cancelling",
+            "phase": "outcomeUnknown",
             "notice": "invalidSearchSnapshot"
           }
         },

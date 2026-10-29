@@ -14,6 +14,9 @@ final class FormatCatalogController {
   }
 
   final ShowdownSession _session;
+
+  /// Shared session identity for composition checks; ownership stays unchanged.
+  ShowdownSession get session => _session;
   late final StreamSubscription<SessionUpdate> _subscription;
   final _changes = StreamController<void>.broadcast();
   FormatCatalog? _catalog;

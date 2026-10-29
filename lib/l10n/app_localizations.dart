@@ -763,6 +763,234 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No actions yet.'**
   String get battleLogEmpty;
+
+  /// Matchmaking panel: Heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a battle'**
+  String get matchmakingHeading;
+
+  /// Matchmaking panel: Format.
+  ///
+  /// In en, this message translates to:
+  /// **'Gen 9 Random Battle'**
+  String get matchmakingFormat;
+
+  /// Matchmaking panel: Experimental.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable experimental battles'**
+  String get matchmakingExperimental;
+
+  /// Matchmaking panel: ExperimentalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Some battle mechanics are not supported yet. You may be unable to make a move.'**
+  String get matchmakingExperimentalHint;
+
+  /// Matchmaking panel: RatedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Rated search; the server may disable rating changes.'**
+  String get matchmakingRatedHint;
+
+  /// Matchmaking panel: AccountHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelling affects this format in other clients signed in to the same account too.'**
+  String get matchmakingAccountHint;
+
+  /// Matchmaking panel: Start.
+  ///
+  /// In en, this message translates to:
+  /// **'Find opponent'**
+  String get matchmakingStart;
+
+  /// Matchmaking panel: Cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel search'**
+  String get matchmakingCancel;
+
+  /// Matchmaking panel: Recover.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect to recover'**
+  String get matchmakingRecover;
+
+  /// Matchmaking panel: RecoveryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect, then reconnect and sign in to check the account again. Disconnecting does not cancel a search on the server.'**
+  String get matchmakingRecoveryHint;
+
+  /// Matchmaking panel: Unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Search is not available yet.'**
+  String get matchmakingUnavailable;
+
+  /// Matchmaking panel: Idle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to find an opponent.'**
+  String get matchmakingIdle;
+
+  /// Matchmaking panel: Submitting.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting search; waiting for the server.'**
+  String get matchmakingSubmitting;
+
+  /// Matchmaking panel: Searching.
+  ///
+  /// In en, this message translates to:
+  /// **'Looking for an opponent…'**
+  String get matchmakingSearching;
+
+  /// Matchmaking panel: Cancelling.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancellation requested; waiting for the outcome.'**
+  String get matchmakingCancelling;
+
+  /// Matchmaking panel: StoppedObserved.
+  ///
+  /// In en, this message translates to:
+  /// **'No search in the latest update. Checking whether a battle is being created.'**
+  String get matchmakingStoppedObserved;
+
+  /// Matchmaking panel: AwaitingBattle.
+  ///
+  /// In en, this message translates to:
+  /// **'A possible battle was found. Waiting for confirmation.'**
+  String get matchmakingAwaitingBattle;
+
+  /// Matchmaking panel: InBattle.
+  ///
+  /// In en, this message translates to:
+  /// **'Battle found. Your battle is shown below.'**
+  String get matchmakingInBattle;
+
+  /// Matchmaking panel: OutcomeUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'The search outcome is unknown. Starting another search is blocked.'**
+  String get matchmakingOutcomeUnknown;
+
+  /// Matchmaking panel: Disconnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to a server to search.'**
+  String get matchmakingDisconnected;
+
+  /// Matchmaking panel: NeedAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to an existing account above.'**
+  String get matchmakingNeedAccount;
+
+  /// Matchmaking panel: NeedExperimental.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable experimental battles to continue.'**
+  String get matchmakingNeedExperimental;
+
+  /// Matchmaking panel: NeedData.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for up-to-date account and server information.'**
+  String get matchmakingNeedData;
+
+  /// Matchmaking panel: RoomBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish the current room operation before searching.'**
+  String get matchmakingRoomBusy;
+
+  /// Matchmaking panel: ExternalSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'This account already has a search. Check your other clients.'**
+  String get matchmakingExternalSearch;
+
+  /// Matchmaking panel: ExistingGame.
+  ///
+  /// In en, this message translates to:
+  /// **'This account already has a game. Finish it before searching.'**
+  String get matchmakingExistingGame;
+
+  /// Matchmaking panel: MalformedCatalog.
+  ///
+  /// In en, this message translates to:
+  /// **'The server sent an unreadable format list. Search is unavailable.'**
+  String get matchmakingMalformedCatalog;
+
+  /// Matchmaking panel: LegacyCatalog.
+  ///
+  /// In en, this message translates to:
+  /// **'This server uses an unsupported format list.'**
+  String get matchmakingLegacyCatalog;
+
+  /// Matchmaking panel: NotAdvertised.
+  ///
+  /// In en, this message translates to:
+  /// **'This server does not offer Gen 9 Random Battle.'**
+  String get matchmakingNotAdvertised;
+
+  /// Matchmaking panel: UnsupportedFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'This battle format is not supported.'**
+  String get matchmakingUnsupportedFormat;
+
+  /// Matchmaking panel: UnsupportedFlags.
+  ///
+  /// In en, this message translates to:
+  /// **'The server settings for this format are not supported.'**
+  String get matchmakingUnsupportedFlags;
+
+  /// Matchmaking panel: SearchDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'The server has disabled search for this format.'**
+  String get matchmakingSearchDisabled;
+
+  /// Matchmaking panel: TeamRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This format requires a team; team selection is not supported yet.'**
+  String get matchmakingTeamRequired;
+
+  /// Matchmaking panel: ServerNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'The server sent a notice. It does not confirm that the search has ended.'**
+  String get matchmakingServerNotice;
+
+  /// Matchmaking panel: SendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The command could not be sent reliably. The server outcome is unknown.'**
+  String get matchmakingSendFailed;
+
+  /// Matchmaking panel: Timeout.
+  ///
+  /// In en, this message translates to:
+  /// **'No conclusive response arrived in time.'**
+  String get matchmakingTimeout;
+
+  /// Matchmaking panel: Conflict.
+  ///
+  /// In en, this message translates to:
+  /// **'Account or battle information changed unexpectedly.'**
+  String get matchmakingConflict;
+
+  /// Matchmaking panel: InvalidSnapshot.
+  ///
+  /// In en, this message translates to:
+  /// **'The server sent unreadable search information.'**
+  String get matchmakingInvalidSnapshot;
 }
 
 class _AppLocalizationsDelegate

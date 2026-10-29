@@ -6,6 +6,7 @@ import 'core/session/showdown_session.dart';
 import 'core/matchmaking/formats/format_catalog_controller.dart';
 import 'core/auth/auth_controller.dart';
 import 'features/connection/connection_controller.dart';
+import 'features/matchmaking/matchmaking_controller.dart';
 
 import 'app_config.dart';
 import 'l10n/app_localizations.dart';
@@ -27,6 +28,7 @@ class _MyAppState extends State<MyApp> {
   late final AuthController _authController;
   late final FormatCatalogController _formatCatalog;
   late final ConnectionController _controller;
+  late final MatchmakingController _matchmaking;
 
   @override
   void initState() {
@@ -36,16 +38,23 @@ class _MyAppState extends State<MyApp> {
     _formatCatalog = FormatCatalogController(session: _session);
     _authController = AuthController(session: _session);
     _controller = ConnectionController(session: _session);
+    _matchmaking = MatchmakingController(
+      session: _session,
+      auth: _authController,
+      catalog: _formatCatalog,
+      rooms: _controller.rooms,
+    );
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     unawaited(_closeSession());
     super.dispose();
   }
 
   Future<void> _closeSession() async {
+    await _matchmaking.dispose();
+    _controller.dispose();
     await _formatCatalog.dispose();
     await _authController.dispose();
     await _controller.closed;
@@ -65,6 +74,7 @@ class _MyAppState extends State<MyApp> {
     home: ConnectionScreen(
       controller: _controller,
       authController: _authController,
+      matchmakingController: _matchmaking,
     ),
   );
 }

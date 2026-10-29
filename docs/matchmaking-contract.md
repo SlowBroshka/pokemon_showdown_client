@@ -4,7 +4,8 @@
 Задача: [#37](https://github.com/SlowBroshka/pokemon_showdown_client/issues/37).
 Статус: [каталог форматов и фильтр доступности](format-catalog.md) реализованы.
 [Команды и updatesearch](search-protocol.md), [владелец комнаты](matched-room-owner.md)
-и [контроллер поиска](matchmaking-controller.md) реализованы. UI поиска ещё не подключён.
+и [контроллер поиска](matchmaking-controller.md) реализованы. [UI RU/EN](matchmaking-ui.md)
+подключён в экспериментальном режиме; живая приёмка ещё не выполнена.
 
 ## План и границы PR
 

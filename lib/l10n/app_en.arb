@@ -540,5 +540,157 @@
   "battleLogEmpty": "No actions yet.",
   "@battleLogEmpty": {
     "description": "Battle panel: battleLogEmpty"
+  },
+  "matchmakingHeading": "Find a battle",
+  "@matchmakingHeading": {
+    "description": "Matchmaking panel: Heading."
+  },
+  "matchmakingFormat": "Gen 9 Random Battle",
+  "@matchmakingFormat": {
+    "description": "Matchmaking panel: Format."
+  },
+  "matchmakingExperimental": "Enable experimental battles",
+  "@matchmakingExperimental": {
+    "description": "Matchmaking panel: Experimental."
+  },
+  "matchmakingExperimentalHint": "Some battle mechanics are not supported yet. You may be unable to make a move.",
+  "@matchmakingExperimentalHint": {
+    "description": "Matchmaking panel: ExperimentalHint."
+  },
+  "matchmakingRatedHint": "Rated search; the server may disable rating changes.",
+  "@matchmakingRatedHint": {
+    "description": "Matchmaking panel: RatedHint."
+  },
+  "matchmakingAccountHint": "Cancelling affects this format in other clients signed in to the same account too.",
+  "@matchmakingAccountHint": {
+    "description": "Matchmaking panel: AccountHint."
+  },
+  "matchmakingStart": "Find opponent",
+  "@matchmakingStart": {
+    "description": "Matchmaking panel: Start."
+  },
+  "matchmakingCancel": "Cancel search",
+  "@matchmakingCancel": {
+    "description": "Matchmaking panel: Cancel."
+  },
+  "matchmakingRecover": "Disconnect to recover",
+  "@matchmakingRecover": {
+    "description": "Matchmaking panel: Recover."
+  },
+  "matchmakingRecoveryHint": "Disconnect, then reconnect and sign in to check the account again. Disconnecting does not cancel a search on the server.",
+  "@matchmakingRecoveryHint": {
+    "description": "Matchmaking panel: RecoveryHint."
+  },
+  "matchmakingUnavailable": "Search is not available yet.",
+  "@matchmakingUnavailable": {
+    "description": "Matchmaking panel: Unavailable."
+  },
+  "matchmakingIdle": "Ready to find an opponent.",
+  "@matchmakingIdle": {
+    "description": "Matchmaking panel: Idle."
+  },
+  "matchmakingSubmitting": "Starting search; waiting for the server.",
+  "@matchmakingSubmitting": {
+    "description": "Matchmaking panel: Submitting."
+  },
+  "matchmakingSearching": "Looking for an opponent…",
+  "@matchmakingSearching": {
+    "description": "Matchmaking panel: Searching."
+  },
+  "matchmakingCancelling": "Cancellation requested; waiting for the outcome.",
+  "@matchmakingCancelling": {
+    "description": "Matchmaking panel: Cancelling."
+  },
+  "matchmakingStoppedObserved": "No search in the latest update. Checking whether a battle is being created.",
+  "@matchmakingStoppedObserved": {
+    "description": "Matchmaking panel: StoppedObserved."
+  },
+  "matchmakingAwaitingBattle": "A possible battle was found. Waiting for confirmation.",
+  "@matchmakingAwaitingBattle": {
+    "description": "Matchmaking panel: AwaitingBattle."
+  },
+  "matchmakingInBattle": "Battle found. Your battle is shown below.",
+  "@matchmakingInBattle": {
+    "description": "Matchmaking panel: InBattle."
+  },
+  "matchmakingOutcomeUnknown": "The search outcome is unknown. Starting another search is blocked.",
+  "@matchmakingOutcomeUnknown": {
+    "description": "Matchmaking panel: OutcomeUnknown."
+  },
+  "matchmakingDisconnected": "Connect to a server to search.",
+  "@matchmakingDisconnected": {
+    "description": "Matchmaking panel: Disconnected."
+  },
+  "matchmakingNeedAccount": "Sign in to an existing account above.",
+  "@matchmakingNeedAccount": {
+    "description": "Matchmaking panel: NeedAccount."
+  },
+  "matchmakingNeedExperimental": "Enable experimental battles to continue.",
+  "@matchmakingNeedExperimental": {
+    "description": "Matchmaking panel: NeedExperimental."
+  },
+  "matchmakingNeedData": "Waiting for up-to-date account and server information.",
+  "@matchmakingNeedData": {
+    "description": "Matchmaking panel: NeedData."
+  },
+  "matchmakingRoomBusy": "Finish the current room operation before searching.",
+  "@matchmakingRoomBusy": {
+    "description": "Matchmaking panel: RoomBusy."
+  },
+  "matchmakingExternalSearch": "This account already has a search. Check your other clients.",
+  "@matchmakingExternalSearch": {
+    "description": "Matchmaking panel: ExternalSearch."
+  },
+  "matchmakingExistingGame": "This account already has a game. Finish it before searching.",
+  "@matchmakingExistingGame": {
+    "description": "Matchmaking panel: ExistingGame."
+  },
+  "matchmakingMalformedCatalog": "The server sent an unreadable format list. Search is unavailable.",
+  "@matchmakingMalformedCatalog": {
+    "description": "Matchmaking panel: MalformedCatalog."
+  },
+  "matchmakingLegacyCatalog": "This server uses an unsupported format list.",
+  "@matchmakingLegacyCatalog": {
+    "description": "Matchmaking panel: LegacyCatalog."
+  },
+  "matchmakingNotAdvertised": "This server does not offer Gen 9 Random Battle.",
+  "@matchmakingNotAdvertised": {
+    "description": "Matchmaking panel: NotAdvertised."
+  },
+  "matchmakingUnsupportedFormat": "This battle format is not supported.",
+  "@matchmakingUnsupportedFormat": {
+    "description": "Matchmaking panel: UnsupportedFormat."
+  },
+  "matchmakingUnsupportedFlags": "The server settings for this format are not supported.",
+  "@matchmakingUnsupportedFlags": {
+    "description": "Matchmaking panel: UnsupportedFlags."
+  },
+  "matchmakingSearchDisabled": "The server has disabled search for this format.",
+  "@matchmakingSearchDisabled": {
+    "description": "Matchmaking panel: SearchDisabled."
+  },
+  "matchmakingTeamRequired": "This format requires a team; team selection is not supported yet.",
+  "@matchmakingTeamRequired": {
+    "description": "Matchmaking panel: TeamRequired."
+  },
+  "matchmakingServerNotice": "The server sent a notice. It does not confirm that the search has ended.",
+  "@matchmakingServerNotice": {
+    "description": "Matchmaking panel: ServerNotice."
+  },
+  "matchmakingSendFailed": "The command could not be sent reliably. The server outcome is unknown.",
+  "@matchmakingSendFailed": {
+    "description": "Matchmaking panel: SendFailed."
+  },
+  "matchmakingTimeout": "No conclusive response arrived in time.",
+  "@matchmakingTimeout": {
+    "description": "Matchmaking panel: Timeout."
+  },
+  "matchmakingConflict": "Account or battle information changed unexpectedly.",
+  "@matchmakingConflict": {
+    "description": "Matchmaking panel: Conflict."
+  },
+  "matchmakingInvalidSnapshot": "The server sent unreadable search information.",
+  "@matchmakingInvalidSnapshot": {
+    "description": "Matchmaking panel: InvalidSnapshot."
   }
 }

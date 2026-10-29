@@ -414,4 +414,143 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get battleLogEmpty => 'No actions yet.';
+
+  @override
+  String get matchmakingHeading => 'Find a battle';
+
+  @override
+  String get matchmakingFormat => 'Gen 9 Random Battle';
+
+  @override
+  String get matchmakingExperimental => 'Enable experimental battles';
+
+  @override
+  String get matchmakingExperimentalHint =>
+      'Some battle mechanics are not supported yet. You may be unable to make a move.';
+
+  @override
+  String get matchmakingRatedHint =>
+      'Rated search; the server may disable rating changes.';
+
+  @override
+  String get matchmakingAccountHint =>
+      'Cancelling affects this format in other clients signed in to the same account too.';
+
+  @override
+  String get matchmakingStart => 'Find opponent';
+
+  @override
+  String get matchmakingCancel => 'Cancel search';
+
+  @override
+  String get matchmakingRecover => 'Disconnect to recover';
+
+  @override
+  String get matchmakingRecoveryHint =>
+      'Disconnect, then reconnect and sign in to check the account again. Disconnecting does not cancel a search on the server.';
+
+  @override
+  String get matchmakingUnavailable => 'Search is not available yet.';
+
+  @override
+  String get matchmakingIdle => 'Ready to find an opponent.';
+
+  @override
+  String get matchmakingSubmitting =>
+      'Starting search; waiting for the server.';
+
+  @override
+  String get matchmakingSearching => 'Looking for an opponent…';
+
+  @override
+  String get matchmakingCancelling =>
+      'Cancellation requested; waiting for the outcome.';
+
+  @override
+  String get matchmakingStoppedObserved =>
+      'No search in the latest update. Checking whether a battle is being created.';
+
+  @override
+  String get matchmakingAwaitingBattle =>
+      'A possible battle was found. Waiting for confirmation.';
+
+  @override
+  String get matchmakingInBattle => 'Battle found. Your battle is shown below.';
+
+  @override
+  String get matchmakingOutcomeUnknown =>
+      'The search outcome is unknown. Starting another search is blocked.';
+
+  @override
+  String get matchmakingDisconnected => 'Connect to a server to search.';
+
+  @override
+  String get matchmakingNeedAccount => 'Sign in to an existing account above.';
+
+  @override
+  String get matchmakingNeedExperimental =>
+      'Enable experimental battles to continue.';
+
+  @override
+  String get matchmakingNeedData =>
+      'Waiting for up-to-date account and server information.';
+
+  @override
+  String get matchmakingRoomBusy =>
+      'Finish the current room operation before searching.';
+
+  @override
+  String get matchmakingExternalSearch =>
+      'This account already has a search. Check your other clients.';
+
+  @override
+  String get matchmakingExistingGame =>
+      'This account already has a game. Finish it before searching.';
+
+  @override
+  String get matchmakingMalformedCatalog =>
+      'The server sent an unreadable format list. Search is unavailable.';
+
+  @override
+  String get matchmakingLegacyCatalog =>
+      'This server uses an unsupported format list.';
+
+  @override
+  String get matchmakingNotAdvertised =>
+      'This server does not offer Gen 9 Random Battle.';
+
+  @override
+  String get matchmakingUnsupportedFormat =>
+      'This battle format is not supported.';
+
+  @override
+  String get matchmakingUnsupportedFlags =>
+      'The server settings for this format are not supported.';
+
+  @override
+  String get matchmakingSearchDisabled =>
+      'The server has disabled search for this format.';
+
+  @override
+  String get matchmakingTeamRequired =>
+      'This format requires a team; team selection is not supported yet.';
+
+  @override
+  String get matchmakingServerNotice =>
+      'The server sent a notice. It does not confirm that the search has ended.';
+
+  @override
+  String get matchmakingSendFailed =>
+      'The command could not be sent reliably. The server outcome is unknown.';
+
+  @override
+  String get matchmakingTimeout => 'No conclusive response arrived in time.';
+
+  @override
+  String get matchmakingConflict =>
+      'Account or battle information changed unexpectedly.';
+
+  @override
+  String get matchmakingInvalidSnapshot =>
+      'The server sent unreadable search information.';
 }

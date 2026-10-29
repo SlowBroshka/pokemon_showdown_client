@@ -7,10 +7,12 @@ final class FakeSocketSink implements WebSocketSink {
   final completed = Completer<void>();
   bool closed = false;
   bool failSend = false;
+  void Function(Object?)? onSend;
   bool hangOnClose = false;
 
   @override
   void add(dynamic data) {
+    onSend?.call(data);
     if (failSend) throw StateError('secret payload');
     sent.add(data);
   }

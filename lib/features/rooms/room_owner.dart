@@ -41,6 +41,9 @@ final class RoomOwner extends ChangeNotifier {
   }
 
   final ShowdownSession _session;
+
+  /// Shared session identity for composition checks; ownership stays unchanged.
+  ShowdownSession get session => _session;
   final Duration roomTimeout;
   final Duration handoffTimeout;
   final _battleUpdates = StreamController<SessionUpdate>.broadcast(sync: true);
@@ -107,6 +110,12 @@ final class RoomOwner extends ChangeNotifier {
     _changed();
     return _reservation;
   }
+
+  /// Whether a caller still owns this reservation in the active connection.
+  bool ownsSearch(Object token) =>
+      !_disposed &&
+      identical(token, _reservation) &&
+      _session.isCurrent(_reservationEpoch);
 
   /// Only for an unsent/definitively resolved search. Cancellation of a server
   /// search is NOT such proof. Stale tokens and candidates cannot release it.

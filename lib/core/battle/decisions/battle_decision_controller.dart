@@ -14,10 +14,13 @@ export 'captured_battle_choice.dart';
 
 /// One room in one connection epoch. Create before joining the room; no replay.
 /// Owns subscriptions only, never the shared session or its connection.
+/// An optional owner-provided updates stream replaces (not supplements) the
+/// session subscription and must preserve source epochs, order and sequences.
 final class BattleDecisionController {
   BattleDecisionController({
     required ShowdownSession session,
     required String roomId,
+    Stream<SessionUpdate>? updates,
     this.responseTimeout = const Duration(seconds: 30),
   }) : _session = session,
        _state = BattleState(
@@ -32,7 +35,10 @@ final class BattleDecisionController {
         'An active session and positive timeout are required',
       );
     }
-    _subscription = session.updates.listen(_receive, onDone: _invalidate);
+    _subscription = (updates ?? session.updates).listen(
+      _receive,
+      onDone: _invalidate,
+    );
   }
 
   final ShowdownSession _session;

@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import '../../core/auth/auth_controller.dart';
+import '../../core/auth/auth_user_id.dart';
+import '../../core/transport/showdown_endpoint.dart';
 import '../../core/matchmaking/formats/format_availability.dart';
 import '../../core/matchmaking/formats/format_catalog_controller.dart';
 import '../../core/protocol/client_commands.dart';
@@ -30,8 +32,17 @@ final class MatchmakingController {
     required this.catalog,
     required this.rooms,
     bool experimentalEnabled = false,
+    this.localTestUserId,
     this.responseTimeout = const Duration(seconds: 10),
   }) {
+    if (localTestUserId != null &&
+        (!localShowdownEnabled ||
+            !const bool.fromEnvironment('SHOWDOWN_MATCHMAKING_TEST') ||
+            authUserId(localTestUserId!) != localTestUserId)) {
+      throw ArgumentError(
+        'Local test identity requires an explicit development build',
+      );
+    }
     _experimentalEnabled = experimentalEnabled;
     if (!identical(auth.session, session) ||
         !identical(catalog.session, session) ||
@@ -48,6 +59,18 @@ final class MatchmakingController {
   }
 
   static const formatId = 'gen9randombattle';
+
+  /// Integration tests only; never supplied by MyApp or inferred from a server.
+  final String? localTestUserId;
+  AuthState? _localIdentity;
+  bool get _localEndpoint =>
+      localShowdownEnabled &&
+      session.endpoint?.scheme == 'ws' &&
+      isAllowedShowdownEndpoint(session.endpoint!);
+  AuthState get _identity => localTestUserId == null
+      ? auth.state
+      : (_localEndpoint ? _localIdentity : null) ??
+            const AuthState(AuthPhase.unavailable);
   final ShowdownSession session;
   final AuthController auth;
   final FormatCatalogController catalog;
@@ -87,7 +110,7 @@ final class MatchmakingController {
       _settled;
 
   bool get _authorized =>
-      auth.state.phase == AuthPhase.authenticated && auth.state.userId != null;
+      _identity.phase == AuthPhase.authenticated && _identity.userId != null;
 
   bool get _formatAvailable =>
       catalog.availability(
@@ -102,7 +125,7 @@ final class MatchmakingController {
         _attempt == null &&
         _fresh &&
         _authorized &&
-        identical(_baselineIdentity, auth.state) &&
+        identical(_baselineIdentity, _identity) &&
         _formatAvailable &&
         rooms.canJoin &&
         baseline != null &&
@@ -111,7 +134,7 @@ final class MatchmakingController {
   }
 
   MatchmakingStart? captureStart() =>
-      canStart ? MatchmakingStart._(this, _epoch, _seen, auth.state) : null;
+      canStart ? MatchmakingStart._(this, _epoch, _seen, _identity) : null;
 
   /// True means local acceptance, not a server ACK. False may include an
   /// ambiguous send failure: consult state and never retry automatically.
@@ -120,12 +143,12 @@ final class MatchmakingController {
         !canStart ||
         action._epoch != _epoch ||
         action._sequence != _seen ||
-        !identical(action._identity, auth.state)) {
+        !identical(action._identity, _identity)) {
       return false;
     }
     _starting = true;
     final reservation = rooms.reserveSearch(
-      userId: auth.state.userId!,
+      userId: _identity.userId!,
       connectionEpoch: _epoch,
       baseline: rooms.searchBaseline!,
     );
@@ -134,7 +157,7 @@ final class MatchmakingController {
       _refresh();
       return false;
     }
-    final attempt = _Attempt(_epoch, auth.state, reservation);
+    final attempt = _Attempt(_epoch, _identity, reservation);
     _attempt = attempt;
     _set(MatchmakingPhase.submitting);
     try {
@@ -170,7 +193,7 @@ final class MatchmakingController {
   bool _sameIdentity(_Attempt attempt) =>
       attempt.epoch == session.connectionEpoch &&
       _authorized &&
-      identical(attempt.identity, auth.state);
+      identical(attempt.identity, _identity);
 
   bool _readyToSend(_Attempt attempt) =>
       _fresh &&
@@ -260,9 +283,28 @@ final class MatchmakingController {
       return;
     }
     if (!session.isCurrent(update.connectionEpoch)) return;
+    if (localTestUserId != null &&
+        update.roomId == null &&
+        update.event is UpdateUserEvent) {
+      final event = update.event as UpdateUserEvent;
+      final full = event.user;
+      final name = full.isNotEmpty && !RegExp(r'^[a-zA-Z0-9]').hasMatch(full)
+          ? full.substring(1)
+          : full;
+      final id = event.named ? authUserId(name.split('@').first) : null;
+      if (!_localEndpoint || id != localTestUserId) {
+        _localIdentity = null;
+      } else {
+        _localIdentity ??= AuthState(
+          AuthPhase.authenticated,
+          userId: id,
+          username: name,
+        );
+      }
+    }
     if (update.roomId == null && update.event is UpdateSearchEvent) {
       final snapshot = (update.event as UpdateSearchEvent).result.snapshot;
-      _baselineIdentity = snapshot != null && _authorized ? auth.state : null;
+      _baselineIdentity = snapshot != null && _authorized ? _identity : null;
     }
     final attempt = _attempt;
     if (attempt == null) {
@@ -389,6 +431,7 @@ final class MatchmakingController {
     _responseTimer = null;
     _attempt = null;
     _baselineIdentity = null;
+    _localIdentity = null;
     _state = const MatchmakingState(MatchmakingPhase.disconnected);
   }
 

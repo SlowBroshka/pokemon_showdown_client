@@ -5,7 +5,8 @@
 Статус: [каталог форматов и фильтр доступности](format-catalog.md) реализованы.
 [Команды и updatesearch](search-protocol.md), [владелец комнаты](matched-room-owner.md)
 и [контроллер поиска](matchmaking-controller.md) реализованы. [UI RU/EN](matchmaking-ui.md)
-подключён в экспериментальном режиме; живая приёмка ещё не выполнена.
+подключён в экспериментальном режиме; [локальная приёмка](matchmaking-acceptance.md)
+описывает полный сервер, Android/Linux и оставшиеся ограничения.
 
 ## План и границы PR
 

@@ -9,21 +9,27 @@
       "events": [
         "switch",
         "drag",
-        "faint",
-        "-cureteam"
+        "faint"
       ],
       "ownerPr": 2,
       "current": "partial",
-      "target": "Persist revealed participants without identifying by nickname; retain public/private separation and ambiguous identity.",
+      "target": "Public appearances, historical snapshots and unresolved identity matches are implemented in PR2. Private active references are revision-scoped. Unique-member reconciliation across Illusion/forms remains PR6. Inactive Gen9 cures are evidence, never nickname-based mutation.",
       "reachability": "in-scope",
       "sources": [
+        "sim/SIM-PROTOCOL.md",
         "sim/pokemon.ts",
-        "sim/SIM-PROTOCOL.md"
+        "data/moves.ts"
       ],
       "scenarios": [
-        "identity",
         "voluntary-switch",
-        "forced-switch"
+        "forced-switch",
+        "roster-return",
+        "roster-same-nickname",
+        "roster-bench-cure",
+        "roster-ambiguous-and-unseen-cure",
+        "roster-private-reference",
+        "roster-log-identity",
+        "roster-disconnect"
       ]
     },
     {
@@ -377,18 +383,20 @@
         "-candynamax",
         "-center",
         "-combine",
-        "-waiting"
+        "-waiting",
+        "-cureteam"
       ],
       "ownerPr": 9,
       "current": "blocked",
-      "target": "Keep unsupported modes guarded; audit any reuse of a token before classifying as harmless.",
+      "target": "Keep unsupported modes guarded; audit any reuse of a token before classifying as harmless. Legacy -cureteam is emitted by Gen2/Gen4 overrides, not base Gen9 Heal Bell: keep guarded. Gen9 uses per-target -curestatus; -activate remains PR5.",
       "reachability": "out-of-scope",
       "sources": [
         "config/formats.ts",
         "sim/SIM-PROTOCOL.md"
       ],
       "scenarios": [
-        "unknown-request-mode"
+        "unknown-request-mode",
+        "identity"
       ]
     },
     {
@@ -568,7 +576,7 @@
     "Close reachability over generated items, copied/called moves, forms, rules and effect parameters; pool presence is not an observed legal battle.",
     "Verify Gen9 overrides and server-side room messages beyond the nine scanned emitter files.",
     "Enumerate all -activate/-start/-end subtypes and annotation variants before enabling public compatibility.",
-    "Define participant identity and observations retained across Illusion, Transform, switch and revival in PR2/6.",
+    "PR2 retains bounded public appearances and explicitly unresolved identity. Resolve Illusion/Transform and revival interactions in PR6/7 without treating appearance count as team size.",
     "Full Random Battle completion, reconnect, timer/surrender and complete game vocabulary are not certified here."
   ]
 }

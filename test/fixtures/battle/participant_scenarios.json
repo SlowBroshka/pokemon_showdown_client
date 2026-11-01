@@ -1,0 +1,316 @@
+{
+  "schemaVersion": 1,
+  "provenance": "Synthetic public-appearance and private-snapshot scenarios; appearances are not unique team members.",
+  "cases": [
+    {
+      "id": "roster-return",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "expect": {
+            "appearanceIds": [
+              1,
+              2
+            ],
+            "activeAppearanceIds": {
+              "p1": 1,
+              "p2": 2
+            }
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-damage|p1a: Alpha|40/100 par"
+        },
+        {
+          "receive": ">battle-contract-1\n|switch|p1a: Beta|Snorlax, L80, M|100/100"
+        },
+        {
+          "expect": {
+            "appearanceHp": [
+              40,
+              100,
+              100
+            ],
+            "appearanceStatuses": [
+              "par",
+              null,
+              null
+            ],
+            "activeAppearanceIds": {
+              "p1": 3,
+              "p2": 2
+            }
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|switch|p1a: Alpha|Pikachu, L80, M|80/100"
+        },
+        {
+          "expect": {
+            "appearanceIds": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "appearanceHp": [
+              40,
+              100,
+              100,
+              80
+            ],
+            "presentationMatches": [
+              [],
+              [],
+              [],
+              [
+                1
+              ]
+            ],
+            "activeAppearanceIds": {
+              "p1": 4,
+              "p2": 2
+            },
+            "unsupported": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "roster-same-nickname",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "receive": ">battle-contract-1\n|drag|p1a: Alpha|Snorlax, L80, M|90/100"
+        },
+        {
+          "expect": {
+            "presentationMatches": [
+              [],
+              [],
+              []
+            ]
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|switch|p1a: Alpha|Pikachu, L80, M|80/100"
+        },
+        {
+          "receive": ">battle-contract-1\n|switch|p1a: Alpha|Pikachu, L80, M|70/100"
+        },
+        {
+          "expect": {
+            "appearanceIds": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "presentationMatches": [
+              [],
+              [],
+              [],
+              [
+                1
+              ],
+              [
+                1,
+                4
+              ]
+            ],
+            "appearanceHp": [
+              100,
+              100,
+              90,
+              80,
+              70
+            ],
+            "unsupported": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "roster-bench-cure",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "receive": ">battle-contract-1\n|-status|p1a: Alpha|par\n|switch|p1a: Beta|Snorlax, L80, M|100/100"
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "receive": ">battle-contract-1\n|-curestatus|p1: Alpha|par|[msg]"
+        },
+        {
+          "expect": {
+            "benchStatusCandidates": [
+              [
+                1
+              ]
+            ],
+            "benchStatusIdents": [
+              "p1: Alpha"
+            ],
+            "appearanceStatuses": [
+              "par",
+              null,
+              null
+            ],
+            "canChoose": true,
+            "unsupported": false
+          }
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "send": "battle-contract-1|/choose move 1|7"
+          }
+        }
+      ]
+    },
+    {
+      "id": "roster-ambiguous-and-unseen-cure",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "receive": ">battle-contract-1\n|switch|p1a: Alpha|Snorlax, L80|100/100\n|switch|p1a: Beta|Ditto, L80|100/100"
+        },
+        {
+          "receive": ">battle-contract-1\n|-curestatus|p1: Alpha|slp\n|-curestatus|p2: Hidden|par"
+        },
+        {
+          "expect": {
+            "benchStatusCandidates": [
+              [
+                1,
+                3
+              ],
+              []
+            ],
+            "appearanceIds": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "activeAppearanceIds": {
+              "p1": 4,
+              "p2": 2
+            },
+            "unsupported": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "roster-private-reference",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "privateActiveSlot": 1,
+            "privateAppearanceId": 1,
+            "privateReferenceRevision": 1,
+            "appearanceHp": [
+              100,
+              100
+            ]
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|switch|p1a: Beta|Snorlax, L80, M|100/100"
+        },
+        {
+          "expect": {
+            "privateActiveSlot": null,
+            "privateAppearanceId": null
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "privateAppearanceId": 3,
+            "privateReferenceRevision": 2
+          }
+        },
+        {
+          "requestFixture": "clear"
+        },
+        {
+          "expect": {
+            "privateActiveSlot": null,
+            "privateAppearanceId": null,
+            "appearanceIds": [
+              1,
+              2,
+              3
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "roster-log-identity",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "receive": ">battle-contract-1\n|move|p1a: Alpha|Thunderbolt|p2a: Gamma\n|switch|p1a: Alpha|Snorlax, L80|100/100\n|cant|p1a: Alpha|slp"
+        },
+        {
+          "expect": {
+            "actorAppearanceIds": [
+              1,
+              3
+            ],
+            "appearanceIds": [
+              1,
+              2,
+              3
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "roster-disconnect",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "privateAppearanceId": 1
+          }
+        },
+        {
+          "disconnect": true
+        },
+        {
+          "expect": {
+            "stale": true,
+            "privateAppearanceId": null,
+            "appearanceIds": [
+              1,
+              2
+            ],
+            "canChoose": false
+          }
+        }
+      ]
+    }
+  ]
+}

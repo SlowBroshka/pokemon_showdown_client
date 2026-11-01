@@ -255,6 +255,29 @@ final class BattleScenarioRunner {
       'phase': _phase,
       'controllerPhase': _controller.phase.name,
       'turn': state.turn,
+      'appearanceIds': state.roster.appearances.keys.toList(),
+      'activeAppearanceIds': state.roster.activeIds,
+      'appearanceHp': [
+        for (final a in state.roster.appearances.values) a.pokemon.health.hp,
+      ],
+      'appearanceStatuses': [
+        for (final a in state.roster.appearances.values)
+          a.pokemon.health.status?.name,
+      ],
+      'presentationMatches': [
+        for (final a in state.roster.appearances.values) a.samePresentationIds,
+      ],
+      'benchStatusCandidates': [
+        for (final r in state.roster.benchStatuses) r.candidateAppearanceIds,
+      ],
+      'benchStatusIdents': [
+        for (final r in state.roster.benchStatuses) r.ident,
+      ],
+      'privateActiveSlot': state.privateActiveReference?.requestSlot,
+      'privateAppearanceId': state.privateActiveReference?.appearanceId,
+      'privateReferenceRevision': state.privateActiveReference?.requestRevision,
+      'actorAppearanceIds': [for (final e in state.log) e.actorAppearanceId],
+      'historyTruncated': state.roster.historyTruncated,
       'requestRevision': state.requestRevision,
       'moveSlots': state.request?.moveSlots ?? <int>[],
       'switchSlots': state.request?.switchSlots ?? <int>[],

@@ -5,6 +5,8 @@ import 'battle_player.dart';
 import 'battle_result.dart';
 import 'battle_log_entry.dart';
 import 'observed_pokemon.dart';
+import 'battle_roster.dart';
+import 'private_active_reference.dart';
 
 /// Projection of one room in one connection epoch. No network or UI ownership.
 final class BattleState {
@@ -25,11 +27,12 @@ final class BattleState {
     this.result,
     Map<String, BattlePlayer> players = const {},
     Map<String, int> teamSizes = const {},
-    Map<String, ObservedPokemon> active = const {},
+    BattleRoster? roster,
+    this.privateActiveReference,
     List<BattleLogEntry> log = const [],
   }) : players = Map.unmodifiable(players),
        teamSizes = Map.unmodifiable(teamSizes),
-       active = Map.unmodifiable(active),
+       roster = roster ?? BattleRoster.empty(),
        log = List.unmodifiable(log);
   final String roomId;
   final int connectionEpoch;
@@ -43,7 +46,9 @@ final class BattleState {
   final bool unsupported;
   final Map<String, BattlePlayer> players;
   final Map<String, int> teamSizes;
-  final Map<String, ObservedPokemon> active;
+  final BattleRoster roster;
+  Map<String, ObservedPokemon> get active => roster.active;
+  final PrivateActiveReference? privateActiveReference;
   final List<BattleLogEntry> log;
   final BattleRequest? request;
   final int requestRevision;
@@ -73,7 +78,9 @@ final class BattleState {
     BattleResult? result,
     Map<String, BattlePlayer>? players,
     Map<String, int>? teamSizes,
-    Map<String, ObservedPokemon>? active,
+    BattleRoster? roster,
+    PrivateActiveReference? privateActiveReference,
+    bool clearPrivateActiveReference = false,
     List<BattleLogEntry>? log,
   }) => BattleState(
     roomId: roomId,
@@ -92,7 +99,10 @@ final class BattleState {
     result: result ?? this.result,
     players: players ?? this.players,
     teamSizes: teamSizes ?? this.teamSizes,
-    active: active ?? this.active,
+    roster: roster ?? this.roster,
+    privateActiveReference: clearRequest || clearPrivateActiveReference
+        ? null
+        : privateActiveReference ?? this.privateActiveReference,
     log: log ?? this.log,
   );
 }

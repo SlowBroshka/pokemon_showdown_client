@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "provenance": "Synthetic ordered specifications; expected projections describe future implementation.",
+  "provenance": "Synthetic ordered specifications executed by battle_scenario_corpus_test.dart; not recorded battles.",
   "setups": {
     "initialized-battle": {
       "roomId": "battle-contract-1",
@@ -530,7 +530,7 @@
           "requestFixture": "move"
         },
         {
-          "receive": ">battle-contract-1\n|-boost|p1a: Alpha|atk|1"
+          "receive": ">battle-contract-1\n|-futuremechanic|p1a: Alpha|opaque"
         },
         {
           "expect": {
@@ -621,10 +621,11 @@
         {
           "expect": {
             "phase": "ready",
-            "htmlExecuted": false
+            "logCount": 0
           }
         }
-      ]
+      ],
+      "note": "Domain assertion only: decorative/HTML records do not enter the structured log. HTML rendering/execution requires separate widget tests."
     },
     {
       "id": "status-and-hp",

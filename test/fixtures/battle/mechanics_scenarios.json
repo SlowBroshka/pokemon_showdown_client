@@ -1,0 +1,1291 @@
+{
+  "schemaVersion": 1,
+  "provenance": "Current baseline/guard assertions, not successful implementation of target mechanics. Multi-event sequences after first unknown do NOT prove projection of later effects.",
+  "cases": [
+    {
+      "id": "identity",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-cureteam|p1a: Alpha"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "boosts-1",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-boost|p1a: Alpha|atk|2\n|-unboost|p1a: Alpha|atk|1\n|-clearboost|p1a: Alpha"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "boosts-2",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-setboost|p1a: Alpha|atk|6\n|-invertboost|p1a: Alpha\n|-clearnegativeboost|p1a: Alpha"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "boosts-3",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-swapboost|p1a: Alpha|p2a: Gamma|atk, def\n|-copyboost|p1a: Alpha|p2a: Gamma\n|-clearallboost"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "boosts-4",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-clearpositiveboost|p2a: Gamma|p1a: Alpha|move: Spectral Thief"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "volatiles-1",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-start|p1a: Alpha|Substitute\n|-end|p1a: Alpha|Substitute"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "volatiles-2",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-singleturn|p1a: Alpha|Protect\n|turn|2"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "volatiles-3",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-singlemove|p1a: Alpha|Destiny Bond\n|switch|p1a: Beta|Snorlax, L80|100/100"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "weather",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Gamma\n|-weather|RainDance|[upkeep]\n|-weather|none"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "field-1",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-fieldstart|move: Trick Room|[of] p1a: Alpha\n|-fieldend|move: Trick Room"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "field-2",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-fieldstart|move: Electric Terrain\n|-fieldend|move: Electric Terrain"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "field-3",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-fieldactivate|move: Perish Song"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "side-conditions-1",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-sidestart|p2: ExampleOpponent|Spikes\n|-sidestart|p2: ExampleOpponent|Spikes\n|-sideend|p2: ExampleOpponent|Spikes"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "side-conditions-2",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-swapsideconditions"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "items-1",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-item|p1a: Alpha|Air Balloon\n|-enditem|p1a: Alpha|Air Balloon"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "items-2",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-enditem|p1a: Alpha|Sitrus Berry|[eat]\n|-heal|p1a: Alpha|100/100|[from] item: Sitrus Berry"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "abilities",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-ability|p1a: Alpha|Mold Breaker\n|-endability|p1a: Alpha"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "effect-context-1",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-activate|p1a: Alpha|move: Substitute|[damage]"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "effect-context-2",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-block|p1a: Alpha|ability: Good as Gold|Thunder Wave|p2a: Gamma"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "illusion",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|replace|p1a: Alpha|Zoroark, L80, M|100/100"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "forms-1",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|detailschange|p1a: Alpha|Palafin-Hero, L80, M"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "forms-2",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-formechange|p1a: Alpha|Aegislash-Blade|[from] ability: Stance Change"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "transform",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-transform|p1a: Alpha|p2a: Gamma|[from] ability: Imposter\n|switch|p1a: Alpha|Ditto, L80|100/100"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "type-change",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "receive": ">battle-contract-1\n|-start|p1a: Alpha|typechange|Water|[from] move: Soak"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false
+          }
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "request-signals-1",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-prepare|p1a: Alpha|Solar Beam|p2a: Gamma"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "request-signals-2",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-mustrecharge|p1a: Alpha"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "log-feedback-1",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-hitcount|p2a: Gamma|3"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "log-feedback-2",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-ohko"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "controllerPhase": "inactive"
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "protocol-metadata-baseline",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "receive": ">battle-contract-1\n|rated|\n|rule|Synthetic rule\n|upkeep\n|t:|1\n|message|Synthetic text\n|-hint|Synthetic hint"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "logCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "timer-baseline",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "receive": ">battle-contract-1\n|inactive|Time left: 120 sec this turn\n|inactiveoff|Timer disabled"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "logCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "recharge-minimal",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "requestFixture": "recharge-minimal"
+        },
+        {
+          "expect": {
+            "requestKind": "malformedRequest",
+            "canChoose": false,
+            "moveSlots": [],
+            "switchSlots": []
+          }
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "choose": {
+            "kind": "switch",
+            "slot": 2
+          }
+        },
+        {
+          "expect": {
+            "sendCount": 0
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true,
+            "requestRevision": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "locked-move-minimal",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "requestFixture": "locked-move-minimal"
+        },
+        {
+          "expect": {
+            "requestKind": "malformedRequest",
+            "canChoose": false,
+            "moveSlots": [],
+            "switchSlots": []
+          }
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "choose": {
+            "kind": "switch",
+            "slot": 2
+          }
+        },
+        {
+          "expect": {
+            "sendCount": 0
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true,
+            "requestRevision": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "revival-selection",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "requestFixture": "revival-selection"
+        },
+        {
+          "expect": {
+            "requestKind": "unsupportedRequest",
+            "canChoose": false,
+            "moveSlots": [],
+            "switchSlots": []
+          }
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "choose": {
+            "kind": "switch",
+            "slot": 2
+          }
+        },
+        {
+          "expect": {
+            "sendCount": 0
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "canChoose": true,
+            "requestRevision": 3
+          }
+        }
+      ]
+    }
+  ]
+}

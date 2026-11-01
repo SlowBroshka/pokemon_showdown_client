@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "provenance": "Synthetic emitter-shape examples; no live capture or legality claim. See inventory requestVariants.",
+  "cases": [
+    {
+      "id": "recharge-minimal",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Recharge",
+                "id": "recharge"
+              }
+            ],
+            "trapped": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "locked-move-minimal",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball"
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "300/300",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "active": [
+          {
+            "moves": [
+              {
+                "move": "Outrage",
+                "id": "outrage"
+              }
+            ],
+            "trapped": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "revival-selection",
+      "payload": {
+        "rqid": 7,
+        "side": {
+          "name": "ExamplePlayer",
+          "id": "p1",
+          "pokemon": [
+            {
+              "ident": "p1: Alpha",
+              "details": "Pikachu, L80, M",
+              "condition": "200/200",
+              "active": true,
+              "stats": {
+                "atk": 150,
+                "def": 100,
+                "spa": 150,
+                "spd": 100,
+                "spe": 180
+              },
+              "moves": [
+                "thunderbolt",
+                "protect"
+              ],
+              "baseAbility": "static",
+              "ability": "static",
+              "item": "",
+              "pokeball": "pokeball",
+              "reviving": true
+            },
+            {
+              "ident": "p1: Beta",
+              "details": "Snorlax, L80, M",
+              "condition": "0 fnt",
+              "active": false,
+              "stats": {
+                "atk": 180,
+                "def": 120,
+                "spa": 100,
+                "spd": 180,
+                "spe": 70
+              },
+              "moves": [
+                "bodyslam"
+              ],
+              "baseAbility": "immunity",
+              "ability": "immunity",
+              "item": "",
+              "pokeball": "pokeball"
+            }
+          ]
+        },
+        "forceSwitch": [
+          true
+        ]
+      }
+    }
+  ]
+}

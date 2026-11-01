@@ -1,0 +1,574 @@
+{
+  "schemaVersion": 1,
+  "format": "gen9randombattle",
+  "revision": "b354a81f11003a03f0dcd1dafd4edc641e6763bd",
+  "coverageMeaning": "Families and representative current behavior, not exhaustive effect IDs or Gen9 compatibility. Target descriptions are backlog, not assertions executed by this PR.",
+  "groups": [
+    {
+      "id": "identity",
+      "events": [
+        "switch",
+        "drag",
+        "faint",
+        "-cureteam"
+      ],
+      "ownerPr": 2,
+      "current": "partial",
+      "target": "Persist revealed participants without identifying by nickname; retain public/private separation and ambiguous identity.",
+      "reachability": "in-scope",
+      "sources": [
+        "sim/pokemon.ts",
+        "sim/SIM-PROTOCOL.md"
+      ],
+      "scenarios": [
+        "identity",
+        "voluntary-switch",
+        "forced-switch"
+      ]
+    },
+    {
+      "id": "boosts",
+      "events": [
+        "-boost",
+        "-unboost",
+        "-setboost",
+        "-swapboost",
+        "-invertboost",
+        "-clearboost",
+        "-clearallboost",
+        "-clearpositiveboost",
+        "-clearnegativeboost",
+        "-copyboost"
+      ],
+      "ownerPr": 3,
+      "current": "blocked",
+      "target": "Apply reported boost changes, resets and transfer atomically; do not calculate damage.",
+      "reachability": "in-scope",
+      "sources": [
+        "sim/battle.ts",
+        "data/moves.ts"
+      ],
+      "scenarios": [
+        "boosts-1",
+        "boosts-2",
+        "boosts-3",
+        "boosts-4"
+      ]
+    },
+    {
+      "id": "volatiles",
+      "events": [
+        "-start",
+        "-end",
+        "-singlemove",
+        "-singleturn"
+      ],
+      "ownerPr": 3,
+      "current": "blocked",
+      "target": "Track effect lifetimes and switch/transfer rules; dispatch typechange/typeadd to PR6.",
+      "reachability": "in-scope",
+      "sources": [
+        "data/conditions.ts",
+        "data/moves.ts"
+      ],
+      "scenarios": [
+        "volatiles-1",
+        "volatiles-2",
+        "volatiles-3"
+      ]
+    },
+    {
+      "id": "weather",
+      "events": [
+        "-weather"
+      ],
+      "ownerPr": 4,
+      "current": "blocked",
+      "target": "Track start/upkeep/end without guessing hidden duration.",
+      "reachability": "in-scope",
+      "sources": [
+        "sim/field.ts"
+      ],
+      "scenarios": [
+        "weather"
+      ]
+    },
+    {
+      "id": "field",
+      "events": [
+        "-fieldstart",
+        "-fieldend",
+        "-fieldactivate"
+      ],
+      "ownerPr": 4,
+      "current": "blocked",
+      "target": "Track terrain and pseudo-weather; distinguish activation from persistent state.",
+      "reachability": "in-scope",
+      "sources": [
+        "data/moves.ts",
+        "data/conditions.ts"
+      ],
+      "scenarios": [
+        "field-1",
+        "field-2",
+        "field-3"
+      ]
+    },
+    {
+      "id": "side-conditions",
+      "events": [
+        "-sidestart",
+        "-sideend",
+        "-swapsideconditions"
+      ],
+      "ownerPr": 4,
+      "current": "blocked",
+      "target": "Represent layers, removal and swapping side conditions.",
+      "reachability": "in-scope",
+      "sources": [
+        "data/moves.ts",
+        "data/conditions.ts"
+      ],
+      "scenarios": [
+        "side-conditions-1",
+        "side-conditions-2"
+      ]
+    },
+    {
+      "id": "items",
+      "events": [
+        "-item",
+        "-enditem"
+      ],
+      "ownerPr": 5,
+      "current": "blocked",
+      "target": "Distinguish revealed, consumed, removed and unknown item; preserve source annotations.",
+      "reachability": "in-scope",
+      "sources": [
+        "sim/pokemon.ts",
+        "data/items.ts"
+      ],
+      "scenarios": [
+        "items-1",
+        "items-2"
+      ]
+    },
+    {
+      "id": "abilities",
+      "events": [
+        "-ability",
+        "-endability"
+      ],
+      "ownerPr": 5,
+      "current": "blocked",
+      "target": "Track revealed/current/suppressed ability without assuming hidden data.",
+      "reachability": "in-scope",
+      "sources": [
+        "sim/pokemon.ts",
+        "data/abilities.ts"
+      ],
+      "scenarios": [
+        "abilities"
+      ]
+    },
+    {
+      "id": "effect-context",
+      "events": [
+        "-activate",
+        "-block"
+      ],
+      "ownerPr": 5,
+      "current": "blocked",
+      "target": "Decode effect-specific activation/block payloads and annotations; stateful effects must not be treated as log-only.",
+      "reachability": "in-scope",
+      "sources": [
+        "data/moves.ts",
+        "data/abilities.ts"
+      ],
+      "scenarios": [
+        "effect-context-1",
+        "effect-context-2"
+      ]
+    },
+    {
+      "id": "illusion",
+      "events": [
+        "replace"
+      ],
+      "ownerPr": 6,
+      "current": "blocked",
+      "target": "Reveal identity without attributing masked observations to the wrong participant.",
+      "reachability": "pool-witness",
+      "sources": [
+        "data/abilities.ts",
+        "data/random-battles/gen9/sets.json"
+      ],
+      "scenarios": [
+        "illusion"
+      ]
+    },
+    {
+      "id": "forms",
+      "events": [
+        "detailschange",
+        "-formechange"
+      ],
+      "ownerPr": 6,
+      "current": "blocked",
+      "target": "Project temporary/permanent form details using actual emitter arity, not only protocol prose.",
+      "reachability": "in-scope",
+      "sources": [
+        "sim/pokemon.ts"
+      ],
+      "scenarios": [
+        "forms-1",
+        "forms-2"
+      ]
+    },
+    {
+      "id": "transform",
+      "events": [
+        "-transform"
+      ],
+      "ownerPr": 6,
+      "current": "blocked",
+      "target": "Track transformation target and restoration on switch; do not overwrite original identity.",
+      "reachability": "pool-witness",
+      "sources": [
+        "sim/pokemon.ts",
+        "data/random-battles/gen9/sets.json"
+      ],
+      "scenarios": [
+        "transform"
+      ]
+    },
+    {
+      "id": "type-change",
+      "events": [],
+      "ownerPr": 6,
+      "current": "blocked",
+      "target": "Handle -start typechange/typeadd with form and Tera interactions.",
+      "reachability": "requires-audit",
+      "sources": [
+        "data/moves.ts",
+        "sim/pokemon.ts"
+      ],
+      "scenarios": [
+        "type-change"
+      ]
+    },
+    {
+      "id": "request-signals",
+      "events": [
+        "-prepare",
+        "-mustrecharge"
+      ],
+      "ownerPr": 7,
+      "current": "blocked",
+      "target": "Represent charging/recharge; enable actions only from current request.",
+      "reachability": "in-scope",
+      "sources": [
+        "data/moves.ts",
+        "data/conditions.ts",
+        "sim/pokemon.ts"
+      ],
+      "scenarios": [
+        "request-signals-1",
+        "request-signals-2"
+      ]
+    },
+    {
+      "id": "log-feedback",
+      "events": [
+        "-crit",
+        "-supereffective",
+        "-resisted",
+        "-miss",
+        "-fail",
+        "-immune",
+        "-notarget",
+        "-nothing",
+        "-hitcount",
+        "-ohko"
+      ],
+      "ownerPr": 8,
+      "current": "mixed",
+      "target": "Add typed RU/EN feedback; currently most ignored, hitcount/ohko block.",
+      "reachability": "requires-audit",
+      "sources": [
+        "sim/battle-actions.ts",
+        "data/moves.ts"
+      ],
+      "scenarios": [
+        "log-feedback-1",
+        "log-feedback-2"
+      ]
+    },
+    {
+      "id": "base-projection",
+      "events": [
+        "player",
+        "teamsize",
+        "gametype",
+        "gen",
+        "tier",
+        "start",
+        "turn",
+        "move",
+        "cant",
+        "-damage",
+        "-heal",
+        "-sethp",
+        "-status",
+        "-curestatus",
+        "-terastallize",
+        "win",
+        "tie"
+      ],
+      "ownerPr": 9,
+      "current": "partial",
+      "target": "Preserve existing baseline while extending variants and validating full flows.",
+      "reachability": "in-scope",
+      "sources": [
+        "sim/SIM-PROTOCOL.md",
+        "sim/battle.ts",
+        "sim/pokemon.ts"
+      ],
+      "scenarios": [
+        "ordinary-turn",
+        "status-and-hp",
+        "terastallize",
+        "win-is-terminal",
+        "tie-is-terminal"
+      ]
+    },
+    {
+      "id": "requests",
+      "events": [
+        "request"
+      ],
+      "ownerPr": 7,
+      "current": "partial",
+      "target": "Cover move/wait/null/forced switch, locks, revive, Tera and error paths; do not infer legal actions from field.",
+      "reachability": "in-scope",
+      "sources": [
+        "sim/pokemon.ts",
+        "sim/side.ts"
+      ],
+      "scenarios": [
+        "wait-and-clear",
+        "unavailable-choice-refresh",
+        "unknown-request-mode",
+        "recharge-minimal",
+        "locked-move-minimal",
+        "revival-selection"
+      ]
+    },
+    {
+      "id": "non-target-modes",
+      "events": [
+        "swap",
+        "teampreview",
+        "-mega",
+        "-primal",
+        "-burst",
+        "-zpower",
+        "-zbroken",
+        "-candynamax",
+        "-center",
+        "-combine",
+        "-waiting"
+      ],
+      "ownerPr": 9,
+      "current": "blocked",
+      "target": "Keep unsupported modes guarded; audit any reuse of a token before classifying as harmless.",
+      "reachability": "out-of-scope",
+      "sources": [
+        "config/formats.ts",
+        "sim/SIM-PROTOCOL.md"
+      ],
+      "scenarios": [
+        "unknown-request-mode"
+      ]
+    },
+    {
+      "id": "protocol-metadata",
+      "events": [
+        "clearpoke",
+        "poke",
+        "rated",
+        "rule",
+        "upkeep",
+        "t:",
+        "message",
+        "-message",
+        "-hint"
+      ],
+      "ownerPr": 9,
+      "current": "ignored",
+      "target": "Explicit metadata/text policy; no execution of server content. Team preview remains unsupported.",
+      "reachability": "in-scope",
+      "sources": [
+        "sim/SIM-PROTOCOL.md",
+        "sim/battle.ts"
+      ],
+      "scenarios": [
+        "decorative-and-html",
+        "protocol-metadata-baseline"
+      ]
+    },
+    {
+      "id": "timer",
+      "events": [
+        "inactive",
+        "inactiveoff"
+      ],
+      "ownerPr": 9,
+      "current": "ignored",
+      "target": "Timer UI/control is a separate stage; do not use timer messages as decision acknowledgement.",
+      "reachability": "deferred",
+      "sources": [
+        "sim/SIM-PROTOCOL.md"
+      ],
+      "scenarios": [
+        "timer-baseline"
+      ]
+    },
+    {
+      "id": "diagnostics",
+      "events": [
+        "error",
+        "bigerror",
+        "debug",
+        "showteam"
+      ],
+      "ownerPr": 9,
+      "current": "mixed",
+      "target": "Handle known choice errors; diagnose unexpected debug/team exposure without treating it as a valid request.",
+      "reachability": "requires-audit",
+      "sources": [
+        "sim/battle.ts",
+        "sim/SIM-PROTOCOL.md"
+      ],
+      "scenarios": [
+        "invalid-choice-retry",
+        "late-error-after-new-request"
+      ]
+    }
+  ],
+  "requestVariants": [
+    {
+      "id": "ordinary",
+      "current": "supported",
+      "ownerPr": 7,
+      "scenarios": [
+        "ordinary-turn",
+        "terastallize",
+        "voluntary-switch",
+        "forced-switch"
+      ],
+      "target": "Keep move, switch, Tera and rqid serialization.",
+      "requestFixtures": [
+        "move",
+        "tera",
+        "force-switch",
+        "extra-field",
+        "fainted-reserve",
+        "no-cancel"
+      ]
+    },
+    {
+      "id": "wait-clear",
+      "current": "supported",
+      "ownerPr": 7,
+      "scenarios": [
+        "wait-and-clear"
+      ],
+      "target": "No choices while wait or cleared.",
+      "requestFixtures": [
+        "wait",
+        "clear"
+      ]
+    },
+    {
+      "id": "locks-and-pp",
+      "current": "partial",
+      "ownerPr": 7,
+      "scenarios": [
+        "unavailable-choice-refresh",
+        "same-rqid-replaces-draft",
+        "recharge-minimal",
+        "locked-move-minimal"
+      ],
+      "target": "Accept legitimate minimal locked/recharge records; preserve server restrictions and hidden maybe flags.",
+      "requestFixtures": [
+        "trapped",
+        "maybe-trapped",
+        "struggle",
+        "recharge-minimal",
+        "locked-move-minimal"
+      ]
+    },
+    {
+      "id": "revival",
+      "current": "blocked",
+      "ownerPr": 7,
+      "scenarios": [
+        "revival-selection"
+      ],
+      "target": "Special selection allows the correct fainted bench target, not normal switch filtering.",
+      "requestFixtures": [
+        "revival-selection"
+      ]
+    },
+    {
+      "id": "invalid-and-other-modes",
+      "current": "guarded",
+      "ownerPr": 7,
+      "scenarios": [
+        "malformed-request-clears-choice",
+        "unknown-request-mode"
+      ],
+      "target": "Malformed input and unsupported modes never authorize choices.",
+      "requestFixtures": [
+        "team-preview",
+        "doubles",
+        "mega",
+        "unknown-target",
+        "invalid-rqid",
+        "missing-side",
+        "conflicting-shapes",
+        "invalid-pp",
+        "invalid-condition",
+        "false-force-switch",
+        "broken-json",
+        "empty-payload"
+      ]
+    },
+    {
+      "id": "freshness",
+      "current": "supported",
+      "ownerPr": 7,
+      "scenarios": [
+        "missing-rqid",
+        "same-rqid-replaces-draft",
+        "receive-before-send",
+        "disconnect-after-send",
+        "double-click"
+      ],
+      "target": "No stale, duplicate or automatically replayed choices.",
+      "requestFixtures": [
+        "no-rqid",
+        "same-rqid-changed"
+      ]
+    }
+  ],
+  "openQuestions": [
+    "Audit dynamic event names and condition-specific payloads; the literal scanner is not a TypeScript parser.",
+    "Close reachability over generated items, copied/called moves, forms, rules and effect parameters; pool presence is not an observed legal battle.",
+    "Verify Gen9 overrides and server-side room messages beyond the nine scanned emitter files.",
+    "Enumerate all -activate/-start/-end subtypes and annotation variants before enabling public compatibility.",
+    "Define participant identity and observations retained across Illusion, Transform, switch and revival in PR2/6.",
+    "Full Random Battle completion, reconnect, timer/surrender and complete game vocabulary are not certified here."
+  ]
+}

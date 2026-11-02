@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "provenance": "Current baseline/guard assertions, not successful implementation of target mechanics. Multi-event sequences after first unknown do NOT prove projection of later effects.",
+  "provenance": "Reviewed positive intermediate projections for PR3 boosts and bounded volatile registry; remaining groups retain baseline guards.",
   "cases": [
     {
       "id": "identity",
@@ -50,22 +50,47 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-boost|p1a: Alpha|atk|2\n|-unboost|p1a: Alpha|atk|1\n|-clearboost|p1a: Alpha"
+          "receive": ">battle-contract-1\n|-boost|p1a: Alpha|atk|2"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "boosts": {
+              "p1": {
+                "atk": 2
+              },
+              "p2": {}
+            }
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|-unboost|p1a: Alpha|atk|1"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "boosts": {
+              "p1": {
+                "atk": 1
+              },
+              "p2": {}
+            }
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-clearboost|p1a: Alpha"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "boosts": {
+              "p1": {},
+              "p2": {}
+            }
+          }
         },
         {
           "choose": {
@@ -75,9 +100,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "sendCount": 1,
+            "unsupported": false
           }
         }
       ]
@@ -90,22 +114,47 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-setboost|p1a: Alpha|atk|6\n|-invertboost|p1a: Alpha\n|-clearnegativeboost|p1a: Alpha"
+          "receive": ">battle-contract-1\n|-setboost|p1a: Alpha|atk|6"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "boosts": {
+              "p1": {
+                "atk": 6
+              },
+              "p2": {}
+            }
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|-invertboost|p1a: Alpha"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "boosts": {
+              "p1": {
+                "atk": -6
+              },
+              "p2": {}
+            }
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-clearnegativeboost|p1a: Alpha"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "boosts": {
+              "p1": {},
+              "p2": {}
+            }
+          }
         },
         {
           "choose": {
@@ -115,9 +164,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "sendCount": 1,
+            "unsupported": false
           }
         }
       ]
@@ -130,22 +178,64 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-swapboost|p1a: Alpha|p2a: Gamma|atk, def\n|-copyboost|p1a: Alpha|p2a: Gamma\n|-clearallboost"
+          "receive": ">battle-contract-1\n|-boost|p2a: Gamma|def|2"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "boosts": {
+              "p1": {},
+              "p2": {
+                "def": 2
+              }
+            }
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|-swapboost|p1a: Alpha|p2a: Gamma|atk, def"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "boosts": {
+              "p1": {
+                "def": 2
+              },
+              "p2": {}
+            }
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-copyboost|p2a: Gamma|p1a: Alpha"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "boosts": {
+              "p1": {
+                "def": 2
+              },
+              "p2": {
+                "def": 2
+              }
+            }
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-clearallboost"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "boosts": {
+              "p1": {},
+              "p2": {}
+            }
+          }
         },
         {
           "choose": {
@@ -155,9 +245,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "sendCount": 1,
+            "unsupported": false
           }
         }
       ]
@@ -170,22 +259,50 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-clearpositiveboost|p2a: Gamma|p1a: Alpha|move: Spectral Thief"
+          "receive": ">battle-contract-1\n|-boost|p1a: Alpha|atk|2"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "boosts": {
+              "p1": {
+                "atk": 2
+              },
+              "p2": {}
+            }
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|-unboost|p1a: Alpha|spe|1"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "boosts": {
+              "p1": {
+                "atk": 2,
+                "spe": -1
+              },
+              "p2": {}
+            }
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-clearpositiveboost|p1a: Alpha|p2a: Gamma|move: Spectral Thief"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "boosts": {
+              "p1": {
+                "spe": -1
+              },
+              "p2": {}
+            }
+          }
         },
         {
           "choose": {
@@ -195,9 +312,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "sendCount": 1,
+            "unsupported": false
           }
         }
       ]
@@ -210,22 +326,32 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-start|p1a: Alpha|Substitute\n|-end|p1a: Alpha|Substitute"
+          "receive": ">battle-contract-1\n|-start|p1a: Alpha|Substitute"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "effects": {
+              "p1": {
+                "substitute": null
+              },
+              "p2": {}
+            }
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|-end|p1a: Alpha|Substitute"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "effects": {
+              "p1": {},
+              "p2": {}
+            }
+          }
         },
         {
           "choose": {
@@ -235,9 +361,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "sendCount": 1,
+            "unsupported": false
           }
         }
       ]
@@ -250,22 +375,32 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-singleturn|p1a: Alpha|Protect\n|turn|2"
+          "receive": ">battle-contract-1\n|-singleturn|p1a: Alpha|move: Protect"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "effects": {
+              "p1": {
+                "protect": null
+              },
+              "p2": {}
+            }
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|turn|2"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "effects": {
+              "p1": {},
+              "p2": {}
+            }
+          }
         },
         {
           "choose": {
@@ -275,9 +410,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "sendCount": 1,
+            "unsupported": false
           }
         }
       ]
@@ -290,22 +424,32 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-singlemove|p1a: Alpha|Destiny Bond\n|switch|p1a: Beta|Snorlax, L80|100/100"
+          "receive": ">battle-contract-1\n|-singlemove|p1a: Alpha|Destiny Bond"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "effects": {
+              "p1": {
+                "destinybond": null
+              },
+              "p2": {}
+            }
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|move|p1a: Alpha|Thunderbolt|p2a: Gamma"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "effects": {
+              "p1": {},
+              "p2": {}
+            }
+          }
         },
         {
           "choose": {
@@ -315,9 +459,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "sendCount": 1,
+            "unsupported": false
           }
         }
       ]
@@ -1283,6 +1426,139 @@
           "expect": {
             "canChoose": true,
             "requestRevision": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "effects-transfer",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "receive": ">battle-contract-1\n|-boost|p1a: Alpha|atk|2\n|-start|p1a: Alpha|Substitute\n|-start|p1a: Alpha|Encore"
+        },
+        {
+          "receive": ">battle-contract-1\n|switch|p1a: Beta|Snorlax, L80|100/100|[from] move: Baton Pass"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "boosts": {
+              "p1": {
+                "atk": 2
+              },
+              "p2": {}
+            },
+            "effects": {
+              "p1": {
+                "substitute": null
+              },
+              "p2": {}
+            },
+            "activeAppearanceIds": {
+              "p1": 3,
+              "p2": 2
+            },
+            "privateAppearanceId": null
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|switch|p1a: Alpha|Pikachu, L80|100/100|[from] move: Shed Tail"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "boosts": {
+              "p1": {},
+              "p2": {}
+            },
+            "effects": {
+              "p1": {
+                "substitute": null
+              },
+              "p2": {}
+            },
+            "activeAppearanceIds": {
+              "p1": 4,
+              "p2": 2
+            }
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|drag|p1a: Beta|Snorlax, L80|100/100"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "effects": {
+              "p1": {},
+              "p2": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "effects-choice-guard",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-boost|p1a: Alpha|atk|2\n|-singleturn|p1a: Alpha|Protect"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "controllerPhase": "submitted",
+            "canChoose": false,
+            "sendCount": 1,
+            "requestRevision": 1
+          }
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "sendCount": 1
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-start|p1a: Alpha|typechange|Water"
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "sendCount": 1
+          }
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "sendCount": 1
           }
         }
       ]

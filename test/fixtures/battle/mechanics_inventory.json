@@ -47,8 +47,8 @@
         "-copyboost"
       ],
       "ownerPr": 3,
-      "current": "blocked",
-      "target": "Apply reported boost changes, resets and transfer atomically; do not calculate damage.",
+      "current": "partial",
+      "target": "Apply reported boost changes, resets and transfer atomically; do not calculate damage. PR3 projects all ten boost operations and a bounded ten-effect registry; unknown effects, including type changes, remain guarded.",
       "reachability": "in-scope",
       "sources": [
         "sim/battle.ts",
@@ -70,8 +70,8 @@
         "-singleturn"
       ],
       "ownerPr": 3,
-      "current": "blocked",
-      "target": "Track effect lifetimes and switch/transfer rules; dispatch typechange/typeadd to PR6.",
+      "current": "partial",
+      "target": "Track effect lifetimes and switch/transfer rules; dispatch typechange/typeadd to PR6. PR3 projects all ten boost operations and a bounded ten-effect registry; unknown effects, including type changes, remain guarded.",
       "reachability": "in-scope",
       "sources": [
         "data/conditions.ts",
@@ -80,7 +80,9 @@
       "scenarios": [
         "volatiles-1",
         "volatiles-2",
-        "volatiles-3"
+        "volatiles-3",
+        "effects-transfer",
+        "effects-choice-guard"
       ]
     },
     {

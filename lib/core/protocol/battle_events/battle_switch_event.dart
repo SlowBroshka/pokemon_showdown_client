@@ -6,7 +6,9 @@ final class BattleSwitchEvent extends ServerEvent {
     super.record, {
     required this.pokemon,
     required this.dragged,
+    this.source,
   });
   final ObservedPokemon pokemon;
   final bool dragged;
+  final String? source;
 }

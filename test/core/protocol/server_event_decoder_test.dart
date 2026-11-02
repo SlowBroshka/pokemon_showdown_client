@@ -84,7 +84,7 @@ void main() {
     );
 
     test('leaves unknown, battle and HTML events uninterpreted', () {
-      for (final type in ['future', '-boost', 'html', 'uhtml']) {
+      for (final type in ['future', '-futuremechanic', 'html', 'uhtml']) {
         final event =
             decode('>battle-test\n|$type|<b>x</b>|{}') as UnknownServerEvent;
         expect(event.eventType, type);

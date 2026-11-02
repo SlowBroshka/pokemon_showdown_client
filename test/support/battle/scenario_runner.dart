@@ -255,6 +255,12 @@ final class BattleScenarioRunner {
       'phase': _phase,
       'controllerPhase': _controller.phase.name,
       'turn': state.turn,
+      'boosts': {
+        for (final p in state.active.entries) p.key: p.value.effects.boosts,
+      },
+      'effects': {
+        for (final p in state.active.entries) p.key: p.value.effects.volatiles,
+      },
       'appearanceIds': state.roster.appearances.keys.toList(),
       'activeAppearanceIds': state.roster.activeIds,
       'appearanceHp': [

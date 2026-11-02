@@ -1,3 +1,4 @@
+import 'pokemon_effects.dart';
 import '../../protocol/server_event_decoder.dart';
 import 'battle_health.dart';
 import 'battle_log_entry.dart';
@@ -84,7 +85,16 @@ BattleState reduceBattleEvent(
   }
   if (event is BattleTurnEvent) {
     if (event.turn < state.turn) return _block(state);
-    return state.copyWith(turn: event.turn);
+    return state.copyWith(
+      turn: event.turn,
+      roster: event.turn == state.turn
+          ? state.roster
+          : state.roster.updateActive(
+              state.active.values.map(
+                (p) => p.withEffects(p.effects.without({'protect'})),
+              ),
+            ),
+    );
   }
   if (event is BattleRequestEvent) {
     final next = event.request;
@@ -126,14 +136,25 @@ BattleState reduceBattleEvent(
     );
   }
   if (event is BattleSwitchEvent) {
-    final pokemon = event.pokemon;
+    var pokemon = event.pokemon;
     if (!_activeIdent(pokemon.ident)) return _block(state);
+    if (event.source == 'move: Baton Pass' ||
+        event.source == 'move: Shed Tail') {
+      final previous = state.active[pokemon.sideId];
+      if (event.dragged || previous == null || previous.health.fainted) {
+        return _block(state);
+      }
+      pokemon = pokemon.withEffects(
+        previous.effects.transferred(event.source!),
+      );
+    }
     return state.copyWith(
       roster: state.roster.enter(pokemon, state.turn),
       clearPrivateActiveReference:
           state.privateActiveReference?.sideId == pokemon.sideId,
     );
   }
+  if (event is BattleEffectEvent) return _applyEffect(state, event);
   if (event is BattleHealthEvent) {
     // Validate the entire multi-target update before applying any portion.
     if (event.changes.any((change) => !_known(state, change.ident))) {
@@ -176,9 +197,11 @@ BattleState reduceBattleEvent(
     final pokemon = state.active[event.ident.substring(0, 2)]!;
     return _replace(
       state,
-      pokemon.withHealth(
-        BattleHealth(hp: 0, maxHp: pokemon.health.maxHp, fainted: true),
-      ),
+      pokemon
+          .withHealth(
+            BattleHealth(hp: 0, maxHp: pokemon.health.maxHp, fainted: true),
+          )
+          .withEffects(const PokemonEffects.empty()),
     );
   }
   if (event is BattleTeraEvent) {
@@ -202,7 +225,11 @@ BattleState reduceBattleEvent(
         attemptedMove: event.attemptedMove,
       ),
     ];
+    final actor = state.active[event.actor.substring(0, 2)]!;
     return state.copyWith(
+      roster: state.roster.updateActive([
+        actor.withEffects(actor.effects.without({'destinybond'})),
+      ]),
       log: entries.length <= maxBattleLogEntries
           ? entries
           : entries.sublist(entries.length - maxBattleLogEntries),
@@ -262,3 +289,78 @@ const _decorative = {
   'uhtml',
   'uhtmlchange',
 };
+
+BattleState _applyEffect(BattleState state, BattleEffectEvent event) {
+  final p = event.arguments;
+  final op = event.operation;
+  if (op == '-clearallboost') {
+    return state.copyWith(
+      roster: state.roster.updateActive(
+        state.active.values.map(
+          (pokemon) => pokemon.withEffects(
+            PokemonEffects(volatiles: pokemon.effects.volatiles),
+          ),
+        ),
+      ),
+    );
+  }
+  if (!_known(state, p[0])) return _block(state);
+  final first = state.active[p[0].substring(0, 2)]!;
+  if (first.health.fainted) return _block(state);
+  final boosts = {...first.effects.boosts};
+  final volatiles = {...first.effects.volatiles};
+  if (op == '-swapboost' || op == '-copyboost') {
+    if (!_known(state, p[1]) || p[0] == p[1]) return _block(state);
+    final second = state.active[p[1].substring(0, 2)]!;
+    if (second.health.fainted) return _block(state);
+    final other = {...second.effects.boosts};
+    final stats = p.length == 3 ? p[2].split(',') : battleStats;
+    for (final stat in stats) {
+      boosts[stat] = other[stat] ?? 0;
+      if (op == '-swapboost') other[stat] = first.effects.boosts[stat] ?? 0;
+    }
+    boosts.removeWhere((_, value) => value == 0);
+    other.removeWhere((_, value) => value == 0);
+    return state.copyWith(
+      roster: state.roster.updateActive([
+        first.withEffects(PokemonEffects(boosts: boosts, volatiles: volatiles)),
+        if (op == '-swapboost')
+          second.withEffects(
+            PokemonEffects(boosts: other, volatiles: second.effects.volatiles),
+          ),
+      ]),
+    );
+  }
+  switch (op) {
+    case '-boost':
+    case '-unboost':
+    case '-setboost':
+      final amount = int.parse(p[2]);
+      boosts[p[1]] = op == '-setboost'
+          ? amount
+          : ((boosts[p[1]] ?? 0) + (op == '-boost' ? amount : -amount)).clamp(
+              -6,
+              6,
+            );
+    case '-invertboost':
+      boosts.updateAll((_, value) => -value);
+    case '-clearboost':
+      boosts.clear();
+    case '-clearpositiveboost':
+      if (p.length == 3 && !_known(state, p[1])) return _block(state);
+      boosts.removeWhere((_, value) => value > 0);
+    case '-clearnegativeboost':
+      boosts.removeWhere((_, value) => value < 0);
+    case '-start':
+    case '-singleturn':
+    case '-singlemove':
+      volatiles[p[1]] = p.length == 3 ? p[2] : null;
+    case '-end':
+      volatiles.remove(p[1]);
+  }
+  boosts.removeWhere((_, value) => value == 0);
+  return _replace(
+    state,
+    first.withEffects(PokemonEffects(boosts: boosts, volatiles: volatiles)),
+  );
+}

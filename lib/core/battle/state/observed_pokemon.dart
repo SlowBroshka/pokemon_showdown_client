@@ -1,4 +1,5 @@
 import 'battle_health.dart';
+import 'pokemon_effects.dart';
 
 final class ObservedPokemon {
   const ObservedPokemon({
@@ -6,7 +7,9 @@ final class ObservedPokemon {
     required this.details,
     required this.health,
     this.teraType,
+    this.effects = const PokemonEffects.empty(),
   });
+  final PokemonEffects effects;
   final String ident;
   final String details;
   final BattleHealth health;
@@ -17,11 +20,20 @@ final class ObservedPokemon {
     details: details,
     health: value,
     teraType: teraType,
+    effects: effects,
   );
   ObservedPokemon withTera(String value) => ObservedPokemon(
     ident: ident,
     details: details,
     health: health,
     teraType: value,
+    effects: effects,
+  );
+  ObservedPokemon withEffects(PokemonEffects value) => ObservedPokemon(
+    ident: ident,
+    details: details,
+    health: health,
+    teraType: teraType,
+    effects: value,
   );
 }

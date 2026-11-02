@@ -20,6 +20,7 @@ void main() {
   final cases = BattleScenarioRunner.index([
     ...corpus['cases'] as List,
     ...readCorpus('mechanics_scenarios')['cases'] as List,
+    ...readCorpus('participant_scenarios')['cases'] as List,
   ]);
   final inventory = readCorpus('mechanics_inventory');
   final upstream = readCorpus('upstream_inventory');

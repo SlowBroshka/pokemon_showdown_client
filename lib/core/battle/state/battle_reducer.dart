@@ -4,6 +4,8 @@ import 'battle_log_entry.dart';
 import 'battle_phase.dart';
 import 'battle_state.dart';
 import 'observed_pokemon.dart';
+import 'private_active_reference.dart';
+import '../requests/battle_request_kind.dart';
 
 export 'battle_state.dart';
 export 'battle_phase.dart';
@@ -12,6 +14,10 @@ export 'battle_log_entry.dart';
 export 'battle_player.dart';
 export 'battle_result.dart';
 export 'observed_pokemon.dart';
+export 'battle_roster.dart';
+export 'battle_appearance.dart';
+export 'bench_status_observation.dart';
+export 'private_active_reference.dart';
 
 const maxBattleLogEntries = 200;
 
@@ -86,11 +92,29 @@ BattleState reduceBattleEvent(
       request: next,
       requestRevision: state.requestRevision + 1,
       privateSide: next.side,
+      clearPrivateActiveReference: true,
     );
     if (state.privateSide != null &&
         next.side != null &&
         state.privateSide!.id != next.side!.id) {
       updated = _block(updated);
+    }
+    final side = next.side;
+    final appearanceId = side == null ? null : state.roster.activeIds[side.id];
+    final activeSlots = side?.pokemon.where((p) => p.active).toList();
+    if (!updated.unsupported &&
+        (next.kind == BattleRequestKind.move ||
+            next.kind == BattleRequestKind.switchRequest) &&
+        appearanceId != null &&
+        activeSlots?.length == 1) {
+      updated = updated.copyWith(
+        privateActiveReference: PrivateActiveReference(
+          sideId: side!.id,
+          requestRevision: updated.requestRevision,
+          requestSlot: activeSlots!.single.slot,
+          appearanceId: appearanceId,
+        ),
+      );
     }
     return updated;
   }
@@ -104,7 +128,11 @@ BattleState reduceBattleEvent(
   if (event is BattleSwitchEvent) {
     final pokemon = event.pokemon;
     if (!_activeIdent(pokemon.ident)) return _block(state);
-    return state.copyWith(active: {...state.active, pokemon.sideId: pokemon});
+    return state.copyWith(
+      roster: state.roster.enter(pokemon, state.turn),
+      clearPrivateActiveReference:
+          state.privateActiveReference?.sideId == pokemon.sideId,
+    );
   }
   if (event is BattleHealthEvent) {
     // Validate the entire multi-target update before applying any portion.
@@ -116,9 +144,19 @@ BattleState reduceBattleEvent(
       final side = change.ident.substring(0, 2);
       active[side] = active[side]!.withHealth(change.health);
     }
-    return state.copyWith(active: active);
+    return state.copyWith(roster: state.roster.updateActive(active.values));
   }
   if (event is BattleStatusEvent) {
+    if (event.cured && RegExp(r'^p[12]: \S(?:.*\S)?$').hasMatch(event.ident)) {
+      return state.copyWith(
+        roster: state.roster.observeBenchStatus(
+          ident: event.ident,
+          turn: state.turn,
+          status: event.status,
+          cured: event.cured,
+        ),
+      );
+    }
     if (!_known(state, event.ident)) return _block(state);
     final pokemon = state.active[event.ident.substring(0, 2)]!;
     if (event.cured &&
@@ -156,6 +194,7 @@ BattleState reduceBattleEvent(
       ...state.log,
       BattleLogEntry(
         turn: state.turn,
+        actorAppearanceId: state.roster.activeIds[event.actor.substring(0, 2)],
         actor: event.actor,
         action: event.action,
         cannotAct: event.cannotAct,
@@ -179,8 +218,9 @@ BattleState reduceBattleEvent(
 }
 
 BattleState _replace(BattleState state, ObservedPokemon pokemon) =>
-    state.copyWith(active: {...state.active, pokemon.sideId: pokemon});
-BattleState _block(BattleState state) => state.copyWith(unsupported: true);
+    state.copyWith(roster: state.roster.updateActive([pokemon]));
+BattleState _block(BattleState state) =>
+    state.copyWith(unsupported: true, clearPrivateActiveReference: true);
 bool _supportedSide(String side) => side == 'p1' || side == 'p2';
 bool _activeIdent(String ident) =>
     ident.startsWith('p1a: ') || ident.startsWith('p2a: ');

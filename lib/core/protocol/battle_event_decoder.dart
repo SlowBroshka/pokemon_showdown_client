@@ -1,3 +1,6 @@
+import '../battle/state/pokemon_effects.dart';
+import 'battle_events/battle_effect_event.dart';
+export 'battle_events/battle_effect_event.dart';
 import 'battle_events/battle_action_event.dart';
 import 'battle_events/battle_end_event.dart';
 import 'battle_events/battle_faint_event.dart';
@@ -34,7 +37,24 @@ export 'battle_events/battle_switch_event.dart';
 export 'battle_events/battle_tera_event.dart';
 export 'battle_events/battle_turn_event.dart';
 
+const _effectTypes = {
+  '-boost',
+  '-unboost',
+  '-setboost',
+  '-swapboost',
+  '-copyboost',
+  '-invertboost',
+  '-clearboost',
+  '-clearallboost',
+  '-clearpositiveboost',
+  '-clearnegativeboost',
+  '-start',
+  '-end',
+  '-singleturn',
+  '-singlemove',
+};
 const _types = {
+  ..._effectTypes,
   'player',
   'teamsize',
   'gametype',
@@ -68,6 +88,7 @@ ServerEvent? decodeBattleEvent(ServerRecord record) {
     final all = data.split('|');
     final annotation = all.indexWhere((p) => p.startsWith('['));
     final tagged = {
+      ..._effectTypes,
       'switch',
       'drag',
       'move',
@@ -88,6 +109,7 @@ ServerEvent? decodeBattleEvent(ServerRecord record) {
         all.skip(annotation).any((p) => !p.startsWith('['))) {
       _bad();
     }
+    if (_effectTypes.contains(type)) return _effect(record, type!, parts);
     switch (type) {
       case 'player':
         if (parts.length < 2 || parts.length > 4) _bad();
@@ -145,6 +167,7 @@ ServerEvent? decodeBattleEvent(ServerRecord record) {
         return BattleSwitchEvent(
           record,
           dragged: type == 'drag',
+          source: _switchSource(all),
           pokemon: ObservedPokemon(
             ident: _ident(parts[0]),
             details: details,
@@ -274,3 +297,76 @@ void _count(List<String> parts, int n) {
 }
 
 Never _bad() => throw const FormatException('Invalid battle event');
+
+String? _switchSource(List<String> parts) {
+  final sources = parts.where((p) => p.startsWith('[from] ')).toList();
+  if (sources.length > 1) _bad();
+  return sources.isEmpty ? null : sources.single.substring(7);
+}
+
+BattleEffectEvent _effect(
+  ServerRecord record,
+  String type,
+  List<String> parts,
+) {
+  final p = [...parts];
+  if (type == '-clearallboost') {
+    if (p.length != 1 || p.single.isNotEmpty) _bad();
+    p.clear();
+  } else {
+    if (p.isEmpty) _bad();
+    _ident(p[0]);
+    switch (type) {
+      case '-boost':
+      case '-unboost':
+      case '-setboost':
+        _count(p, 3);
+        final amount = int.tryParse(p[2]);
+        if (!battleStats.contains(p[1]) ||
+            amount == null ||
+            amount < (type == '-setboost' ? -6 : 0) ||
+            amount > 6) {
+          _bad();
+        }
+      case '-swapboost':
+      case '-copyboost':
+        if (p.length != 2 && p.length != 3) _bad();
+        _ident(p[1]);
+        if (p.length == 3) {
+          final stats = p[2].split(',').map((s) => s.trim()).toList();
+          if (stats.any((s) => !battleStats.contains(s)) ||
+              stats.toSet().length != stats.length) {
+            _bad();
+          }
+          p[2] = stats.join(',');
+        }
+      case '-clearpositiveboost':
+        if (p.length != 1 && p.length != 3) _bad();
+        if (p.length == 3) {
+          _ident(p[1]);
+          _text(p[2]);
+        }
+      case '-invertboost':
+      case '-clearboost':
+      case '-clearnegativeboost':
+        _count(p, 1);
+      default:
+        if (p.length < 2 || p.length > 3) _bad();
+        final name = p[1].startsWith('move: ') ? p[1].substring(6) : p[1];
+        p[1] = name.toLowerCase().replaceAll(' ', '');
+        final valid = type == '-singleturn'
+            ? p[1] == 'protect'
+            : type == '-singlemove'
+            ? p[1] == 'destinybond'
+            : persistentEffects.contains(p[1]);
+        if (!valid) _bad();
+        if (type == '-start' && p[1] == 'disable') {
+          _count(p, 3);
+          _text(p[2]);
+        } else {
+          _count(p, 2);
+        }
+    }
+  }
+  return BattleEffectEvent(record, operation: type, arguments: p);
+}

@@ -148,7 +148,7 @@ void main() {
     'unknown state, mode and malformed events stay blocked after request',
     () {
       for (final wire in [
-        '|-boost|p1a: Alpha|atk|1',
+        '|-futuremechanic|p1a: Alpha|atk|1',
         '|-transform|p1a: Alpha|p2a: Gamma',
         '|teampreview',
         '|gen|8',

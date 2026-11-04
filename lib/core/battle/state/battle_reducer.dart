@@ -1,3 +1,5 @@
+import 'battle_environment_reducer.dart';
+export 'battle_environment.dart';
 import 'pokemon_effects.dart';
 import '../../protocol/server_event_decoder.dart';
 import 'battle_health.dart';
@@ -49,6 +51,15 @@ BattleState reduceBattleEvent(
   if (event is MalformedServerEvent) return _block(state);
   if (event is UnknownServerEvent) {
     return _decorative.contains(event.eventType) ? state : _block(state);
+  }
+  if (event is BattleEnvironmentEvent) {
+    if (event.actor != null && !_known(state, event.actor!)) {
+      return _block(state);
+    }
+    final environment = reduceEnvironment(state.environment, event, state.turn);
+    return environment == null
+        ? _block(state)
+        : state.copyWith(environment: environment);
   }
   if (event is BattlePlayerEvent) {
     final player = event.player;

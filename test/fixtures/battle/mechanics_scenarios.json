@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "provenance": "Reviewed positive intermediate projections for PR3 boosts and bounded volatile registry; remaining groups retain baseline guards.",
+  "provenance": "PR3/PR4 positive intermediate projections for reviewed effects; remaining families retain baseline guards. Synthetic traces checked against the pinned upstream.",
   "cases": [
     {
       "id": "identity",
@@ -473,22 +473,49 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Gamma\n|-weather|RainDance|[upkeep]\n|-weather|none"
+          "receive": ">battle-contract-1\n|-weather|RainDance|[from] ability: Drizzle|[of] p2a: Gamma"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "weather": "raindance",
+            "weatherStartedTurn": 1
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|turn|2\n|-weather|RainDance|[upkeep]"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "weather": "raindance",
+            "weatherStartedTurn": 1,
+            "weatherUpkeepTurn": 2
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-weather|Snowscape|[from] ability: Snow Warning|[of] p1a: Alpha"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "weather": "snowscape",
+            "weatherStartedTurn": 2,
+            "weatherUpkeepTurn": null
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-weather|none"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "weather": null
+          }
         },
         {
           "choose": {
@@ -498,9 +525,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "sendCount": 1,
+            "unsupported": false
           }
         }
       ]
@@ -513,22 +539,54 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-fieldstart|move: Trick Room|[of] p1a: Alpha\n|-fieldend|move: Trick Room"
+          "receive": ">battle-contract-1\n|-fieldstart|move: Trick Room|[of] p1a: Alpha"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "fieldConditions": [
+              "trickroom"
+            ]
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|-fieldstart|move: Gravity\n|-fieldstart|move: Magic Room|[of] p1a: Alpha\n|-fieldstart|move: Wonder Room|[of] p2a: Gamma"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "fieldConditions": [
+              "trickroom",
+              "gravity",
+              "magicroom",
+              "wonderroom"
+            ]
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-fieldend|move: Trick Room\n|-fieldend|move: Magic Room|[of] p1a: Alpha"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "fieldConditions": [
+              "gravity",
+              "wonderroom"
+            ]
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-fieldend|move: Gravity\n|-fieldend|move: Wonder Room"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "fieldConditions": []
+          }
         },
         {
           "choose": {
@@ -538,9 +596,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "sendCount": 1,
+            "unsupported": false
           }
         }
       ]
@@ -553,22 +610,74 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-fieldstart|move: Electric Terrain\n|-fieldend|move: Electric Terrain"
+          "receive": ">battle-contract-1\n|-fieldstart|move: Electric Terrain"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "terrain": "electricterrain"
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|-fieldstart|move: Grassy Terrain"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "terrain": "grassyterrain"
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-fieldend|move: Electric Terrain"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "terrain": "grassyterrain"
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-fieldstart|move: Misty Terrain"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "terrain": "mistyterrain"
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-fieldend|Misty Terrain"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "terrain": null
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-fieldstart|move: Psychic Terrain"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "terrain": "psychicterrain"
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-fieldend|move: Psychic Terrain"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "terrain": null
+          }
         },
         {
           "choose": {
@@ -578,9 +687,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "sendCount": 1,
+            "unsupported": false
           }
         }
       ]
@@ -593,22 +701,32 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
           "receive": ">battle-contract-1\n|-fieldactivate|move: Perish Song"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "fieldActivations": [
+              "perishsong"
+            ],
+            "fieldConditions": [],
+            "terrain": null
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|-fieldactivate|move: Teatime"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "fieldActivations": [
+              "perishsong",
+              "teatime"
+            ],
+            "fieldConditions": []
+          }
         },
         {
           "choose": {
@@ -618,9 +736,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "sendCount": 1,
+            "unsupported": false
           }
         }
       ]
@@ -633,22 +750,96 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-sidestart|p2: ExampleOpponent|Spikes\n|-sidestart|p2: ExampleOpponent|Spikes\n|-sideend|p2: ExampleOpponent|Spikes"
+          "receive": ">battle-contract-1\n|-sidestart|p2: ExampleOpponent|Spikes"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "sideConditions": {
+              "p1": {},
+              "p2": {
+                "spikes": 1
+              }
+            }
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|-sidestart|p2: ExampleOpponent|Spikes"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "sideConditions": {
+              "p1": {},
+              "p2": {
+                "spikes": 2
+              }
+            }
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-sidestart|p2: ExampleOpponent|Spikes\n|-sidestart|p1: Example|move: Toxic Spikes"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "sideConditions": {
+              "p1": {
+                "toxicspikes": 1
+              },
+              "p2": {
+                "spikes": 3
+              }
+            }
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-sidestart|p1: Example|move: Toxic Spikes"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "sideConditions": {
+              "p1": {
+                "toxicspikes": 2
+              },
+              "p2": {
+                "spikes": 3
+              }
+            }
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-sideend|p2: ExampleOpponent|Spikes|[from] move: Defog|[of] p1a: Alpha"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "sideConditions": {
+              "p1": {
+                "toxicspikes": 2
+              },
+              "p2": {}
+            }
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-sideend|p1: Example|move: Toxic Spikes|[of] p1a: Alpha"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "sideConditions": {
+              "p1": {},
+              "p2": {}
+            }
+          }
         },
         {
           "choose": {
@@ -658,9 +849,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "sendCount": 1,
+            "unsupported": false
           }
         }
       ]
@@ -673,22 +863,55 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-swapsideconditions"
+          "receive": ">battle-contract-1\n|-sidestart|p1: Example|Reflect\n|-sidestart|p2: ExampleOpponent|move: Stealth Rock\n|-sidestart|p2: ExampleOpponent|move: Sticky Web"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "sideConditions": {
+              "p1": {
+                "reflect": 1
+              },
+              "p2": {
+                "stealthrock": 1,
+                "stickyweb": 1
+              }
+            }
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|-swapsideconditions\n|-activate|p1a: Alpha|move: Court Change"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "sideConditions": {
+              "p1": {
+                "stealthrock": 1,
+                "stickyweb": 1
+              },
+              "p2": {
+                "reflect": 1
+              }
+            }
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-sideend|p1: Example|Stealth Rock|[from] move: Rapid Spin|[of] p1a: Alpha\n|-sideend|p1: Example|Sticky Web|[from] move: Rapid Spin|[of] p1a: Alpha"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "sideConditions": {
+              "p1": {},
+              "p2": {
+                "reflect": 1
+              }
+            }
+          }
         },
         {
           "choose": {
@@ -698,9 +921,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "sendCount": 1,
+            "unsupported": false
           }
         }
       ]
@@ -1559,6 +1781,156 @@
         {
           "expect": {
             "sendCount": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "environment-lifecycle",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "receive": ">battle-contract-1\n|-weather|RainDance\n|-fieldstart|move: Trick Room\n|-fieldstart|move: Electric Terrain\n|-sidestart|p1|Spikes"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-weather|RainDance|[upkeep]\n|-sidestart|p2|Reflect"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "controllerPhase": "submitted",
+            "canChoose": false,
+            "sendCount": 1,
+            "requestRevision": 1
+          }
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "sendCount": 1
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|switch|p1a: Beta|Snorlax, L80|100/100\n|faint|p2a: Gamma\n|turn|12"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "weather": "raindance",
+            "terrain": "electricterrain",
+            "fieldConditions": [
+              "trickroom"
+            ],
+            "sideConditions": {
+              "p1": {
+                "spikes": 1
+              },
+              "p2": {
+                "reflect": 1
+              }
+            },
+            "sendCount": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "environment-unknown",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "receive": ">battle-contract-1\n|-weather|RainDance\n|-fieldactivate|move: Fairy Lock"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "canChoose": false,
+            "weather": "raindance",
+            "fieldConditions": []
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "environment-layer-overflow",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "receive": ">battle-contract-1\n|-sidestart|p1|move: Toxic Spikes\n|-sidestart|p1|move: Toxic Spikes"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "sideConditions": {
+              "p1": {
+                "toxicspikes": 2
+              },
+              "p2": {}
+            }
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-sidestart|p1|move: Toxic Spikes"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "sideConditions": {
+              "p1": {
+                "toxicspikes": 2
+              },
+              "p2": {}
+            },
+            "canChoose": false
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "sendCount": 0
           }
         }
       ]

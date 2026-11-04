@@ -1,3 +1,4 @@
+import 'battle_environment.dart';
 import '../requests/battle_request.dart';
 import '../requests/request_side.dart';
 import 'battle_phase.dart';
@@ -28,11 +29,13 @@ final class BattleState {
     Map<String, BattlePlayer> players = const {},
     Map<String, int> teamSizes = const {},
     BattleRoster? roster,
+    BattleEnvironment? environment,
     this.privateActiveReference,
     List<BattleLogEntry> log = const [],
   }) : players = Map.unmodifiable(players),
        teamSizes = Map.unmodifiable(teamSizes),
        roster = roster ?? BattleRoster.empty(),
+       environment = environment ?? BattleEnvironment(),
        log = List.unmodifiable(log);
   final String roomId;
   final int connectionEpoch;
@@ -47,6 +50,7 @@ final class BattleState {
   final Map<String, BattlePlayer> players;
   final Map<String, int> teamSizes;
   final BattleRoster roster;
+  final BattleEnvironment environment;
   Map<String, ObservedPokemon> get active => roster.active;
   final PrivateActiveReference? privateActiveReference;
   final List<BattleLogEntry> log;
@@ -79,6 +83,7 @@ final class BattleState {
     Map<String, BattlePlayer>? players,
     Map<String, int>? teamSizes,
     BattleRoster? roster,
+    BattleEnvironment? environment,
     PrivateActiveReference? privateActiveReference,
     bool clearPrivateActiveReference = false,
     List<BattleLogEntry>? log,
@@ -100,6 +105,7 @@ final class BattleState {
     players: players ?? this.players,
     teamSizes: teamSizes ?? this.teamSizes,
     roster: roster ?? this.roster,
+    environment: environment ?? this.environment,
     privateActiveReference: clearRequest || clearPrivateActiveReference
         ? null
         : privateActiveReference ?? this.privateActiveReference,

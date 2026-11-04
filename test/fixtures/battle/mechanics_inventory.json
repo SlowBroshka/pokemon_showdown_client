@@ -91,14 +91,16 @@
         "-weather"
       ],
       "ownerPr": 4,
-      "current": "blocked",
-      "target": "Track start/upkeep/end without guessing hidden duration.",
+      "current": "partial",
+      "target": "PR4: four Gen9 weather kinds, explicit start/upkeep/end, public source metadata; no guessed duration or suppression.",
       "reachability": "in-scope",
       "sources": [
-        "sim/field.ts"
+        "sim/field.ts",
+        "data/conditions.ts"
       ],
       "scenarios": [
-        "weather"
+        "weather",
+        "environment-lifecycle"
       ]
     },
     {
@@ -109,8 +111,8 @@
         "-fieldactivate"
       ],
       "ownerPr": 4,
-      "current": "blocked",
-      "target": "Track terrain and pseudo-weather; distinguish activation from persistent state.",
+      "current": "partial",
+      "target": "PR4: four exclusive terrains, Gravity and three rooms, bounded Perish Song/Teatime activation observations. Fairy Lock and unknown subtypes remain guarded.",
       "reachability": "in-scope",
       "sources": [
         "data/moves.ts",
@@ -119,7 +121,8 @@
       "scenarios": [
         "field-1",
         "field-2",
-        "field-3"
+        "field-3",
+        "environment-unknown"
       ]
     },
     {
@@ -130,8 +133,8 @@
         "-swapsideconditions"
       ],
       "ownerPr": 4,
-      "current": "blocked",
-      "target": "Represent layers, removal and swapping side conditions.",
+      "current": "partial",
+      "target": "PR4: ten side conditions, capped layers, explicit removal, atomic Court Change and its narrow activation acknowledgment. Legacy/Gmax/pledge conditions remain guarded.",
       "reachability": "in-scope",
       "sources": [
         "data/moves.ts",
@@ -139,7 +142,8 @@
       ],
       "scenarios": [
         "side-conditions-1",
-        "side-conditions-2"
+        "side-conditions-2",
+        "environment-layer-overflow"
       ]
     },
     {
@@ -186,8 +190,8 @@
         "-block"
       ],
       "ownerPr": 5,
-      "current": "blocked",
-      "target": "Decode effect-specific activation/block payloads and annotations; stateful effects must not be treated as log-only.",
+      "current": "partial",
+      "target": "Decode effect-specific activation/block payloads and annotations; stateful effects must not be treated as log-only. PR4 accepts only the Court Change activation acknowledgment; all other subtypes remain guarded.",
       "reachability": "in-scope",
       "sources": [
         "data/moves.ts",
@@ -195,7 +199,8 @@
       ],
       "scenarios": [
         "effect-context-1",
-        "effect-context-2"
+        "effect-context-2",
+        "side-conditions-2"
       ]
     },
     {

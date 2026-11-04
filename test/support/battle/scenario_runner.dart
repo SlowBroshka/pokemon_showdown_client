@@ -255,6 +255,20 @@ final class BattleScenarioRunner {
       'phase': _phase,
       'controllerPhase': _controller.phase.name,
       'turn': state.turn,
+      'weather': state.environment.weather?.id,
+      'weatherStartedTurn': state.environment.weather?.startedTurn,
+      'weatherUpkeepTurn': state.environment.weather?.lastUpkeepTurn,
+      'terrain': state.environment.terrain?.id,
+      'fieldConditions': state.environment.fields.keys.toList(),
+      'sideConditions': {
+        'p1': {
+          for (final e in state.environment.p1.entries) e.key: e.value.layers,
+        },
+        'p2': {
+          for (final e in state.environment.p2.entries) e.key: e.value.layers,
+        },
+      },
+      'fieldActivations': [for (final a in state.environment.activations) a.id],
       'boosts': {
         for (final p in state.active.entries) p.key: p.value.effects.boosts,
       },

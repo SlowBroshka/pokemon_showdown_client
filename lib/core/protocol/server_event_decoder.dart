@@ -1,3 +1,6 @@
+import 'battle_environment_decoder.dart';
+export 'battle_environment_decoder.dart';
+
 import 'dart:convert';
 
 import '../matchmaking/search/search_snapshot_decoder.dart';
@@ -64,6 +67,8 @@ ServerEvent? decodeServerRecord(ServerRecord record) {
     return MalformedServerEvent(record, reason: 'Missing event type or data');
   }
 
+  final environmentEvent = decodeBattleEnvironment(record);
+  if (environmentEvent != null) return environmentEvent;
   final battleEvent = decodeBattleEvent(record);
   if (battleEvent != null) return battleEvent;
   switch (type) {

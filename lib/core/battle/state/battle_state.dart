@@ -1,3 +1,4 @@
+import 'effect_observation.dart';
 import 'battle_environment.dart';
 import '../requests/battle_request.dart';
 import '../requests/request_side.dart';
@@ -32,11 +33,13 @@ final class BattleState {
     BattleEnvironment? environment,
     this.privateActiveReference,
     List<BattleLogEntry> log = const [],
+    List<EffectObservation> effectObservations = const [],
   }) : players = Map.unmodifiable(players),
        teamSizes = Map.unmodifiable(teamSizes),
        roster = roster ?? BattleRoster.empty(),
        environment = environment ?? BattleEnvironment(),
-       log = List.unmodifiable(log);
+       log = List.unmodifiable(log),
+       effectObservations = List.unmodifiable(effectObservations);
   final String roomId;
   final int connectionEpoch;
   final BattlePhase phase;
@@ -54,6 +57,7 @@ final class BattleState {
   Map<String, ObservedPokemon> get active => roster.active;
   final PrivateActiveReference? privateActiveReference;
   final List<BattleLogEntry> log;
+  final List<EffectObservation> effectObservations;
   final BattleRequest? request;
   final int requestRevision;
 
@@ -87,6 +91,7 @@ final class BattleState {
     PrivateActiveReference? privateActiveReference,
     bool clearPrivateActiveReference = false,
     List<BattleLogEntry>? log,
+    List<EffectObservation>? effectObservations,
   }) => BattleState(
     roomId: roomId,
     connectionEpoch: connectionEpoch,
@@ -110,5 +115,6 @@ final class BattleState {
         ? null
         : privateActiveReference ?? this.privateActiveReference,
     log: log ?? this.log,
+    effectObservations: effectObservations ?? this.effectObservations,
   );
 }

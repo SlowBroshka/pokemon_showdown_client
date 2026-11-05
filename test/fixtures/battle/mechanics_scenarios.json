@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "provenance": "PR3/PR4 positive intermediate projections for reviewed effects; remaining families retain baseline guards. Synthetic traces checked against the pinned upstream.",
+  "provenance": "PR3/PR4/PR5 positive projections for reviewed mechanics; remaining families retain baseline guards. Synthetic traces checked against pinned upstream; Good as Gold fixture corrected in PR5.",
   "cases": [
     {
       "id": "identity",
@@ -935,22 +935,42 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-item|p1a: Alpha|Air Balloon\n|-enditem|p1a: Alpha|Air Balloon"
+          "receive": ">battle-contract-1\n|-item|p1a: Alpha|Air Balloon"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "items": {
+              "p1": "Air Balloon",
+              "p2": null
+            },
+            "itemKnowledge": {
+              "p1": "held",
+              "p2": "unknown"
+            }
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|-enditem|p1a: Alpha|Air Balloon"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "items": {
+              "p1": null,
+              "p2": null
+            },
+            "itemKnowledge": {
+              "p1": "absent",
+              "p2": "unknown"
+            },
+            "itemEndReasons": {
+              "p1": "ended",
+              "p2": null
+            }
+          }
         },
         {
           "choose": {
@@ -960,9 +980,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "unsupported": false,
+            "sendCount": 1
           }
         }
       ]
@@ -975,22 +994,59 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-enditem|p1a: Alpha|Sitrus Berry|[eat]\n|-heal|p1a: Alpha|100/100|[from] item: Sitrus Berry"
+          "receive": ">battle-contract-1\n|-enditem|p1a: Alpha|Sitrus Berry|[eat]"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "itemKnowledge": {
+              "p1": "absent",
+              "p2": "unknown"
+            },
+            "itemEndReasons": {
+              "p1": "consumed",
+              "p2": null
+            }
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|-heal|p1a: Alpha|100/100|[from] item: Sitrus Berry"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "items": {
+              "p1": null,
+              "p2": null
+            },
+            "itemKnowledge": {
+              "p1": "absent",
+              "p2": "unknown"
+            },
+            "effectNames": [
+              "Sitrus Berry",
+              "Sitrus Berry"
+            ]
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-item|p1a: Alpha|Sitrus Berry|[from] ability: Harvest"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "items": {
+              "p1": "Sitrus Berry",
+              "p2": null
+            },
+            "itemKnowledge": {
+              "p1": "held",
+              "p2": "unknown"
+            }
+          }
         },
         {
           "choose": {
@@ -1000,9 +1056,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "unsupported": false,
+            "sendCount": 1
           }
         }
       ]
@@ -1015,22 +1070,38 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-ability|p1a: Alpha|Mold Breaker\n|-endability|p1a: Alpha"
+          "receive": ">battle-contract-1\n|-ability|p1a: Alpha|Mold Breaker"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "abilities": {
+              "p1": "Mold Breaker",
+              "p2": null
+            },
+            "suppressedAbilities": {
+              "p1": false,
+              "p2": false
+            }
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|-endability|p1a: Alpha"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "abilities": {
+              "p1": "Mold Breaker",
+              "p2": null
+            },
+            "suppressedAbilities": {
+              "p1": true,
+              "p2": false
+            }
+          }
         },
         {
           "choose": {
@@ -1040,9 +1111,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "unsupported": false,
+            "sendCount": 1
           }
         }
       ]
@@ -1055,22 +1125,35 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-activate|p1a: Alpha|move: Substitute|[damage]"
+          "receive": ">battle-contract-1\n|-start|p1a: Alpha|Substitute\n|-activate|p1a: Alpha|move: Substitute|[damage]"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "effects": {
+              "p1": {
+                "substitute": null
+              },
+              "p2": {}
+            },
+            "effectNames": [
+              "Substitute"
+            ]
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|-end|p1a: Alpha|Substitute"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "effects": {
+              "p1": {},
+              "p2": {}
+            }
+          }
         },
         {
           "choose": {
@@ -1080,9 +1163,8 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "unsupported": false,
+            "sendCount": 1
           }
         }
       ]
@@ -1095,22 +1177,39 @@
           "requestFixture": "move"
         },
         {
-          "expect": {
-            "canChoose": true
-          }
-        },
-        {
-          "receive": ">battle-contract-1\n|-block|p1a: Alpha|ability: Good as Gold|Thunder Wave|p2a: Gamma"
+          "receive": ">battle-contract-1\n|-immune|p1a: Alpha|[from] ability: Good as Gold"
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "controllerPhase": "inactive"
+            "unsupported": false,
+            "canChoose": true,
+            "effectNames": [
+              "Good as Gold"
+            ],
+            "effectSources": [
+              1
+            ],
+            "effectTargets": [
+              1
+            ],
+            "abilities": {
+              "p1": null,
+              "p2": null
+            }
           }
         },
         {
-          "requestFixture": "move"
+          "receive": ">battle-contract-1\n|-block|p1a: Alpha|item: Ability Shield"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "canChoose": true,
+            "effectNames": [
+              "Good as Gold",
+              "Ability Shield"
+            ]
+          }
         },
         {
           "choose": {
@@ -1120,12 +1219,12 @@
         },
         {
           "expect": {
-            "unsupported": true,
-            "canChoose": false,
-            "sendCount": 0
+            "unsupported": false,
+            "sendCount": 1
           }
         }
-      ]
+      ],
+      "note": "Corrected PR1 synthetic Good as Gold -block: pinned emitter uses -immune with [from] ability."
     },
     {
       "id": "illusion",
@@ -1921,6 +2020,164 @@
         },
         {
           "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "sendCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "traits-transfer",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "receive": ">battle-contract-1\n|-item|p2a: Gamma|Leftovers\n|-item|p1a: Alpha|Leftovers|[from] ability: Magician|[of] p2a: Gamma"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "items": {
+              "p1": "Leftovers",
+              "p2": null
+            },
+            "itemKnowledge": {
+              "p1": "held",
+              "p2": "absent"
+            },
+            "effectSources": [
+              2,
+              1
+            ]
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-activate|p1a: Alpha|Skill Swap|Pressure|Levitate|[of] p2a: Gamma"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "abilities": {
+              "p1": "Pressure",
+              "p2": "Levitate"
+            }
+          }
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-activate|p1a: Alpha|item: Quick Claw"
+        },
+        {
+          "expect": {
+            "sendCount": 1,
+            "controllerPhase": "submitted",
+            "canChoose": false,
+            "requestRevision": 1
+          }
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "sendCount": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "traits-unknown",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "receive": ">battle-contract-1\n|-item|p1a: Alpha|Leftovers\n|-activate|p1a: Alpha|ability: Cud Chew"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "items": {
+              "p1": "Leftovers",
+              "p2": null
+            },
+            "canChoose": false
+          }
+        },
+        {
+          "requestFixture": "move"
+        },
+        {
+          "choose": {
+            "kind": "move",
+            "slot": 1
+          }
+        },
+        {
+          "expect": {
+            "sendCount": 0,
+            "unsupported": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "traits-source-atomicity",
+      "setup": "initialized-battle",
+      "steps": [
+        {
+          "requestFixture": "move"
+        },
+        {
+          "receive": ">battle-contract-1\n|-damage|p1a: Alpha|90/100|[from] item: Rocky Helmet|[of] p2a: Gamma"
+        },
+        {
+          "expect": {
+            "unsupported": false,
+            "effectNames": [
+              "Rocky Helmet"
+            ],
+            "effectSources": [
+              2
+            ],
+            "effectTargets": [
+              1
+            ]
+          }
+        },
+        {
+          "receive": ">battle-contract-1\n|-item|p1a: Alpha|Leftovers|[from] move: Covet|[of] p2a: Missing"
+        },
+        {
+          "expect": {
+            "unsupported": true,
+            "items": {
+              "p1": null,
+              "p2": null
+            },
+            "effectNames": [
+              "Rocky Helmet"
+            ]
+          }
         },
         {
           "choose": {

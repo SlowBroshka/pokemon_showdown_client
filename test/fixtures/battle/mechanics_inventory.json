@@ -153,8 +153,8 @@
         "-enditem"
       ],
       "ownerPr": 5,
-      "current": "blocked",
-      "target": "Distinguish revealed, consumed, removed and unknown item; preserve source annotations.",
+      "current": "partial",
+      "target": "PR5: unknown/held/absent, explicit ending reason, restoration and reviewed transfers; annotations do not resurrect consumed items.",
       "reachability": "in-scope",
       "sources": [
         "sim/pokemon.ts",
@@ -162,7 +162,9 @@
       ],
       "scenarios": [
         "items-1",
-        "items-2"
+        "items-2",
+        "traits-transfer",
+        "traits-source-atomicity"
       ]
     },
     {
@@ -172,15 +174,16 @@
         "-endability"
       ],
       "ownerPr": 5,
-      "current": "blocked",
-      "target": "Track revealed/current/suppressed ability without assuming hidden data.",
+      "current": "partial",
+      "target": "PR5: reported current/previous ability, explicit suppression and Skill Swap; no base-ability guessing. As One/Neutralizing Gas remain guarded.",
       "reachability": "in-scope",
       "sources": [
         "sim/pokemon.ts",
         "data/abilities.ts"
       ],
       "scenarios": [
-        "abilities"
+        "abilities",
+        "traits-transfer"
       ]
     },
     {
@@ -191,7 +194,7 @@
       ],
       "ownerPr": 5,
       "current": "partial",
-      "target": "Decode effect-specific activation/block payloads and annotations; stateful effects must not be treated as log-only. PR4 accepts only the Court Change activation acknowledgment; all other subtypes remain guarded.",
+      "target": "PR5: bounded typed provenance, reviewed activation/block schemas, PR4 Court Change retained; unknown/stateful subtypes remain guarded.",
       "reachability": "in-scope",
       "sources": [
         "data/moves.ts",
@@ -200,7 +203,9 @@
       "scenarios": [
         "effect-context-1",
         "effect-context-2",
-        "side-conditions-2"
+        "side-conditions-2",
+        "traits-unknown",
+        "traits-source-atomicity"
       ]
     },
     {
@@ -306,7 +311,7 @@
       ],
       "ownerPr": 8,
       "current": "mixed",
-      "target": "Add typed RU/EN feedback; currently most ignored, hitcount/ohko block.",
+      "target": "Add typed RU/EN feedback; currently most ignored, hitcount/ohko block. PR5 captures -immune source annotations (including Good as Gold); unannotated immunity remains decorative.",
       "reachability": "requires-audit",
       "sources": [
         "sim/battle-actions.ts",
@@ -314,7 +319,8 @@
       ],
       "scenarios": [
         "log-feedback-1",
-        "log-feedback-2"
+        "log-feedback-2",
+        "effect-context-2"
       ]
     },
     {

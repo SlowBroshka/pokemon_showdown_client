@@ -255,6 +255,30 @@ final class BattleScenarioRunner {
       'phase': _phase,
       'controllerPhase': _controller.phase.name,
       'turn': state.turn,
+      'items': {
+        for (final e in state.active.entries) e.key: e.value.traits.item,
+      },
+      'itemKnowledge': {
+        for (final e in state.active.entries)
+          e.key: e.value.traits.itemKnowledge.name,
+      },
+      'itemEndReasons': {
+        for (final e in state.active.entries)
+          e.key: e.value.traits.itemEndReason?.name,
+      },
+      'abilities': {
+        for (final e in state.active.entries) e.key: e.value.traits.ability,
+      },
+      'suppressedAbilities': {
+        for (final e in state.active.entries) e.key: e.value.traits.suppressed,
+      },
+      'effectNames': [for (final e in state.effectObservations) e.effect.name],
+      'effectSources': [
+        for (final e in state.effectObservations) e.sourceAppearanceId,
+      ],
+      'effectTargets': [
+        for (final e in state.effectObservations) e.targetAppearanceId,
+      ],
       'weather': state.environment.weather?.id,
       'weatherStartedTurn': state.environment.weather?.startedTurn,
       'weatherUpkeepTurn': state.environment.weather?.lastUpkeepTurn,

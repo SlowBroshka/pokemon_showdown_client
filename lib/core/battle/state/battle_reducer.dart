@@ -1,3 +1,7 @@
+import 'effect_observation.dart';
+import 'battle_trait_reducer.dart';
+export 'pokemon_traits.dart';
+export 'effect_observation.dart';
 import 'battle_environment_reducer.dart';
 export 'battle_environment.dart';
 import 'pokemon_effects.dart';
@@ -51,6 +55,33 @@ BattleState reduceBattleEvent(
   if (event is MalformedServerEvent) return _block(state);
   if (event is UnknownServerEvent) {
     return _decorative.contains(event.eventType) ? state : _block(state);
+  }
+  if (event is BattleTraitEvent) {
+    return reduceTraits(state, event) ?? _block(state);
+  }
+  if (event is BattleAttributedEvent) {
+    final source = event.source;
+    final of = source.ofIdent;
+    if (of != null && publicActiveIdent(of) && !_known(state, of)) {
+      return _block(state);
+    }
+    final next = reduceBattleEvent(
+      state,
+      event.inner,
+      connectionEpoch: connectionEpoch,
+    );
+    if (!state.unsupported && next.unsupported) return _block(state);
+    final first = event.record.data!.split('|').first;
+    final target = publicIdent(first) ? first : null;
+    // Annotation relations are preserved separately; no persistent trait inference.
+    final owner =
+        source.kind == EffectSourceKind.item ||
+            source.kind == EffectSourceKind.ability
+        ? of ?? target
+        : source.kind == EffectSourceKind.move
+        ? of
+        : null;
+    return recordEffect(next, event.record.eventType!, source, target, owner);
   }
   if (event is BattleEnvironmentEvent) {
     if (event.actor != null && !_known(state, event.actor!)) {
@@ -154,6 +185,11 @@ BattleState reduceBattleEvent(
       final previous = state.active[pokemon.sideId];
       if (event.dragged || previous == null || previous.health.fainted) {
         return _block(state);
+      }
+      if (event.source == 'move: Baton Pass' && previous.traits.suppressed) {
+        return _block(
+          state,
+        ); // Gastro Acid copy exceptions need a separate audit.
       }
       pokemon = pokemon.withEffects(
         previous.effects.transferred(event.source!),

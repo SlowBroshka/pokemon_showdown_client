@@ -2,9 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pokemon_showdown_client/core/protocol/server_event_decoder.dart';
 import 'package:pokemon_showdown_client/core/protocol/server_message.dart';
 
-ServerEvent? decode(String wire, {bool room = true}) => decodeServerRecord(
-  parseServerMessage('${room ? '>battle-environment\n' : ''}$wire').single,
-);
+ServerEvent? decode(String wire, {bool room = true}) {
+  final event = decodeServerRecord(
+    parseServerMessage('${room ? '>battle-environment\n' : ''}$wire').single,
+  );
+  return event is BattleAttributedEvent ? event.inner : event;
+}
 
 void main() {
   test(

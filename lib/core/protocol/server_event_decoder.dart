@@ -1,3 +1,5 @@
+import 'battle_trait_decoder.dart';
+export 'battle_trait_decoder.dart';
 import 'battle_environment_decoder.dart';
 export 'battle_environment_decoder.dart';
 
@@ -67,10 +69,12 @@ ServerEvent? decodeServerRecord(ServerRecord record) {
     return MalformedServerEvent(record, reason: 'Missing event type or data');
   }
 
+  final traitEvent = decodeBattleTrait(record);
+  if (traitEvent != null) return traitEvent;
   final environmentEvent = decodeBattleEnvironment(record);
-  if (environmentEvent != null) return environmentEvent;
+  if (environmentEvent != null) return attributeBattleEvent(environmentEvent);
   final battleEvent = decodeBattleEvent(record);
-  if (battleEvent != null) return battleEvent;
+  if (battleEvent != null) return attributeBattleEvent(battleEvent);
   switch (type) {
     case 'updatesearch':
       if (record.roomId != null) {

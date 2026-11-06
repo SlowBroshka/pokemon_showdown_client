@@ -2,8 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pokemon_showdown_client/core/protocol/server_event_decoder.dart';
 import 'package:pokemon_showdown_client/core/protocol/server_message.dart';
 
-ServerEvent decode(String line) =>
-    decodeServerRecord(parseServerMessage('>battle-test\n$line').single)!;
+ServerEvent decode(String line) {
+  final event = decodeServerRecord(
+    parseServerMessage('>battle-test\n$line').single,
+  )!;
+  return event is BattleAttributedEvent ? event.inner : event;
+}
 
 void main() {
   test('all supported event families are typed', () {
